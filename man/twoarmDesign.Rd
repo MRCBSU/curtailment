@@ -6,8 +6,8 @@
 \title{Find two-arm trial designs that use stochastic curtailment}
 \usage{
 twoarmDesign(
-  nmin,
-  nmax,
+  nmin.arm,
+  nmax.arm,
   block.size,
   pc,
   pt,
@@ -25,9 +25,9 @@ twoarmDesign(
 )
 }
 \arguments{
-\item{nmin}{Minimum permitted sample size \emph{per arm}. Should be a multiple of block size.}
+\item{nmin.arm}{Minimum permitted sample size \emph{per arm}. Should be a multiple of block size.}
 
-\item{nmax}{Maximum permitted sample size \emph{per arm}. Should be a multiple of block size.}
+\item{nmax.arm}{Maximum permitted sample size \emph{per arm}. Should be a multiple of block size.}
 
 \item{block.size}{Block size.}
 
@@ -67,16 +67,16 @@ The output can be used as the sole argument in the function 'drawDiagram', which
 admissible design of your choice. Monitoring frequency can set in terms of block size.
 }
 \examples{
-x4 <- twoarmDesign(nmin=20,
-nmax=24,
-block.size=4,
-pc=0.05,
+des <- twoarmDesign(nmin.arm=20,
+nmax.arm=24,
+block.size=8,
+pc=0.1,
 pt=0.4,
-alpha=0.2,
-power=0.7,
-maxthetaF=NULL,
+alpha=0.1,
+power=0.8,
+maxthetaF=0.4,
 minthetaE=0.7,
-max.combns=1e3)
+max.combns=1e4)
 
 }
 \author{

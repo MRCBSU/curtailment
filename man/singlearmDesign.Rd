@@ -68,7 +68,13 @@ The output can be used as the sole argument in the function 'drawDiagram', which
 admissible design of your choice. Monitoring frequency can set in terms of block(/cohort) size ("C") or number of stages ("stages").
 }
 \examples{
-singlearmDesign(nmin = 20, nmax = 20, C = 1, p0 = 0.1, p1 = 0.4, power = 0.8, alpha = 0.1)
+output <- singlearmDesign(nmin = 30,
+ nmax = 30,
+ C = 5,
+ p0 = 0.1,
+ p1 = 0.4,
+ power = 0.8,
+ alpha = 0.05)
 }
 \author{
 Martin Law, \email{martin.law@mrc-bsu.cam.ac.uk}

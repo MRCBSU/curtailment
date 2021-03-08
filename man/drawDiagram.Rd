@@ -30,8 +30,14 @@ The function takes a single argument: the output from the function singlearmDesi
 If the supplied argument contains more than one admissible designs, the user is offered a choice of which design to use.
 }
 \examples{
-output <- singlearmDesign(nmin = 20, nmax = 20, C = 1, p0 = 0.1, p1 = 0.4, power = 0.8, alpha = 0.1)
-drawDiagram(output)
+output <- singlearmDesign(nmin = 30,
+ nmax = 30,
+ C = 5,
+ p0 = 0.1,
+ p1 = 0.4,
+ power = 0.8,
+ alpha = 0.05)
+ dig <- drawDiagram(output)
 }
 \author{
 Martin Law, \email{martin.law@mrc-bsu.cam.ac.uk}
