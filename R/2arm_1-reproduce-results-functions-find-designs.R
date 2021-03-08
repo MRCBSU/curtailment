@@ -293,16 +293,16 @@ findBlock2armUncurtailedMatrix <- function(n, r, Bsize, pat.cols, prob.vec){
 #' @author Martin Law, \email{martin.law@@mrc-bsu.cam.ac.uk}
 #' @return Output is a list of two dataframes. The first, $input, is a one-row data frame that contains all the arguments used in the call.
 #' The second, $all.des, contains the operating characteristics of all admissible designs found.
-#' @examples x4 <- twoarmDesign(nmin.arm=20,
+#' @examples des <- twoarmDesign(nmin.arm=20,
 #' nmax.arm=24,
-#' block.size=4,
-#' pc=0.05,
+#' block.size=8,
+#' pc=0.1,
 #' pt=0.4,
-#' alpha=0.2,
-#' power=0.7,
-#' maxthetaF=NULL,
+#' alpha=0.1,
+#' power=0.8,
+#' maxthetaF=0.4,
 #' minthetaE=0.7,
-#' max.combns=1e3)
+#' max.combns=1e4)
 #'
 #' @export
 twoarmDesign <- function(nmin.arm,
@@ -1262,7 +1262,8 @@ createPlotAndBounds2arm <- function(des, des.input, rownum, save.plot, xmax, yma
   # Add shading:
   diag.df.subset <- diag.df[!is.na(diag.df$decision),]
   diag.df.subset$analysis <- "No"
-  diag.df.subset$analysis[diag.df.subset$m %% des$block == 0] <- "Yes"
+  stop.index <- diag.df.subset$m %in% initial.stop.bounds$m
+  diag.df.subset$analysis[stop.index] <- "Yes"
 
   plot.title <- "Stopping boundaries"
   sub.text1 <- paste("Max no. of analyses: ", des$stage, ". Max(N): ", des$n, ". ESS(p", sep="")
@@ -1275,9 +1276,9 @@ createPlotAndBounds2arm <- function(des, des.input, rownum, save.plot, xmax, yma
   diagram <- diagram +
     geom_tile(color="white")+
     labs(fill="Decision",
-         alpha="Interim analysis",
+         alpha="Analysis",
          x="Number of participants",
-         y="Number of responses",
+         y="Number of responses on treatment + non-responses on control",
          title=plot.title,
          subtitle = plot.subtitle2)+
     coord_cartesian(expand = 0)+

@@ -428,18 +428,19 @@ if(!is.na(C) & !is.na(stages)) stop("Values given for both cohort/block size C a
 #   if(nmax%%C!=0) stop("nmax must be a multiple of cohort size")
 #   nposs <- seq(from=nmin, to=nmax, by=C)
 #   }
-
 n.initial.range <- nmin:nmax
 if(use.stages==TRUE){
   nposs.min.index <- min(which((nmin:nmax)%%stages==0)) # nmin must be a multiple of number of stages
-  nposs.min <- n.initial.range[nposs.min.index]
   nposs.max.index <- max(which((nmin:nmax)%%stages==0)) # nmax must be a multiple of number of stages
+  if(any(is.infinite(nposs.min.index), is.infinite(nposs.max.index))) stop("There must be at least one value within [nmin, nmax] that is a multiple of the number of stages")
+  nposs.min <- n.initial.range[nposs.min.index]
   nposs.max <- n.initial.range[nposs.max.index]
   nposs <- seq(from=nposs.min, to=nposs.max, by=stages)
 }else{
   nposs.min.index <- min(which((nmin:nmax)%%C==0)) # nmin must be a multiple of cohort size
-  nposs.min <- n.initial.range[nposs.min.index]
   nposs.max.index <- max(which((nmin:nmax)%%C==0)) # nmax must be a multiple of cohort size
+  if(any(is.infinite(nposs.min.index), is.infinite(nposs.max.index))) stop("There must be at least one value within [nmin, nmax] that is a multiple of the cohort size")
+  nposs.min <- n.initial.range[nposs.min.index]
   nposs.max <- n.initial.range[nposs.max.index]
   nposs <- seq(from=nposs.min, to=nposs.max, by=C)
 }
@@ -718,7 +719,13 @@ if(!is.na(max.combns) & is.na(maxthetas)){ # Only use max.combns if maxthetas is
 #' @export
 #' @author Martin Law, \email{martin.law@@mrc-bsu.cam.ac.uk}
 #' @return Output is a list of two dataframes. The first, $input, is a one-row data frame that contains all the arguments used in the call. The second, $all.des, contains the operating characteristics of all admissible designs found.
-#' @examples singlearmDesign(nmin = 20, nmax = 20, C = 1, p0 = 0.1, p1 = 0.4, power = 0.8, alpha = 0.1)
+#' @examples output <- singlearmDesign(nmin = 30,
+#'  nmax = 30,
+#'  C = 5,
+#'  p0 = 0.1,
+#'  p1 = 0.4,
+#'  power = 0.8,
+#'  alpha = 0.05)
 singlearmDesign <- function(nmin,
                         nmax,
                         C=NA,
@@ -3111,7 +3118,7 @@ createPlotAndBoundsSimon <- function(des, des.input, rownum, save.plot, xmax, ym
   diagram <- diagram +
     geom_tile(color="white")+
     labs(fill="Decision",
-         alpha="Interim analysis",
+         alpha="Analysis",
          x="Number of participants",
          y="Number of responses",
          title=plot.title,
@@ -3201,7 +3208,8 @@ createPlotAndBounds <- function(des, des.input, rownum, save.plot, xmax, ymax){
   # Add shading:
   diag.df.subset <- diag.df[!is.na(diag.df$decision),]
   diag.df.subset$analysis <- "No"
-  diag.df.subset$analysis[diag.df.subset$m %% des$C == 0] <- "Yes"
+  stop.index <- diag.df.subset$m %in% unique(findo$tp$m)
+  diag.df.subset$analysis[stop.index] <- "Yes"
 
   plot.title <- "Stopping boundaries"
   sub.text1 <- paste("Max no. of analyses: ", des$stage, ". Max(N): ", des$n, ". ESS(p", sep="")
@@ -3214,7 +3222,7 @@ createPlotAndBounds <- function(des, des.input, rownum, save.plot, xmax, ymax){
   diagram <- diagram +
     geom_tile(color="white")+
     labs(fill="Decision",
-         alpha="Interim analysis",
+         alpha="Analysis",
          x="Number of participants",
          y="Number of responses",
          title=plot.title,
@@ -3279,8 +3287,14 @@ createPlotAndBounds <- function(des, des.input, rownum, save.plot, xmax, ymax){
 #' @export
 #' @author Martin Law, \email{martin.law@@mrc-bsu.cam.ac.uk}
 #' @return The output is a list of two elements. The first, $diagram, is a ggplot2 object showing how the trial should proceed: when to to undertake an interim analysis, that is, when to check if a stopping boundary has been reached (solid colours) and what decision to make at each possible point (continue / go decision / no go decision). The second list element, $bounds.mat, is a data frame containing three columns: the number of participants at which to undertake an interim analysis (m), and the number of responses at which the trial should stop for a go decision (success) or a no go decision (fail).
-#' @examples output <- singlearmDesign(nmin = 20, nmax = 20, C = 1, p0 = 0.1, p1 = 0.4, power = 0.8, alpha = 0.1)
-#' drawDiagram(output)
+#' @examples output <- singlearmDesign(nmin = 30,
+#'  nmax = 30,
+#'  C = 5,
+#'  p0 = 0.1,
+#'  p1 = 0.4,
+#'  power = 0.8,
+#'  alpha = 0.05)
+#'  dig <- drawDiagram(output)
 drawDiagram <- function(findDesign.output, print.row=NULL, save.plot=FALSE, xmax=NULL, ymax=NULL){
   UseMethod("drawDiagram")
 }
