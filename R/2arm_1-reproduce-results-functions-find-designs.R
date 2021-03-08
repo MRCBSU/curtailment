@@ -1031,53 +1031,7 @@ findBounds <- function(des, des.input){
  # Our design (not strictly H0-optimal, but is within 0.5 of optimal wrt EssH0 and has N=31, vs N=71 for the actual H0-optimal):
  # n=31; r2=3; thetaF=0.1277766; thetaE=0.9300000
 
- findRejectionRegions <- function(n, r, thetaF=NULL, thetaE=NULL, pc, pt, method=NULL){
-   ########## Function to find CP matrix for our design:
-   findBlockCP <- function(n, r, pc, pt, thetaF, thetaE){
-     Bsize <- 2
-     pat.cols <- seq(from=2*n, to=2, by=-2)[-1]
-     qc <- 1-pc
-     qt <- 1-pt
-     prob0 <- qt*pc
-     prob1 <- pt*pc + qt*qc
-     prob2 <- pt*qc
-     prob.vec <- c(prob0, prob1, prob2)
-
-     ########## CREATE UNCURTAILED MATRIX
-     mat <- matrix(3, ncol=2*n, nrow=min(n+r+Bsize+2, 2*n+1))
-     rownames(mat) <- 0:(nrow(mat)-1)
-     mat[(n+r+2):nrow(mat),] <- 1
-     mat[1:(n+r+1),2*n] <- 0 # Fail at end
-
-     for(i in (n+r+1):1){
-       for(j in pat.cols){  # Only look every C patients (no need to look at final col)
-         if(i-1<=j){ # Condition: Sm<=m
-           mat[i,j] <- ifelse(test=j-(i-1) > n-r+1, yes=0, no=sum(prob.vec*mat[i:(i+Bsize), j+Bsize])) #### TYPO FOUND MAY 9TH 2019: "n-r-1" changed to "n-r+1"
-           # IF success is not possible (i.e. [total no. of pats-Xa+Ya-Xb] > n-r+1), THEN set CP to zero. Otherwise, calculate it based on "future" CPs.
-         }
-       }
-     }
-
-     for(i in 3:nrow(mat)){
-       mat[i, 1:(i-2)] <- NA
-     }
-     uncurt <- mat
-
-     ########## CREATE CURTAILED MATRIX
-     for(i in (n+r+1):1){
-       for(j in pat.cols){  # Only look every Bsize patients (no need to look at final col)
-         if(i-1<=j){ # Condition: Sm<=m
-           newcp <- sum(prob.vec*mat[i:(i+Bsize), j+Bsize])
-           if(newcp > thetaE) mat[i,j] <- 1
-           if(newcp < thetaF) mat[i,j] <- 0
-           if(newcp <= thetaE & newcp >= thetaF) mat[i,j] <- newcp
-         }
-       }
-     }
-     #return(list(uncurt, mat))
-     return(mat)
-   }
-
+ findRejectionRegions <- function(n, r, thetaF=NULL, thetaE=NULL, pc, pt, method=NULL, Bsize=NULL){
    ######################## FUNCTION TO FIND BASIC CP MATRIX (CP=0/1/neither) FOR CARSTEN
    carstenCPonly <- function(n1, n, r1, r, pair=FALSE){
      cpmat <- matrix(0.5, ncol=2*n, nrow=r+1)
@@ -1105,7 +1059,7 @@ findBounds <- function(des, des.input){
 
    #### Find CPs for block and Carsten designs:
    if(method=="block"){
-     block.mat <- findBlockCP(n=n, r=r, pc=pc, pt=pt, thetaF=thetaF, thetaE=thetaE)
+     block.mat <- findBlockCP(n=n, r=r, Bsize=Bsize, pc=pc, pt=pt, thetaF=thetaF, thetaE=thetaE)
      #### Find lower and upper stopping boundaries for block and Carsten designs:
      lower <- rep(-Inf, ncol(block.mat)/2)
      upper <- rep(Inf, ncol(block.mat)/2)

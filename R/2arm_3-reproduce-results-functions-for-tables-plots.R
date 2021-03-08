@@ -97,7 +97,6 @@ plotPowerBoth <- function(x, power.ss="power"){
 # This function, varypPlot, requires others:
 ########## Function to find CP matrix for our design: ##########
 findBlockCP <- function(n, r, pc, pt, thetaF, thetaE){
-
   Bsize <- 2
   pat.cols <- seq(from=2*n, to=2, by=-2)[-1]
   qc <- 1-pc
@@ -112,16 +111,14 @@ findBlockCP <- function(n, r, pc, pt, thetaF, thetaE){
   rownames(mat) <- 0:(nrow(mat)-1)
   mat[(n+r+2):nrow(mat),] <- 1
   mat[1:(n+r+1),2*n] <- 0 # Fail at end
-
   for(i in (n+r+1):1){
     for(j in pat.cols){  # Only look every C patients (no need to look at final col)
       if(i-1<=j){ # Condition: Sm<=m
-        mat[i,j] <- ifelse(test=j-(i-1) > n-r+1, yes=0, no=sum(prob.vec*mat[i:(i+Bsize), j+Bsize]))
+        mat[i,j] <- ifelse(test=j-(i-1) > n-r+1, yes=0, no=sum(prob.vec*mat[i:(i+Bsize), j+Bsize])) #### TYPO FOUND MAY 9TH 2019: "n-r-1" changed to "n-r+1"
         # IF success is not possible (i.e. [total no. of pats-Xa+Ya-Xb] > n-r+1), THEN set CP to zero. Otherwise, calculate it based on "future" CPs.
       }
     }
   }
-
   for(i in 3:nrow(mat)){
     mat[i, 1:(i-2)] <- NA
   }
@@ -139,7 +136,8 @@ findBlockCP <- function(n, r, pc, pt, thetaF, thetaE){
     }
   }
   return(mat)
-} # END OF FUNCTION
+}
+
 
 
 ######################## FUNCTION TO FIND BASIC CP MATRIX (CP=0/1/neither) FOR CARSTEN ##################
