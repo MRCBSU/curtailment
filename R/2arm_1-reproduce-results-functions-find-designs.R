@@ -270,8 +270,8 @@ findBlock2armUncurtailedMatrix <- function(n, r, Bsize, pat.cols, prob.vec){
 #' This function finds admissible design realisations for two-arm binary outcome trials, using stochastic curtailment.
 #' The output can be used as the sole argument in the function 'drawDiagram', which will return the stopping boundaries for the
 #' admissible design of your choice. Monitoring frequency can set in terms of block size.
-#' @param nmin Minimum permitted sample size *per arm*. Should be a multiple of block size.
-#' @param nmax Maximum permitted sample size *per arm*. Should be a multiple of block size.
+#' @param nmin.arm Minimum permitted sample size *per arm*. Should be a multiple of block size.
+#' @param nmax.arm Maximum permitted sample size *per arm*. Should be a multiple of block size.
 #' @param block.size Block size.
 #' @param pc Anticipated response rate on the control arm.
 #' @param p1 Anticipated response rate on the treatment arm.
@@ -293,8 +293,8 @@ findBlock2armUncurtailedMatrix <- function(n, r, Bsize, pat.cols, prob.vec){
 #' @author Martin Law, \email{martin.law@@mrc-bsu.cam.ac.uk}
 #' @return Output is a list of two dataframes. The first, $input, is a one-row data frame that contains all the arguments used in the call.
 #' The second, $all.des, contains the operating characteristics of all admissible designs found.
-#' @examples x4 <- twoarmDesign(nmin=20,
-#' nmax=24,
+#' @examples x4 <- twoarmDesign(nmin.arm=20,
+#' nmax.arm=24,
 #' block.size=4,
 #' pc=0.05,
 #' pt=0.4,
@@ -305,8 +305,8 @@ findBlock2armUncurtailedMatrix <- function(n, r, Bsize, pat.cols, prob.vec){
 #' max.combns=1e3)
 #'
 #' @export
-twoarmDesign <- function(nmin,
-                            nmax,
+twoarmDesign <- function(nmin.arm,
+                            nmax.arm,
                             block.size,
                             pc,
                             pt,
@@ -329,10 +329,10 @@ twoarmDesign <- function(nmin,
 
   if(Bsize%%2!=0) stop("Block size must be an even number")
 
-  if((2*nmin)%%Bsize!=0) stop("2*nmin must be a multiple of block size")
-  if((2*nmax)%%Bsize!=0) stop("2*nmax must be a multiple of block size")
+  if((2*nmin.arm)%%Bsize!=0) stop("2*nmin.arm must be a multiple of block size")
+  if((2*nmax.arm)%%Bsize!=0) stop("2*nmax.arm must be a multiple of block size")
 
-  nposs <- seq(from=nmin, to=nmax, by=Bsize/2)
+  nposs <- seq(from=nmin.arm, to=nmax.arm, by=Bsize/2)
 
   qc <- 1-pc
   qt <- 1-pt
@@ -522,8 +522,8 @@ twoarmDesign <- function(nmin,
     all.des$stage <- all.des[,"eff.n"]/all.des[,"block"]
     names(all.des)[names(all.des)=="n"] <- "n.arm"
     names(all.des)[names(all.des)=="eff.n"] <- "n"
-    input <- data.frame(nmin=nmin,
-                        nmax=nmax,
+    input <- data.frame(nmin.arm=nmin.arm,
+                        nmax.arm=nmax.arm,
                         block=block.size,
                         pc=pc,
                         pt=pt,
