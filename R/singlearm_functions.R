@@ -3365,10 +3365,6 @@ drawDiagram.curtailment_simon <- function(findDesign.output, print.row=NULL, sav
 }
 
 
-
-
-
-
 #function generator
 defunct <- function(msg = "This function is depreciated") function(...) return(stop(msg))
 #' @export
