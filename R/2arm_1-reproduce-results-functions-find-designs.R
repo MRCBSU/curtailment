@@ -671,7 +671,8 @@ findCarstenChenTypeITypeIIRmRows <- function(nr.list, pc, pt, runs, alpha, power
 ########### End of function for single row #############
 
 ########### Function for single row: Chen #############
-  chenSim <- function(h0, n1, n, a1, r2, pc, pt, runs){
+  chenSim
+  function(h0, n1, n, a1, r2, pc, pt, runs){
 
     n2 <- n-n1
 
@@ -735,6 +736,100 @@ findCarstenChenTypeITypeIIRmRows <- function(nr.list, pc, pt, runs, alpha, power
     ess <- sum(s1.curtailed.ss, s2.go.ss, s2.nogo.ss)/runs
     prob.reject.h0 <- length(s2.go.ss)/runs
     prob.accept.h0 <- (length(s2.nogo.ss)+length(s1.curtailed.ss))/runs
+
+    return(c(n1, n, a1, r2, prob.reject.h0, ess))
+  }
+
+
+  chenSimX <- function(h0, n1, n, a1, r2, pc, pt, runs){
+
+    n2 <- n-n1
+
+    # Stopping rules for S1 and S2:
+    s1.nogo <- n1-a1+1
+    s2.go <- n+r2
+    s2.nogo <- n-r2+1
+
+    # h0: Set TRUE to estimate type I error and ESS|pt=pc, set to FALSE for power and ESS|pt=pt
+    if(h0==TRUE){
+      pt <- pc
+    }
+
+    # Simulate all successes together, on trt and on control. "Success" means reponse if on trt, non-response if on control:
+    trt <- rbinom(n*runs, 1, prob=pt)
+    con <- rbinom(n*runs, 1, prob=1-pc)
+
+    ##### Build matrix of successes, both stage 1 and stage 2 #####
+    # Allocate pats to trt or control. Note: Balance only required by end of trial.
+    alloc <- vector("list", runs)
+    n.times.i.minus.1 <- n*((1:runs)-1)
+    success.s12 <- matrix(rep(0, 2*n*runs), nrow=runs)
+
+    # TRUE for TREATMENT, FALSE for CONTROL:
+    for(i in 1:runs){
+      alloc[[i]] <- sample(rep(c(T, F), n), size=2*n, replace=F)
+      s.index <- (n.times.i.minus.1[i]+1):(n.times.i.minus.1[i]+n)
+      success.s12[i, alloc[[i]]] <-  trt[s.index]
+      success.s12[i,!alloc[[i]]] <-  con[s.index]
+    }
+
+    success <- success.s12
+    failure <- -1*(success-1)
+
+    # Cumulative successes and failures over time:
+    success.cum <- t(apply(success, 1, cumsum))
+    failure.cum <- t(apply(failure, 1, cumsum))
+
+    # Stage 1 only:
+    success.s1.cum <- success.cum[,1:(2*n1)]
+    failure.s1.cum <- failure.cum[,1:(2*n1)]
+
+    # Which trials fail early due to hitting n1-a1+1 failures?
+    fail.wrt.s1.boundary.index <- apply(failure.s1.cum, 1, function(x) any(x==s1.nogo))
+    curtailed.s1.subset <- failure.s1.cum[fail.wrt.s1.boundary.index, , drop=FALSE]
+    # Sample size of trials curtailed at S1:
+    s1.curtailed.ss <- apply(curtailed.s1.subset, 1, function(x) which.max(x==s1.nogo))
+
+    # Subset cumulative results to only the remaining trials:
+    success.cum.non.s1.failure.trials.subset <- success.cum[-fail.wrt.s1.boundary.index, , drop=FALSE]
+    failure.cum.non.s1.failure.trials.subset <- failure.cum[-fail.wrt.s1.boundary.index, , drop=FALSE]
+    # Of these remaining trials, which trials reach the req'd no. of successes, and after how many participants?
+    successful.trial.index <- apply(success.cum.non.s1.failure.trials.subset, 1, function(x) any(x==s2.go))
+    success.cum.successful.trials.subset <- success.cum.non.s1.failure.trials.subset[successful.trial.index, , drop=FALSE]
+    early.stop.success.ss <- apply(success.cum.successful.trials.subset, 1, function(x) which.max(x==s2.go))
+    # The remaining trials must fail by reaching the required no. of failures. After how many participants do the trials end?
+    failure.cum.s2.failure.trials.subset <- failure.cum.non.s1.failure.trials.subset[!successful.trial.index, , drop=FALSE]
+    early.stop.failure.ss <- apply(failure.cum.s2.failure.trials.subset, 1, function(x) which.max(x==s2.nogo))
+
+    # Find type I error, power, ESS:
+    prob.reject.h0 <- length(early.stop.success.ss)/runs
+    ess <- 0.5*sum(s1.curtailed.ss, early.stop.success.ss, early.stop.failure.ss)/runs
+
+
+
+#
+#     # Split into "curtailed during S1" and "not curtailed during S1". Note: curtail for no go only.
+#     curtailed.s1.bin <- apply(failure.s1.cum, 1, function(x) any(x==s1.nogo))
+#     curtailed.s1.index <- which(curtailed.s1.bin) # Index of trials/rows that reach the S1 no go stopping boundary
+#     curtailed.s1.subset <- failure.s1.cum[curtailed.s1.index, , drop=FALSE]
+#     # Sample size of trials curtailed at S1:
+#     s1.curtailed.ss <- apply(curtailed.s1.subset, 1, function(x) which.max(x==s1.nogo))
+#
+#     ########## All other trials progress to S2. Subset these:
+#     success.cum.nocurtail.at.s1 <- success.cum[-curtailed.s1.index, , drop=FALSE]
+#     failure.cum.nocurtail.at.s1 <- failure.cum[-curtailed.s1.index, , drop=FALSE]
+#
+#     # Trials/rows that reach the S2 go stopping boundary (including trials that continue to the end):
+#     s2.go.bin <- apply(success.cum.nocurtail.at.s1, 1, function(x) any(x==s2.go))
+#     s2.go.index <- which(s2.go.bin)
+#     # Sample size of trials with a go decision:
+#     s2.go.ss <- apply(success.cum.nocurtail.at.s1[s2.go.index, , drop=FALSE], 1, function(x) which.max(x==s2.go))
+#     # Sample size of trials with a no go decision, conditional on not stopping in S1:
+#     s2.nogo.ss <- apply(failure.cum.nocurtail.at.s1[-s2.go.index, , drop=FALSE], 1, function(x) which.max(x==s2.nogo))
+#
+#     ess <- sum(s1.curtailed.ss, s2.go.ss, s2.nogo.ss)/runs
+#     prob.reject.h0 <- length(s2.go.ss)/runs
+#     prob.accept.h0 <- (length(s2.nogo.ss)+length(s1.curtailed.ss))/runs
 
     return(c(n1, n, a1, r2, prob.reject.h0, ess))
   }
