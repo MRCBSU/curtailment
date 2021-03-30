@@ -314,7 +314,7 @@ twoarmDesign <- function(nmin.arm,
                             power,
                             maxthetaF=NULL,
                             minthetaE=0.7,
-                            bounds="wald",
+                            bounds="ahern",
                             fixed.r=NULL,
                             max.combns=1e6,
                             rm.dominated.designs=TRUE,
@@ -401,7 +401,6 @@ twoarmDesign <- function(nmin.arm,
 
 
   mat.list <- vector("list", nrow(sc.subset))
-
   for(i in 1:nrow(sc.subset)){
     mat.list[[i]] <- findBlock2armUncurtailedMatrix(n=sc.subset[i,"n"], r=sc.subset[i,"r"], Bsize=Bsize, pat.cols=pat.cols.list[[paste(sc.subset$n[i])]], prob.vec=prob.vec)
   }
