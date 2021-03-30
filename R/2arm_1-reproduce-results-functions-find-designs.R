@@ -1104,8 +1104,8 @@ findBounds <- function(des, des.input){
    colnames(boundaries) <- paste(interims)
    for(i in 1:length(interims)){
      j <- interims[i]
-     lower <- if (any(mat[,j]==0, na.rm=TRUE) ) max(which(mat[,j]==0))-1 else NA
-     upper <- if (any(mat[,j]==1, na.rm=TRUE) ) which.max(mat[,j])-1 else NA
+     lower <- if (any(mat[,j]==0, na.rm=TRUE) ) max(which(mat[,j]==0))-1 else -Inf
+     upper <- if (any(mat[,j]==1, na.rm=TRUE) ) which.max(mat[,j])-1 else Inf
      # -1 terms to account for the fact that row 1 is equivalent to zero successes.
      boundaries[, i] <- c(lower, upper)
    }
@@ -1319,10 +1319,10 @@ createPlotAndBounds2arm <- function(des, des.input, rownum, save.plot, xmax, yma
   initial.stop.bounds <- data.frame(t(initial.stop.bounds))
   initial.stop.bounds <- cbind(as.numeric(rownames(initial.stop.bounds)), initial.stop.bounds)
   names(initial.stop.bounds) <- c("m", "fail", "success")
-  tp.fail.components <- apply(initial.stop.bounds, 1, function(x) data.frame(0:x["fail"], rep(x["m"], length(0:x["fail"]))))
+  tp.fail.components <- apply(initial.stop.bounds[!is.infinite(initial.stop.bounds$fail),], 1, function(x) data.frame(0:x["fail"], rep(x["m"], length(0:x["fail"]))))
   tp.fail <- do.call(rbind, tp.fail.components)
   names(tp.fail) <- c("Sm", "m")
-  tp.success.components <- apply(initial.stop.bounds, 1, function(x) data.frame(x["success"]:x["m"], rep(x["m"], length(x["success"]:x["m"]))))
+  tp.success.components <- apply(initial.stop.bounds[!is.infinite(initial.stop.bounds$success),], 1, function(x) data.frame(x["success"]:x["m"], rep(x["m"], length(x["success"]:x["m"]))))
   tp.success <- do.call(rbind, tp.success.components)
   names(tp.success) <- c("Sm", "m")
 
