@@ -6,10 +6,7 @@ findWeights <- function(single.des, weight.mat){
     vector.of.loss
 }
 
-#' @export
-plotWeights <- function(main.output){
-  des <- main.output$all.des
-
+plotWeightsOneCohortSize <- function(des){
   w <- seq(0, 1, by=0.01)
   weights.matrix <- expand.grid(w, w)
   weights.matrix <- weights.matrix[rowSums(weights.matrix)<=1, ]
@@ -32,7 +29,7 @@ plotWeights <- function(main.output){
     ggplot2::theme(#axis.text.x=element_text(),
       legend.text=ggplot2::element_text(size=ggplot2::rel(1.5)),
       legend.title=ggplot2::element_text(size=ggplot2::rel(1.5)),
-      plot.title = ggplot2::element_text(size = ggplot2::rel(1.4)),
+      plot.title = ggplot2::element_text(size = ggplot2::rel(1.4), hjust=0.5),
       axis.ticks=ggplot2::element_blank(),
       axis.line=ggplot2::element_blank(),
       axis.title=ggplot2::element_text(size=ggplot2::rel(1.5)),
@@ -41,7 +38,20 @@ plotWeights <- function(main.output){
       legend.key.size = ggplot2::unit(1, "cm"),
       legend.position = c(0.8,0.75),
       panel.border=ggplot2::element_blank(),
-      panel.grid.major=ggplot2::element_line(color='#eeeeee'))
+      panel.grid.major=ggplot2::element_line(color='#eeeeee'))+
+    ggplot2::ggtitle(paste("Cohort size=", des[1, "C"], ", No. of stages=", des[1, "stage"]))
+
 output
 }
 
+#' @export
+plotWeights <- function(main.output, split.by.cohort.size=TRUE){
+  if(var(main.output$all.des[, "C"])==0 | split.by.cohort.size==FALSE){
+      output <- plotWeightsOneCohortSize(main.output$all.des)
+  }else{
+    des.df <- as.data.frame(main.output$all.des)
+    all.des.list <- split(des.df, des.df$C)
+    output <- lapply(all.des.list, plotWeightsOneCohortSize)
+  }
+  output
+}
