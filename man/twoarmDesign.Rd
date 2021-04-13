@@ -15,7 +15,7 @@ twoarmDesign(
   power,
   maxthetaF = NULL,
   minthetaE = 0.7,
-  bounds = "wald",
+  bounds = "ahern",
   fixed.r = NULL,
   max.combns = 1e+06,
   rm.dominated.designs = TRUE,
