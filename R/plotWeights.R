@@ -1,4 +1,4 @@
-findWeights <- function(single.des, weight.mat){
+findLossSingleDesign <- function(single.des, weight.mat){
     current.des.ess0 <- single.des["EssH0"]
     current.des.ess1 <- single.des["Ess"]
     current.des.n <- single.des["n"]
@@ -13,7 +13,7 @@ plotWeightsOneCohortSize <- function(des){
   weights.matrix <- cbind(weights.matrix, 1-rowSums(weights.matrix))
   weights.matrix <- weights.matrix[-1, ]
 
-  loss.matrix <- apply(des, 1, findWeights, weights.matrix)
+  loss.matrix <- apply(des, 1, findLossSingleDesign, weights.matrix)
   # What is the best design for each weight?
   best.des <- apply(loss.matrix, 1, which.min)
   weights.df <- data.frame(weights.matrix, factor(best.des))
