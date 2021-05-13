@@ -57,7 +57,7 @@ createPlotAndBoundsSimonReview <- function(des, save.plot=FALSE, xmax=NULL, ymax
      labs(fill="Decision",
           alpha="Analysis",
           x="Number of participants",
-          y="Number of responses",
+          y="Number of responses"#,
     #      title=plot.title,
     #      subtitle = plot.subtitle2
     )+
