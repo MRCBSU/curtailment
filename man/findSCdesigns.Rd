@@ -15,6 +15,7 @@ findSCdesigns(
   maxthetaF = p1,
   bounds = "wald",
   fixed.r1 = NA,
+  fixed.r = NA,
   fixed.n1 = NA,
   max.combns = 1e+06,
   maxthetas = NA,
