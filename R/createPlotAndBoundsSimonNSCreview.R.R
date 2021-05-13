@@ -50,11 +50,11 @@ createPlotAndBoundsSimonNSCreview <- function(des, xmax=NULL, ymax=NULL, save.pl
   #diag.df.subset$analysis[diag.df.subset$m %in% tp.fail$m] <- "Yes"
   diag.df.subset$analysis[diag.df.subset$m %in% c(tp.fail$m, tp.success$m)] <- "Yes"
 
-  plot.title <- "Stopping boundaries"
-  sub.text1 <- paste("Max(N): ", des$n, ". ESS(p", sep="")
-  sub.text2 <- paste("): ", round(des$EssH0, 1), ". ESS(p", sep="")
-  sub.text3 <- paste("):", round(des$Ess, 1), sep="")
-  plot.subtitle2 <- bquote(.(sub.text1)[0]*.(sub.text2)[1]*.(sub.text3))
+  # plot.title <- "Stopping boundaries"
+  # sub.text1 <- paste("Max(N): ", des$n, ". ESS(p", sep="")
+  # sub.text2 <- paste("): ", round(des$EssH0, 1), ". ESS(p", sep="")
+  # sub.text3 <- paste("):", round(des$Ess, 1), sep="")
+  # plot.subtitle2 <- bquote(.(sub.text1)[0]*.(sub.text2)[1]*.(sub.text3))
   # Initial setup:
   diagram <- pkgcond::suppress_warnings(ggplot2::ggplot(data=diag.df.subset, mapping = aes(x=m, y=Sm, fill=decision, alpha=analysis))+
                                           scale_alpha_discrete(range=c(0.5, 1)),
@@ -65,8 +65,9 @@ createPlotAndBoundsSimonNSCreview <- function(des, xmax=NULL, ymax=NULL, save.pl
          alpha="Analysis",
          x="Number of participants",
          y="Number of responses",
-         title=plot.title,
-         subtitle = plot.subtitle2)+
+   #     title=plot.title,
+   #     subtitle = plot.subtitle2
+   )+
     coord_cartesian(expand = 0)+
     theme_minimal()
 

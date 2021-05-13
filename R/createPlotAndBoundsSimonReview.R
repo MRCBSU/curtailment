@@ -44,22 +44,23 @@ createPlotAndBoundsSimonReview <- function(des, save.plot=FALSE, xmax=NULL, ymax
   diag.df.subset$analysis <- "No"
   diag.df.subset$analysis[diag.df.subset$m %in% tp.fail$m] <- "Yes"
 
-  plot.title <- "Stopping boundaries"
-  sub.text1 <- paste("Max no. of analyses: 2. Max(N): ", des$n, ". ESS(p", sep="")
-  sub.text2 <- paste("): ", round(des$EssH0, 1), ". ESS(p", sep="")
-  sub.text3 <- paste("):", round(des$Ess, 1), sep="")
-  plot.subtitle2 <- bquote(.(sub.text1)[0]*.(sub.text2)[1]*.(sub.text3))
+  # plot.title <- "Stopping boundaries"
+  # sub.text1 <- paste("Max no. of analyses: 2. Max(N): ", des$n, ". ESS(p", sep="")
+  # sub.text2 <- paste("): ", round(des$EssH0, 1), ". ESS(p", sep="")
+  # sub.text3 <- paste("):", round(des$Ess, 1), sep="")
+  # plot.subtitle2 <- bquote(.(sub.text1)[0]*.(sub.text2)[1]*.(sub.text3))
   diagram <- pkgcond::suppress_warnings(ggplot2::ggplot(data=diag.df.subset, mapping = aes(x=m, y=Sm, fill=decision, alpha=analysis))+
                                           scale_alpha_discrete(range=c(0.5, 1)),
                                         "Using alpha for a discrete variable is not advised")
   diagram <- diagram +
     geom_tile(color="white")+
-    labs(fill="Decision",
-         alpha="Analysis",
-         x="Number of participants",
-         y="Number of responses",
-         title=plot.title,
-         subtitle = plot.subtitle2)+
+     labs(fill="Decision",
+          alpha="Analysis",
+          x="Number of participants",
+          y="Number of responses",
+    #      title=plot.title,
+    #      subtitle = plot.subtitle2
+    )+
     coord_cartesian(expand = 0)+
     theme_minimal()
 
