@@ -1,3 +1,4 @@
+#'@export
 createPlotAndBoundsSimonReview <- function(des, save.plot=FALSE, xmax=NULL, ymax=NULL){
   des <- as.data.frame(t(des))
   coords <- expand.grid(0:des$n, 1:des$n)
