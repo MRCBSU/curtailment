@@ -2108,6 +2108,7 @@ findSCdesigns <- function(nmin,
                  maxthetaF=p1,
                  bounds="wald",
                  fixed.r1=NA,
+                 fixed.r=NA,
                  fixed.n1=NA,
                  max.combns=1e6,
                  maxthetas=NA,
@@ -2157,6 +2158,9 @@ findSCdesigns <- function(nmin,
 
   if(!is.na(fixed.r1)){
     sc.subset <- sc.subset[sc.subset$r1 %in% fixed.r1,]
+  }
+  if(!is.na(fixed.r)){
+    sc.subset <- sc.subset[sc.subset$r %in% fixed.r,]
   }
   if(!is.na(fixed.n1)){
     sc.subset <- sc.subset[sc.subset$n1 %in% fixed.n1,]

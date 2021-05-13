@@ -1,5 +1,5 @@
 
-
+#'@export
 findNSCdesigns <- function(nmin, nmax, p0, p1, alpha, power, mintheta1=0, maxtheta0=1)
 {
   #system.time({
