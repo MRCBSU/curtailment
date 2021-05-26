@@ -1,6 +1,5 @@
 #' @import data.table
 #' @import ggplot2
-#' @import clinfun
 #' @import tcltk
 #' @import ggthemes
 #' @import pkgcond
