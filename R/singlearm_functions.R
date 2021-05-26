@@ -2252,9 +2252,9 @@ if(!is.na(max.combns) & is.na(maxthetas)){ # Only use max.combns if maxthetas is
     # current.theta.combns <- current.theta.combns[current.theta.combns[,2]>0.7, ] # remove combns where thetaE < 0.7 (as not justifiable)
 
     # Don't need a matrix of all thetaF and thetaE combns -- potentially quicker to have thetaF as a vector (already defined), and the list can be a list of thetaE vectors:
-    current.theta.combns <- data.table(current.theta.combns)
+    current.theta.combns <- data.table::data.table(current.theta.combns)
     current.theta.combns[, grp := .GRP, by = V2]
-    setkey(current.theta.combns, grp)
+    data.table::setkey(current.theta.combns, grp)
     split.thetas <- current.theta.combns[, list(list(.SD)), by = grp]$V1
     thetaF.list <- lapply(split.thetas, function(x) x[, 1])
     all.thetas <- rev(store.all.thetas[[h]])[-length(store.all.thetas[[h]])] # All thetaE values, decreasing, not including the final value, thetaE=0.
@@ -2392,25 +2392,25 @@ design.plot <- function(results.df, loss.df, scenario, design)
   designs.df$design <- factor(designs.df$design, levels = as.character(sort(as.numeric(levels(designs.df$design)))))
   design.type <- switch(design, "simon"="Simon", "simon_e1"="Mander Thompson", "nsc"="NSC", "sc"="SC", "mstage"="m-stage")
 
-  output <-  ggplot2::ggplot(designs.df, aes(x=q1, y=q0)) +
-    geom_raster(aes(fill = design)) +
-    scale_fill_discrete(name="Design",labels=as.vector(design.details)) +
-    ggtitle(paste(design.type, ", scenario ", scenario, sep="")) +
-    xlab(expression(w[1])) +
-    ylab(expression(w[0])) +
-    theme_bw()+
-    theme(#axis.text.x=element_text(),
-      legend.text=element_text(size=7),
-      plot.title = element_text(size = rel(1.4)),
-      axis.ticks=element_blank(),
-      axis.line=element_blank(),
-      axis.title=element_text(size=rel(1.5)),
-      axis.title.y=element_text(angle = 0, vjust=0.5),
-      axis.text=element_text(size=rel(1.5)),
-      legend.key.size = unit(0.4, "cm"),
+  output <-  ggplot2::ggplot(designs.df,  ggplot2::aes(x=q1, y=q0)) +
+     ggplot2::geom_raster(ggplot2::aes(fill = design)) +
+     ggplot2::scale_fill_discrete(name="Design",labels=as.vector(design.details)) +
+     ggplot2::ggtitle(paste(design.type, ", scenario ", scenario, sep="")) +
+     ggplot2::xlab(expression(w[1])) +
+     ggplot2::ylab(expression(w[0])) +
+     ggplot2::theme_bw()+
+     ggplot2::theme(#axis.text.x=element_text(),
+      legend.text= ggplot2::element_text(size=7),
+      plot.title =  ggplot2::element_text(size =  ggplot2::rel(1.4)),
+      axis.ticks= ggplot2::element_blank(),
+      axis.line= ggplot2::element_blank(),
+      axis.title= ggplot2::element_text(size=rel(1.5)),
+      axis.title.y= ggplot2::element_text(angle = 0, vjust=0.5),
+      axis.text= ggplot2::element_text(size=rel(1.5)),
+      legend.key.size =  ggplot2::unit(0.4, "cm"),
       legend.position = c(0.8,0.75),
-      panel.border=element_blank(),
-      panel.grid.major=element_line(color='#eeeeee'))
+      panel.border= ggplot2::element_blank(),
+      panel.grid.major= ggplot2::element_line(color='#eeeeee'))
   return(output)
 }
 
@@ -2430,26 +2430,26 @@ plot.all <- function(results, loss, scen){
 
 plotExpdLoss <- function(loss.df, design.type, scenario, design.loss.range){
   title <- paste("Expected loss: ", design.type, ", Scenario ", scenario, sep="")
-  ggplot2::ggplot(loss.df, aes(w1, w0)) +
-    ggtitle(title) +
-    theme_bw() +
-    xlab(expression(w[1])) +
-    ylab(expression(w[0])) +
-    geom_raster(aes(fill = loss)) +
-    scale_fill_gradient(low="red", high="darkblue", limits=design.loss.range) +
-    theme(#axis.text.x=element_text(),
-      axis.text=element_text(size=15),
-      axis.title.x = element_text(size=15),
-      axis.title.y = element_text(size=15, angle = 0, vjust = 0.5),
-      legend.text=element_text(size=12),
-      plot.title = element_text(size = rel(1.5)),
-      axis.ticks=element_blank(),
-      axis.line=element_blank(),
-      legend.key.size = unit(0.75, "cm"),
+  ggplot2::ggplot(loss.df, ggplot2::aes(w1, w0)) +
+    ggplot2::ggtitle(title) +
+    ggplot2::theme_bw() +
+    ggplot2::xlab(expression(w[1])) +
+    ggplot2::ylab(expression(w[0])) +
+    ggplot2::geom_raster(ggplot2::aes(fill = loss)) +
+    ggplot2::scale_fill_gradient(low="red", high="darkblue", limits=design.loss.range) +
+    ggplot2::theme(#axis.text.x=element_text(),
+      axis.text=ggplot2::element_text(size=15),
+      axis.title.x = ggplot2::element_text(size=15),
+      axis.title.y = ggplot2::element_text(size=15, angle = 0, vjust = 0.5),
+      legend.text=ggplot2::element_text(size=12),
+      plot.title = ggplot2::element_text(size = rel(1.5)),
+      axis.ticks=ggplot2::element_blank(),
+      axis.line=ggplot2::element_blank(),
+      legend.key.size = ggplot2::unit(0.75, "cm"),
       legend.position = c(0.9,0.65),
-      legend.title = element_text(size=15),
-      panel.border=element_blank(),
-      panel.grid.major=element_line(color='#eeeeee'))
+      legend.title = ggplot2::element_text(size=15),
+      panel.border=ggplot2::element_blank(),
+      panel.grid.major=ggplot2::element_line(color='#eeeeee'))
 }
 
 plotAllExpdLoss <- function(loss.list, scen, loss.range){
@@ -2724,22 +2724,22 @@ plotMedianSSDesign <- function(dataf, p0, p1, factor, title){
   }
   dataf[, factor] <- factor(dataf[, factor])
 
-  ggplot2::ggplot(dataf, aes(x = p.vec, y = median, ymin = lower, ymax = upper), aes_string(group = factor)) +
-    geom_line(aes_string(color=factor), size=1) +
-    geom_ribbon(aes_string(fill = factor), alpha = 0.3) +
-    labs(title=title,
+  ggplot2::ggplot(dataf, ggplot2::aes(x = p.vec, y = median, ymin = lower, ymax = upper), ggplot2::aes_string(group = factor)) +
+    ggplot2::geom_line(ggplot2::aes_string(color=factor), size=1) +
+    ggplot2::geom_ribbon(ggplot2::aes_string(fill = factor), alpha = 0.3) +
+    ggplot2::labs(title=title,
          x ="p", y = "Sample size", fill="Design\n(block size B)", color="Design\n(block size B)")+
-    geom_vline(xintercept = p0, size=0.5, color="grey60", linetype="longdash") +
-    geom_vline(xintercept = p1, size=0.5, color="grey60", linetype="longdash") +
-    theme_bw()+
-    theme(legend.text=element_text(size=rel(1.5)),
-          legend.title=element_text(size=rel(1.5)),
-          plot.title = element_text(size = rel(1.5)),
-          axis.ticks=element_blank(),
-          axis.line=element_blank(),
-          axis.text.x=element_text(angle=0),
-          axis.title=element_text(size=rel(1.5)),
-          axis.text=element_text(size=rel(1.5))
+    ggplot2::geom_vline(xintercept = p0, size=0.5, color="grey60", linetype="longdash") +
+    ggplot2::geom_vline(xintercept = p1, size=0.5, color="grey60", linetype="longdash") +
+    ggplot2::theme_bw()+
+    ggplot2::theme(legend.text=ggplot2::element_text(size=rel(1.5)),
+          legend.title=ggplot2::element_text(size=rel(1.5)),
+          plot.title = ggplot2::element_text(size = rel(1.5)),
+          axis.ticks=ggplot2::element_blank(),
+          axis.line=ggplot2::element_blank(),
+          axis.text.x=ggplot2::element_text(angle=0),
+          axis.title=ggplot2::element_text(size=rel(1.5)),
+          axis.text=ggplot2::element_text(size=rel(1.5))
     )
 }
 
@@ -2779,14 +2779,14 @@ plotBounds <- function(wald.ahern.bounds, mstage.bounds, title="XXX"){
   print(range(wald.ahern.bounds$N))
   #library(ggplot2)
   plot.output <- ggplot2::ggplot()+
-    geom_ribbon(data=wald.ahern.bounds, aes(x=N, y=NULL, ymin=lower, ymax=upper, fill=design), alpha = 0.3)+
-    geom_point(data=mstage.bounds, aes(x=n, y=r))+
-    labs(title=title,
+    ggplot2::geom_ribbon(data=wald.ahern.bounds, ggplot2::aes(x=N, y=NULL, ymin=lower, ymax=upper, fill=design), alpha = 0.3)+
+    ggplot2::geom_point(data=mstage.bounds, ggplot2::aes(x=n, y=r))+
+    ggplot2::labs(title=title,
          x ="Maximum sample size",
          y = "Final rejection boundary",
          fill="Design")+
-    theme_bw()+
-    scale_x_continuous(limits=range(wald.ahern.bounds$N), expand=c(0,1))
+    ggplot2::theme_bw()+
+    ggplot2::scale_x_continuous(limits=range(wald.ahern.bounds$N), expand=c(0,1))
   plot.output
 }
 
