@@ -3,6 +3,7 @@
 S3method(drawDiagram,curtailment_simon)
 S3method(drawDiagram,curtailment_single)
 S3method(drawDiagram,curtailment_twoarm)
+S3method(drawDiagram,power.htest)
 export(SCfn)
 export(createPlotAndBoundsSimonNSCreview)
 export(createPlotAndBoundsSimonReview)
