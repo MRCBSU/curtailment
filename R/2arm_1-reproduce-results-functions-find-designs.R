@@ -1493,7 +1493,6 @@ drawDiagram.power.htest <- function(des, save.plot=FALSE, xmax=NULL, ymax=NULL){
   if(!is.null(xmax)){
     diagram <- diagram +
       expand_limits(x=xmax)
-    xbreaks <- c(xbreaks, xmax)
   }
   if(!is.null(ymax)){
     diagram <- diagram +
