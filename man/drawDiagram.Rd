@@ -37,7 +37,7 @@ output <- singlearmDesign(nmin = 30,
  p1 = 0.4,
  power = 0.8,
  alpha = 0.05)
- dig <- drawDiagram(output)
+ dig <- drawDiagram(output, print.row = 2)
 }
 \author{
 Martin Law, \email{martin.law@mrc-bsu.cam.ac.uk}

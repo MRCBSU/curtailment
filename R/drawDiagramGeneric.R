@@ -1,3 +1,11 @@
+#' drawDiagramGeneric
+#'
+#' @author Martin Law, \email{martin.law@@mrc-bsu.cam.ac.uk}
+#' @export
+#' @examples
+#'  go <- cbind(6:8, rep(8,3))
+#'  nogo <- cbind(0:5, rep(8,6))
+#'  drawDiagramGeneric(n=8, go=go, nogo=nogo, ylab="Number of successes")
 drawDiagramGeneric <- function(n,
                                go,
                                nogo,
@@ -61,7 +69,7 @@ drawDiagramGeneric <- function(n,
     ggplot2::coord_cartesian(expand = 0)+
     ggplot2::theme_minimal()
 
-  xbreaks <- c(analysis, n)
+  xbreaks <- unique(c(analysis, n))
 
   if(!is.null(xmax)){
     diagram <- diagram +
@@ -86,7 +94,3 @@ drawDiagramGeneric <- function(n,
   return(diagram)
 }
 
-go <- cbind(6:8, rep(8,3))
-nogo <- cbind(0:5, rep(8,6))
-
-drawDiagramGeneric(n=8, go=go, nogo=nogo, ylab="Number of successes")

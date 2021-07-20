@@ -3091,7 +3091,7 @@ findCoeffs <- function(n, p0, p1){
 #'  p1 = 0.4,
 #'  power = 0.8,
 #'  alpha = 0.05)
-#'  dig <- drawDiagram(output)
+#'  dig <- drawDiagram(output, print.row = 2)
 drawDiagram <- function(findDesign.output, print.row=NULL, save.plot=FALSE, xmax=NULL, ymax=NULL){
   UseMethod("drawDiagram")
 }
