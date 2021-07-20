@@ -13,7 +13,7 @@ drawDiagram(
 )
 }
 \arguments{
-\item{findDesign.output}{Output from either the function singlearmDesign or findSimonDesigns.}
+\item{findDesign.output}{Output from either the function singlearmDesign or find2stageDesigns}
 
 \item{print.row}{Choose a row number to directly obtain a plot and stopping boundaries for a particular design realisation. Default is NULL.}
 

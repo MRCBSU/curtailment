@@ -2976,9 +2976,11 @@ simonEfficacy <- function(n1, n2, r1, r2, e1, p0, p1)
   to.return
 }
 
-#' Find Simon designs
+#' Find two-stage designs
 #'
-#' This function finds Simon designs for a given set of design parameters. It returns not
+#' This function finds two-stage designs for a given set of design parameters, allowing
+#' stopping for benefit at the interim (Mander and Thompson's design) or no stopping
+#' for benefit at the interim (Simon's design). It returns not
 #' only the optimal and minimax design realisations, but all design realisations that could
 #' be considered "best" in terms of expected sample size under p=p0 (EssH0), expected
 #' sample size under p=p1 (Ess), maximum sample size (n) or any weighted combination of these
@@ -3012,7 +3014,7 @@ simonEfficacy <- function(n1, n2, r1, r2, e1, p0, p1)
 #' 1989,
 #' Pages 1-10}
 #' @export
-findSimonDesigns <- function(nmin, nmax, p0, p1, alpha, power, benefit=FALSE)
+find2stageDesigns <- function(nmin, nmax, p0, p1, alpha, power, benefit=FALSE)
 {
 
   if(benefit==FALSE){
@@ -3075,7 +3077,7 @@ findCoeffs <- function(n, p0, p1){
 #' This function produces both a data frame and a diagram of stopping boundaries.
 #' The function takes a single argument: the output from the function singlearmDesign.
 #' If the supplied argument contains more than one admissible designs, the user is offered a choice of which design to use.
-#' @param  findDesign.output Output from either the function singlearmDesign or findSimonDesigns.
+#' @param  findDesign.output Output from either the function singlearmDesign or find2stageDesigns
 #' @param  print.row Choose a row number to directly obtain a plot and stopping boundaries for a particular design realisation. Default is NULL.
 #' @param  save.plot Logical. Set to TRUE to save plot as PDF. Default is FALSE.
 #' @param  xmax,ymax Choose values for the upper limits of the x- and y-axes respectively. Helpful for comparing two design realisations. Default is NULL.
