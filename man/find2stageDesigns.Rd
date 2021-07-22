@@ -25,8 +25,8 @@ find2stageDesigns(nmin, nmax, p0, p1, alpha, power, benefit = FALSE)
 A list of class "curtailment_simon" containing two data frames. The first data frame, $input,
 has a single row and contains all the inputted values. The second data frame, $all.des, contains one
 row for each design realisation, and contains the details of each design, including sample size,
-stopping boundaries and operating characteristics. To see a diagram of any obtained design realisation,
-simply call the function drawDiagram with this output as the only argument.
+stopping boundaries and operating characteristics. To see a diagram of any obtained design realisation
+and its corresponding stopping boundaries, simply call the function drawDiagram with this output as the only argument.
 }
 \description{
 This function finds two-stage designs for a given set of design parameters, allowing
