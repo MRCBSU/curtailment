@@ -1,10 +1,9 @@
 #' @import data.table
 #' @import ggplot2
-#' @import tcltk
 #' @import ggthemes
 #' @import pkgcond
 
-requireNamespace("data.table")
+#requireNamespace("data.table")
 
 #### EXPLANATION OF CODE
 # singlearmDesign: used to search for m-stage designs
@@ -409,10 +408,6 @@ findDesignsGivenCohortStage <- function(nmin,
                         exact.thetaF=NA,
                         exact.thetaE=NA)
 {
-
-  require(tcltk)
-  require(data.table)
-
   q0 <- 1-p0
   q1 <- 1-p1
 
@@ -2117,10 +2112,6 @@ findSCdesigns <- function(nmin,
                  exact.thetaE=NA
                  )
 {
-
-  require(tcltk)
-  require(data.table)
-
   #sc.all <- findN1N2R1R2_df(nmin=nmin, nmax=nmax, e1=FALSE)
   sc.all <- findSimonN1N2R1R2(nmin=nmin, nmax=nmax, e1=FALSE)
 
@@ -2997,8 +2988,8 @@ simonEfficacy <- function(n1, n2, r1, r2, e1, p0, p1)
 #' @return A list of class "curtailment_simon" containing two data frames. The first data frame, $input,
 #' has a single row and contains all the inputted values. The second data frame, $all.des, contains one
 #' row for each design realisation, and contains the details of each design, including sample size,
-#' stopping boundaries and operating characteristics. To see a diagram of any obtained design realisation,
-#' simply call the function drawDiagram with this output as the only argument.
+#' stopping boundaries and operating characteristics. To see a diagram of any obtained design realisation
+#' and its corresponding stopping boundaries, simply call the function drawDiagram with this output as the only argument.
 #' @author Martin Law, \email{martin.law@@mrc-bsu.cam.ac.uk}
 #' @references
 #' \href{https://doi.org/10.1016/j.cct.2010.07.008}{A.P. Mander, S.G. Thompson,

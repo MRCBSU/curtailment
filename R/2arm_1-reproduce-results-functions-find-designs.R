@@ -321,8 +321,6 @@ twoarmDesign <- function(nmin.arm,
                             exact.thetaE=NULL,
                             fast.method=FALSE)
 {
-  require(data.table)
-
   Bsize <- block.size
 
   if(Bsize%%2!=0) stop("Block size must be an even number")
@@ -1456,7 +1454,8 @@ drawDiagram.curtailment_twoarm <- function(findDesign.output, print.row=NULL, sa
 } # end of drawDiagram()
 
 #' @export
-drawDiagram.power.htest <- function(des, save.plot=FALSE, xmax=NULL, ymax=NULL){
+drawDiagram.power.htest <- function(findDesign.output, print.row=NULL, save.plot=FALSE, xmax=NULL, ymax=NULL){
+  des <- findDesign.output
   # des is output from power.prop.test()
   n <- 2*ceiling(des$n)
   coords <- expand.grid(0:n, 1:n)
