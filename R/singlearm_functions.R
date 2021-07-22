@@ -4,6 +4,8 @@
 #' @import ggthemes
 #' @import pkgcond
 
+requireNamespace("data.table")
+
 #### EXPLANATION OF CODE
 # singlearmDesign: used to search for m-stage designs
 # findDesignOCs: called within singlearmDesign
@@ -2118,7 +2120,6 @@ findSCdesigns <- function(nmin,
 
   require(tcltk)
   require(data.table)
-  require(rlist)
 
   #sc.all <- findN1N2R1R2_df(nmin=nmin, nmax=nmax, e1=FALSE)
   sc.all <- findSimonN1N2R1R2(nmin=nmin, nmax=nmax, e1=FALSE)

@@ -1,7 +1,6 @@
 #' @import gridExtra
 #' @import ggplot2
 #' @import grid
-#' @import gdata
 #' @import ggthemes
 
 ####
@@ -322,7 +321,6 @@ twoarmDesign <- function(nmin.arm,
                             exact.thetaE=NULL,
                             fast.method=FALSE)
 {
-  require(tcltk)
   require(data.table)
 
   Bsize <- block.size

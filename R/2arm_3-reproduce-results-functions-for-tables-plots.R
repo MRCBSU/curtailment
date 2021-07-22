@@ -4,7 +4,6 @@
 
 # library(gridExtra)
 # library(grid)
-# library(gdata)
 # library(ggplot2)
 # library(ggthemes)
 # library(xtable)
