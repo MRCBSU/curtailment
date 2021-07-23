@@ -2991,7 +2991,7 @@ simonEfficacy <- function(n1, n2, r1, r2, e1, p0, p1)
 #' stopping boundaries and operating characteristics. To see a diagram of any obtained design realisation
 #' and its corresponding stopping boundaries, simply call the function drawDiagram with this output as the only argument.
 #' @author Martin Law, \email{martin.law@@mrc-bsu.cam.ac.uk}
-#' @example mt.design <- find2stageDesigns(nmin=23, nmax=27, p0=0.75, p1=0.92, alpha=0.22, power=0.95, benefit=T)
+#' @examples find2stageDesigns(nmin=23, nmax=27, p0=0.75, p1=0.92, alpha=0.22, power=0.95, benefit=T)
 #' @references
 #' \href{https://doi.org/10.1016/j.cct.2010.07.008}{A.P. Mander, S.G. Thompson,
 #' Two-stage designs optimal under the alternative hypothesis for phase II cancer clinical trials,

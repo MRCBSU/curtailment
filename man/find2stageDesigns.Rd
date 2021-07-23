@@ -37,6 +37,9 @@ be considered "best" in terms of expected sample size under p=p0 (EssH0), expect
 sample size under p=p1 (Ess), maximum sample size (n) or any weighted combination of these
 three optimality criteria.
 }
+\examples{
+find2stageDesigns(nmin=23, nmax=27, p0=0.75, p1=0.92, alpha=0.22, power=0.95, benefit=T)
+}
 \references{
 \href{https://doi.org/10.1016/j.cct.2010.07.008}{A.P. Mander, S.G. Thompson,
 Two-stage designs optimal under the alternative hypothesis for phase II cancer clinical trials,
