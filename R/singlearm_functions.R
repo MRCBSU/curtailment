@@ -73,6 +73,8 @@ findWald <- function(alpha, power, p0, p1){
 #'
 #' @param n1 Number of participants in stage 1
 #' @param n2 Number of participants in stage 2
+#' @param r1 Interim stopping boundary that must be exceeded to avoid no go stopping
+#' @param r Final rejection boundary that must be exceeded to reject the null hypothesis.
 #' @param p0 Anticipated response probability for inefficacious treatment
 #' @param p1 Anticipated response probability for efficacious treatment
 #' @return A vector containing all the inputted values and corresponding operating characteristics.
@@ -84,9 +86,9 @@ findWald <- function(alpha, power, p0, p1){
 #' Volume 10, Issue 1,
 #' 1989,
 #' Pages 1-10}
-#' @examples findSingleSimonDesign(n1 = 15, n2 = 11, r1 = 1, r2 = 4, p0 = 0.1, p1 = 0.3)
+#' @examples findSingleSimonDesign(n1 = 15, n2 = 11, r1 = 1, r = 4, p0 = 0.1, p1 = 0.3)
 #' @export
-findSingleSimonDesign <- function(n1, n2, r1, r2, p0, p1)
+findSingleSimonDesign <- function(n1, n2, r1, r, p0, p1)
   {
   n <- n1+n2
   # Create Pascal's triangle for S1: these are the coefficients (before curtailment) A, where A * p^b * q*c
@@ -160,12 +162,12 @@ findSingleSimonDesign <- function(n1, n2, r1, r2, p0, p1)
 
   output <- data.frame(k=final[,1], n=final[,2], prob=final[,3], prob.p0=final[,4])
   output$success <- "Fail"
-  output$success[output$k > r2] <- "Success"
+  output$success[output$k > r] <- "Success"
   power <- sum(output$prob[output$success=="Success"])
   sample.size.expd <- sum(output$n*output$prob)
   sample.size.expd.p0 <- sum(output$n*output$prob.p0)
   alpha <- sum(output$prob.p0[output$success=="Success"])
-  to.return <- c(n1=n1, n2=n2, n=n, r1=r1, r=r2, alpha=alpha, power=power, EssH0=sample.size.expd.p0, Ess=sample.size.expd)
+  to.return <- c(n1=n1, n2=n2, n=n, r1=r1, r=r, alpha=alpha, power=power, EssH0=sample.size.expd.p0, Ess=sample.size.expd)
   to.return
 }
 
@@ -2081,6 +2083,8 @@ insideTheta <- function(n1, n2, n, r1, r2, thetaF, thetaE, cp.sm, cp.m, p0, p, q
 #' The output is a data frame of admissible design realisations.
 #' @param nmin Minimum permitted sample size.
 #' @param nmax Maximum permitted sample size.
+#' @param p0 Probability for which to control the type-I error-rate
+#' @param p1 Probability for which to control the power
 #' @param alpha Significance level
 #' @param power Required power (1-beta).
 #' @param maxthetaF Maximum value of lower CP threshold theta_F_max. Defaults to p.
@@ -2089,11 +2093,12 @@ insideTheta <- function(n1, n2, n, r1, r2, thetaF, thetaE, cp.sm, cp.m, p0, p, q
 #' @param max.combns Provide a maximum number of ordered pairs (theta_F, theta_E). Defaults to 1e6.
 #' @param maxthetas Provide a maximum number of CP values used to create ordered pairs (theta_F, theta_E). Can be used instead of max.combns. Defaults to NA.
 #' @param fixed.r1 Choose what interim rejection boundaries should be searched over. Useful for reproducing a particular design realisation. Defaults to NA.
+#' @param fixed.r Choose what final rejection boundaries should be searched over. Useful for reproducing a particular design realisation. Defaults to NA.
 #' @param fixed.n1 Choose what interim sample size values n1 should be searched over. Useful for reproducing a particular design realisation. Defaults to NA.
 #' @param exact.thetaF Provide an exact value for lower threshold theta_F. Useful for reproducing a particular design realisation. Defaults to NA.
 #' @param exact.thetaE Provide an exact value for upper threshold theta_E. Useful for reproducing a particular design realisation. Defaults to NA.
 #' @export
-#' @examples findSCdesigns(nmin = 20, nmax = 21, p0 = 0.1, p1 = 0.4, power = 0.8, alpha = 0.1, max.combns=1e2)
+#' @examples \donttest{findSCdesigns(nmin = 20, nmax = 20, p0 = 0.1, p1 = 0.4, power = 0.8, alpha = 0.1, max.combns=1e2)}
 findSCdesigns <- function(nmin,
                  nmax,
                  p0,
@@ -2852,7 +2857,7 @@ findLossComponents <- function(df=all.results, w0=1, w1=0){
 
 
 # Simon's design: No curtailment -- only stopping is at end of S1:
-simonEfficacy <- function(n1, n2, r1, r2, e1, p0, p1)
+simonEfficacy <- function(n1, n2, r1, r, e1, p0, p1)
 {
 
   n <- n1+n2
@@ -2934,7 +2939,7 @@ simonEfficacy <- function(n1, n2, r1, r2, e1, p0, p1)
   output <- data.frame(k=final[,1], n=final[,2], prob=final[,3], prob.p0=final[,4])
 
   output$success <- "Fail"
-  output$success[output$k > r2] <- "Success"
+  output$success[output$k > r] <- "Success"
   output$success[output$n==n1 & output$k > e1] <- "Success"
 
 
@@ -2964,7 +2969,7 @@ simonEfficacy <- function(n1, n2, r1, r2, e1, p0, p1)
 
   #output <- list(output, mean.bias=bias.mean, var.bias=bias.var, sample.size=sample.size, expd.sample.size=sample.size.expd, PET=PET,
   #               sample.size.p0=sample.size.p0, expd.sample.size.p0=sample.size.expd.p0, PET.p0=PET.p0, alpha=alpha, power=power)
-  to.return <- c(n1=n1, n2=n2, n=n, r1=r1, r=r2, alpha=alpha, power=power, EssH0=sample.size.expd.p0, Ess=sample.size.expd, e1=e1)
+  to.return <- c(n1=n1, n2=n2, n=n, r1=r1, r=r, alpha=alpha, power=power, EssH0=sample.size.expd.p0, Ess=sample.size.expd, e1=e1)
   to.return
 }
 
@@ -2991,7 +2996,7 @@ simonEfficacy <- function(n1, n2, r1, r2, e1, p0, p1)
 #' stopping boundaries and operating characteristics. To see a diagram of any obtained design realisation
 #' and its corresponding stopping boundaries, simply call the function drawDiagram with this output as the only argument.
 #' @author Martin Law, \email{martin.law@@mrc-bsu.cam.ac.uk}
-#' @examples find2stageDesigns(nmin=23, nmax=27, p0=0.75, p1=0.92, alpha=0.22, power=0.95, benefit=T)
+#' @examples find2stageDesigns(nmin=23, nmax=27, p0=0.75, p1=0.92, alpha=0.22, power=0.95, benefit=TRUE)
 #' @references
 #' \href{https://doi.org/10.1016/j.cct.2010.07.008}{A.P. Mander, S.G. Thompson,
 #' Two-stage designs optimal under the alternative hypothesis for phase II cancer clinical trials,
@@ -3012,13 +3017,13 @@ find2stageDesigns <- function(nmin, nmax, p0, p1, alpha, power, benefit=FALSE)
 
   if(benefit==FALSE){
     nr.lists <- findSimonN1N2R1R2(nmin=nmin, nmax=nmax, e1=FALSE)
-    simon.df <- apply(nr.lists, 1, function(x) {findSingleSimonDesign(n1=x[1], n2=x[2], r1=x[4], r2=x[5], p0=p0, p1=p1)})
+    simon.df <- apply(nr.lists, 1, function(x) {findSingleSimonDesign(n1=x[1], n2=x[2], r1=x[4], r=x[5], p0=p0, p1=p1)})
     simon.df <- t(simon.df)
     simon.df <- as.data.frame(simon.df)
     names(simon.df) <- c("n1", "n2", "n", "r1", "r", "alpha", "power", "EssH0", "Ess")
   } else{
     nr.lists <- findSimonN1N2R1R2(nmin=nmin, nmax=nmax, e1=TRUE)
-    simon.df <- apply(nr.lists, 1, function(x) {simonEfficacy(n1=x[1], n2=x[2], r1=x[4], r2=x[5], p0=p0, p1=p1, e1=x[6])})
+    simon.df <- apply(nr.lists, 1, function(x) {simonEfficacy(n1=x[1], n2=x[2], r1=x[4], r=x[5], p0=p0, p1=p1, e1=x[6])})
     simon.df <- t(simon.df)
     simon.df <- as.data.frame(simon.df)
     names(simon.df) <- c("n1", "n2", "n", "r1", "r", "alpha", "power", "EssH0", "Ess", "e1")
@@ -3157,5 +3162,5 @@ drawDiagram.curtailment_simon <- function(findDesign.output, print.row=NULL, sav
 
 #function generator
 defunct <- function(msg = "This function is depreciated") function(...) return(stop(msg))
-#' @export
-SCfn = defunct("SCfn changed name to findSCdesigns")
+# @export
+#' SCfn = defunct("SCfn changed name to findSCdesigns")
