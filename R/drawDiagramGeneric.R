@@ -22,6 +22,7 @@ drawDiagramGeneric <- function(n,
                                xmax=NULL,
                                ymax=NULL,
                                ylab=NULL){
+  m <- Sm <- decision <- NULL
   if(length(go)==2) go <- matrix(go, ncol=2)
   if(length(nogo)==2) nogo <- matrix(nogo, ncol=2)
 

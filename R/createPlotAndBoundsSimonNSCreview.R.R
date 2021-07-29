@@ -1,4 +1,5 @@
 createPlotAndBoundsSimonNSCreview <- function(des, xmax=NULL, ymax=NULL, save.plot=FALSE){
+  m <- Sm <- decision <- analysis <- NULL
   des <- as.data.frame(t(des))
   coords <- expand.grid(0:des$n, 1:des$n)
   diag.df <- data.frame(Sm=as.numeric(coords[,1]),
@@ -97,9 +98,9 @@ createPlotAndBoundsSimonNSCreview <- function(des, xmax=NULL, ymax=NULL, save.pl
       plot.width <- 8
       scaling <- 1.25
       plot.height <- 8*scaling*(des$r+1)/des$n
-      pdf(plot.filename, width = plot.width, height = plot.height)
+      grDevices::pdf(plot.filename, width = plot.width, height = plot.height)
       print(diagram)
-      dev.off()
+      grDevices::dev.off()
     }
   }
   tp.success.unique.m <- tp.success[!duplicated(tp.success$m), ]

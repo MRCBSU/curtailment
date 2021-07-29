@@ -1,4 +1,5 @@
 createPlotAndBoundsSimon <- function(des, des.input, rownum, save.plot=FALSE, xmax=NULL, ymax=NULL){
+  m <- Sm <- decision <- analysis <- NULL
   des <- as.data.frame(des[rownum, ])
   coords <- expand.grid(0:des$n, 1:des$n)
   diag.df <- data.frame(Sm=as.numeric(coords[,1]),
@@ -89,9 +90,9 @@ createPlotAndBoundsSimon <- function(des, des.input, rownum, save.plot=FALSE, xm
       plot.width <- 8
       scaling <- 1.25
       plot.height <- 8*scaling*(des$r+1)/des$n
-      pdf(plot.filename, width = plot.width, height = plot.height)
+      grDevices::pdf(plot.filename, width = plot.width, height = plot.height)
       print(diagram)
-      dev.off()
+      grDevices::dev.off()
     }
   }
   stop.bounds <- data.frame(m=c(des$n1, des$n),

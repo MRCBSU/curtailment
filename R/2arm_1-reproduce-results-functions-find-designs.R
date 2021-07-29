@@ -1306,6 +1306,7 @@ fastSearch <- function(thetas,
 
 
 createPlotAndBounds2arm <- function(des, des.input, rownum, save.plot, xmax, ymax){
+  m <- Sm <- decision <- analysis <- NULL
   rownum <- as.numeric(rownum)
   des <- des[rownum, , drop=FALSE]
   initial.stop.bounds <- findBounds(des=des,
@@ -1401,9 +1402,9 @@ createPlotAndBounds2arm <- function(des, des.input, rownum, save.plot, xmax, yma
       plot.width <- 8
       scaling <- 1.25
       plot.height <- 8*scaling*(des$r+1)/des$n
-      pdf(plot.filename, width = plot.width, height = plot.height)
+      grDevices::pdf(plot.filename, width = plot.width, height = plot.height)
       print(diagram)
-      dev.off()
+      grDevices::dev.off()
     }
   }
 

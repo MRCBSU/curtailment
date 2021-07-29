@@ -3,7 +3,8 @@
 #' @import ggthemes
 #' @import pkgcond
 #' @import stats
-
+#' @importFrom grDevices dev.off pdf
+#' @importFrom utils combn head setTxtProgressBar txtProgressBar
 #requireNamespace("data.table")
 
 #### EXPLANATION OF CODE
@@ -2373,6 +2374,7 @@ if(!is.na(max.combns) & is.na(maxthetas)){ # Only use max.combns if maxthetas is
 
 design.plot <- function(results.df, loss.df, scenario, design)
 {
+  qs <- q0 <- q1 <- NULL
   index <- which(results.df$design==design)
   all.loss.subset <- t(loss.df[index,])
   designs <- results.df[index,]
