@@ -2,6 +2,7 @@
 #' @import ggplot2
 #' @import ggthemes
 #' @import pkgcond
+#' @import stats
 
 #requireNamespace("data.table")
 

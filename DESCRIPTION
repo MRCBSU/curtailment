@@ -18,4 +18,5 @@ Imports:
     gridExtra,
     ggthemes,
     data.table,
-    pkgcond
+    pkgcond,
+    stats
