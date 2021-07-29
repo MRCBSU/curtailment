@@ -38,7 +38,7 @@ sample size under p=p1 (Ess), maximum sample size (n) or any weighted combinatio
 three optimality criteria.
 }
 \examples{
-find2stageDesigns(nmin=23, nmax=27, p0=0.75, p1=0.92, alpha=0.22, power=0.95, benefit=T)
+find2stageDesigns(nmin=23, nmax=27, p0=0.75, p1=0.92, alpha=0.22, power=0.95, benefit=TRUE)
 }
 \references{
 \href{https://doi.org/10.1016/j.cct.2010.07.008}{A.P. Mander, S.G. Thompson,

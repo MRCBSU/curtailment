@@ -28,6 +28,10 @@ findSCdesigns(
 
 \item{nmax}{Maximum permitted sample size.}
 
+\item{p0}{Probability for which to control the type-I error-rate}
+
+\item{p1}{Probability for which to control the power}
+
 \item{alpha}{Significance level}
 
 \item{power}{Required power (1-beta).}
@@ -39,6 +43,8 @@ findSCdesigns(
 \item{bounds}{choose what final rejection boundaries should be searched over: Those of A'Hern ("ahern"), Wald ("wald") or no constraints (NA). Defaults to "wald".}
 
 \item{fixed.r1}{Choose what interim rejection boundaries should be searched over. Useful for reproducing a particular design realisation. Defaults to NA.}
+
+\item{fixed.r}{Choose what final rejection boundaries should be searched over. Useful for reproducing a particular design realisation. Defaults to NA.}
 
 \item{fixed.n1}{Choose what interim sample size values n1 should be searched over. Useful for reproducing a particular design realisation. Defaults to NA.}
 
@@ -56,5 +62,5 @@ This function differs from singlearmDesign in that it includes a Simon-style int
 The output is a data frame of admissible design realisations.
 }
 \examples{
-findSCdesigns(nmin = 20, nmax = 21, p0 = 0.1, p1 = 0.4, power = 0.8, alpha = 0.1, max.combns=1e2)
+\donttest{findSCdesigns(nmin = 20, nmax = 20, p0 = 0.1, p1 = 0.4, power = 0.8, alpha = 0.1, max.combns=1e2)}
 }

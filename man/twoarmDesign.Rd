@@ -33,6 +33,8 @@ twoarmDesign(
 
 \item{pc}{Anticipated response rate on the control arm.}
 
+\item{pt}{Anticipated response rate on the treatment arm.}
+
 \item{alpha}{Significance level}
 
 \item{power}{Required power (1-beta).}
@@ -47,6 +49,9 @@ twoarmDesign(
 
 \item{max.combns}{Provide a maximum number of ordered pairs (theta_F, theta_E). Defaults to 1e6.}
 
+\item{rm.dominated.designs}{Logical. If TRUE, dominated designs will be
+removed from final output. Defaults to TRUE.}
+
 \item{exact.thetaF}{Provide an exact value for lower threshold theta_F. Useful for reproducing a particular design realisation. Defaults to NULL.}
 
 \item{exact.thetaE}{Provide an exact value for upper threshold theta_E. Useful for reproducing a particular design realisation. Defaults to NULL.}
@@ -54,8 +59,6 @@ twoarmDesign(
 \item{fast.method}{Logical. If FALSE, design search is conducted over all combinations of
 (theta_F, theta_E). If TRUE, a much faster, though less thorough, design search is undertaken.
 Defaults to FALSE.}
-
-\item{p1}{Anticipated response rate on the treatment arm.}
 }
 \value{
 Output is a list of two dataframes. The first, $input, is a one-row data frame that contains all the arguments used in the call.
@@ -77,7 +80,6 @@ power=0.8,
 maxthetaF=0.4,
 minthetaE=0.7,
 max.combns=1e4)
-
 }
 \author{
 Martin Law, \email{martin.law@mrc-bsu.cam.ac.uk}

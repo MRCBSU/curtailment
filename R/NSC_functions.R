@@ -1,6 +1,17 @@
 
-#'@export
-findNSCdesigns <- function(nmin, nmax, p0, p1, alpha, power, mintheta1=0, maxtheta0=1)
+#' findNSCdesigns
+#'
+#' This function finds admissible design realisations for single-arm binary outcome trials, using non-stochastic curtailment.
+#' The output is a data frame of admissible design realisations.
+#' @param nmin Minimum permitted sample size.
+#' @param nmax Maximum permitted sample size.
+#' @param p0 Probability for which to control the type-I error-rate
+#' @param p1 Probability for which to control the power
+#' @param alpha Significance level
+#' @param power Required power (1-beta).
+#' @export
+#' @examples findNSCdesigns(nmin=20, nmax=21, p0=0.1, p1=0.4, alpha=0.1, power=0.8)
+findNSCdesigns <- function(nmin, nmax, p0, p1, alpha, power)
 {
   #system.time({
 

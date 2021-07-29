@@ -4,12 +4,16 @@
 \alias{findSingleSimonDesign}
 \title{Find a single Simon design}
 \usage{
-findSingleSimonDesign(n1, n2, r1, r2, p0, p1)
+findSingleSimonDesign(n1, n2, r1, r, p0, p1)
 }
 \arguments{
 \item{n1}{Number of participants in stage 1}
 
 \item{n2}{Number of participants in stage 2}
+
+\item{r1}{Interim stopping boundary that must be exceeded to avoid no go stopping}
+
+\item{r}{Final rejection boundary that must be exceeded to reject the null hypothesis.}
 
 \item{p0}{Anticipated response probability for inefficacious treatment}
 
@@ -24,7 +28,7 @@ the inputted values along with the type-I error-rate (alpha), power,  expected s
 and expected sample size under p=p1 (Ess).
 }
 \examples{
-findSingleSimonDesign(n1 = 15, n2 = 11, r1 = 1, r2 = 4, p0 = 0.1, p1 = 0.3)
+findSingleSimonDesign(n1 = 15, n2 = 11, r1 = 1, r = 4, p0 = 0.1, p1 = 0.3)
 }
 \references{
 \href{https://doi.org/10.1016/0197-2456(89)90015-9}{Richard Simon,

@@ -39,13 +39,24 @@ plotWeightsOneCohortSize <- function(des){
       legend.position = c(0.8,0.75),
       panel.border=ggplot2::element_blank(),
       panel.grid.major=ggplot2::element_line(color='#eeeeee'))+
-    ggplot2::ggtitle(paste("Cohort size=", des[1, "C"], ", No. of stages=", des[1, "stage"]))
-
+    ggplot2::ggtitle(paste("Cohort size=", des[1, "C"], ", No. of stages=", des[1, "stage"], sep=""))
 output
 }
 
+#' plotByWeight
+#'
+#' This function shows the omni-admissible design -- the design realisation with
+#' the lowest loss score -- from a subset of admissible designs. The input is an
+#' object created by singlearmDesign.
+#'
+#' @param main.output Object created by the function(s) listed above.
+#' @param split.by.cohort.size Logical. If TRUE, creates separate plots for each
+#' cohort size/block size/ number of stages. Defaults to TRUE.
 #' @export
-plotWeights <- function(main.output, split.by.cohort.size=TRUE){
+#' @examples
+#' designs <- singlearmDesign(nmin=30, nmax=30, C=5, p0=0.1, p1=0.4, power=0.8, alpha = 0.05)
+#' plotByWeight(designs)
+plotByWeight <- function(main.output, split.by.cohort.size=TRUE){
   if(var(main.output$all.des[, "C"])==0 | split.by.cohort.size==FALSE){
       output <- plotWeightsOneCohortSize(main.output$all.des)
   }else{

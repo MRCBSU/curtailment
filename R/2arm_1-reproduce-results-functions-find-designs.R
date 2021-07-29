@@ -273,7 +273,7 @@ findBlock2armUncurtailedMatrix <- function(n, r, Bsize, pat.cols, prob.vec){
 #' @param nmax.arm Maximum permitted sample size *per arm*. Should be a multiple of block size.
 #' @param block.size Block size.
 #' @param pc Anticipated response rate on the control arm.
-#' @param p1 Anticipated response rate on the treatment arm.
+#' @param pt Anticipated response rate on the treatment arm.
 #' @param alpha Significance level
 #' @param power Required power (1-beta).
 #' @param maxthetaF Maximum value of lower CP threshold theta_F_max.
@@ -281,14 +281,13 @@ findBlock2armUncurtailedMatrix <- function(n, r, Bsize, pat.cols, prob.vec){
 #' @param bounds choose what final rejection boundaries should be searched over: Those of A'Hern ("ahern"), Wald ("wald") or no constraints (NA). Defaults to "wald".
 #' @param max.combns Provide a maximum number of ordered pairs (theta_F, theta_E). Defaults to 1e6.
 #' @param fixed.r Choose what final rejection boundaries should be searched over. Useful for reproducing a particular design realisation. Defaults to NULL.
+#' @param rm.dominated.designs Logical. If TRUE, dominated designs will be
+#' removed from final output. Defaults to TRUE.
 #' @param exact.thetaF Provide an exact value for lower threshold theta_F. Useful for reproducing a particular design realisation. Defaults to NULL.
 #' @param exact.thetaE Provide an exact value for upper threshold theta_E. Useful for reproducing a particular design realisation. Defaults to NULL.
 #' @param fast.method Logical. If FALSE, design search is conducted over all combinations of
 #' (theta_F, theta_E). If TRUE, a much faster, though less thorough, design search is undertaken.
 #' Defaults to FALSE.
-#'
-#'
-#' @export
 #' @author Martin Law, \email{martin.law@@mrc-bsu.cam.ac.uk}
 #' @return Output is a list of two dataframes. The first, $input, is a one-row data frame that contains all the arguments used in the call.
 #' The second, $all.des, contains the operating characteristics of all admissible designs found.
@@ -302,7 +301,6 @@ findBlock2armUncurtailedMatrix <- function(n, r, Bsize, pat.cols, prob.vec){
 #' maxthetaF=0.4,
 #' minthetaE=0.7,
 #' max.combns=1e4)
-#'
 #' @export
 twoarmDesign <- function(nmin.arm,
                             nmax.arm,

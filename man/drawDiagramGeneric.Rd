@@ -6,6 +6,23 @@
 \usage{
 drawDiagramGeneric(n, go, nogo, xmax = NULL, ymax = NULL, ylab = NULL)
 }
+\arguments{
+\item{n}{Maximum sample size}
+
+\item{go}{Two-column matrix detailing stopping boundaries for a go decision
+or efficacy stopping, where the first column contains the number of responses and
+the second column contains the corresponding number of participants so far.}
+
+\item{nogo}{Two-column matrix detailing stopping boundaries for a no go decision
+or futility stopping, where the first column contains the number of responses and
+the second column contains the corresponding number of participants so far.}
+
+\item{xmax}{Optional. Maximum value for x axis.}
+
+\item{ymax}{Optional. Maximum value for y axis.}
+
+\item{ylab}{Optional. Label for y axis.}
+}
 \description{
 drawDiagramGeneric
 }

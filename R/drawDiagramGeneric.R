@@ -1,6 +1,16 @@
 #' drawDiagramGeneric
 #'
 #' @author Martin Law, \email{martin.law@@mrc-bsu.cam.ac.uk}
+#' @param n Maximum sample size
+#' @param go Two-column matrix detailing stopping boundaries for a go decision
+#' or efficacy stopping, where the first column contains the number of responses and
+#' the second column contains the corresponding number of participants so far.
+#' @param nogo Two-column matrix detailing stopping boundaries for a no go decision
+#' or futility stopping, where the first column contains the number of responses and
+#' the second column contains the corresponding number of participants so far.
+#' @param xmax Optional. Maximum value for x axis.
+#' @param ymax Optional. Maximum value for y axis.
+#' @param ylab Optional. Label for y axis.
 #' @export
 #' @examples
 #'  go <- cbind(6:8, rep(8,3))
@@ -93,4 +103,3 @@ drawDiagramGeneric <- function(n,
   print(diagram)
   return(diagram)
 }
-
