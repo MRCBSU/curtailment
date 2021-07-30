@@ -20,8 +20,8 @@ plotWeightsOneCohortSize <- function(des){
   names(weights.df) <- c("w_0", "w_1", "1-w_0-w_1", "Design")
   design.details <- apply(des, 1, function(x) paste("{", x["r"], "/", x["n"], ", ", format(round(as.numeric(x["thetaF"]),2), nsmall=2), "/", format(round(as.numeric(x["thetaE"]),2), nsmall=2), "}", sep=""))
 
-  output <- ggplot2::ggplot(weights.df, ggplot2::aes(x=w_1, y=w_0)) +
-    ggplot2::geom_raster(ggplot2::aes(fill = Design)) +
+  output <- ggplot2::ggplot(weights.df, ggplot2::aes_string(x="w_1", y="w_0")) +
+    ggplot2::geom_raster(ggplot2::aes_string(fill="Design")) +
     ggplot2::scale_fill_discrete(name="Design",labels=as.vector(design.details)) +
     ggplot2::xlab(expression(w[1])) +
     ggplot2::ylab(expression(w[0])) +

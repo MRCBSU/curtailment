@@ -39,41 +39,43 @@ findDifferences <- function(loss.df, designs.df){
 
 #################### SECTION 3.2: MISSPECIFICATION OF RESPONSE RATES -- FIGS 3 AND 4 ################
 
-plotPower <- function(x, power.ss="power"){
-  theplot <- ggplot(x, aes(true.pt, true.pc)) +
-    theme_tufte() +
-    geom_raster(aes(fill = switch(power.ss, "power" = rejectH0, "ss" = ss))) +
-    scale_fill_gradient2(low="yellow", high="red", guide="colorbar") +
-    geom_text(aes(true.pt, true.pc, label = switch(power.ss, "power" = round(rejectH0, 2), "ss" = round(ss,1))), color = "black", size = 5) +
-    labs(fill = switch(power.ss, "power" = "P(reject H0)", "ss" = "ESS"),
-         y=expression("True p"[C]),
-         x=expression("True p"[T])) +
-    theme(axis.text=element_text(size=rel(1.25)),
-          axis.title=element_text(size=rel(1.5)))
-  theplot
-}
-
-plotPowerBoth <- function(x, power.ss="power"){
-  theplot <- ggplot(x, aes(true.pt, true.pc)) +
-    theme_tufte() +
-    ggtitle(bquote(paste("P(reject H"[0], "), H"[0], "-optimal design for p"[0], "=",.(x$pc[1]), ", p"[1], "=", .(x$pt[1])))) +
-    geom_raster(aes(fill = switch(power.ss, "power" = rejectH0, "ss" = ss))) +
-    scale_fill_gradient2(low="yellow", high="red", guide="colorbar") +
-    geom_text(aes(true.pt, true.pc,
-                  label = switch(power.ss, "power" = round(rejectH0, 2), "ss" = round(ss,1))),
-              color = "black",
-              size = rel(4)) +
-    labs(fill = switch(power.ss, "power" = expression("P(reject H"[0],")"), "ss" = "ESS"),
-         y=expression("True p"[C]),
-         x=expression("True p"[T])) +
-    theme(plot.title = element_text(hjust = 0.5),
-          axis.text=element_text(size=rel(1.25)),
-          axis.title=element_text(size=rel(1.25)),
-          strip.text = element_text(size=rel(1.25))
-    )+
-    facet_grid(. ~ design)
-  theplot
-}
+# plotPower <- function(x, power.ss="power"){
+#   thelabel <- switch(power.ss, "power" = round(rejectH0, 2), "ss" = round(ss,1))
+#   theplot <- ggplot(x, aes_string("true.pt", "true.pc")) +
+#     theme_tufte() +
+#     geom_raster(aes(fill = switch(power.ss, "power" = rejectH0, "ss" = ss))) +
+#     scale_fill_gradient2(low="yellow", high="red", guide="colorbar") +
+#     geom_text(aes_string("true.pt", "true.pc", label=thelabel), color = "black", size = 5) +
+#     labs(fill = switch(power.ss, "power" = "P(reject H0)", "ss" = "ESS"),
+#          y=expression("True p"[C]),
+#          x=expression("True p"[T])) +
+#     theme(axis.text=element_text(size=rel(1.25)),
+#           axis.title=element_text(size=rel(1.5)))
+#   theplot
+# }
+#
+# plotPowerBoth <- function(x, power.ss="power"){
+#   thelabel <- switch(power.ss, "power" = round(rejectH0, 2), "ss" = round(ss,1))
+#   theplot <- ggplot(x, aes_string("true.pt", "true.pc")) +
+#     theme_tufte() +
+#     ggtitle(bquote(paste("P(reject H"[0], "), H"[0], "-optimal design for p"[0], "=",.(x$pc[1]), ", p"[1], "=", .(x$pt[1])))) +
+#     geom_raster(aes(fill = switch(power.ss, "power" = rejectH0, "ss" = ss))) +
+#     scale_fill_gradient2(low="yellow", high="red", guide="colorbar") +
+#     geom_text(aes(true.pt, true.pc,
+#                   label=thelabel),
+#               color = "black",
+#               size = rel(4)) +
+#     labs(fill = switch(power.ss, "power" = expression("P(reject H"[0],")"), "ss" = "ESS"),
+#          y=expression("True p"[C]),
+#          x=expression("True p"[T])) +
+#     theme(plot.title = element_text(hjust = 0.5),
+#           axis.text=element_text(size=rel(1.25)),
+#           axis.title=element_text(size=rel(1.25)),
+#           strip.text = element_text(size=rel(1.25))
+#     )+
+#     facet_grid(. ~ design)
+#   theplot
+# }
 
 
 
@@ -214,45 +216,45 @@ varypPlot <- function(h0=TRUE, n, r, thetaF=NULL, thetaE=NULL, pc, pt, true.pc, 
 
 
 
-varypPowerSS <- function(method, n, r, pc, pt, thetaF=NULL, thetaE=NULL, p.range, runs, lower.triangle=TRUE,
-                         seed=sample(1:1e5, 1), power.ss="power", title.text=FALSE, plot=TRUE){
-  df <- data.frame(expand.grid(seq(p.range[1], p.range[2], by=0.1), seq(p.range[1], p.range[2], by=0.1)))
-  names(df) <- c("true.pt", "true.pc")
-  if(lower.triangle==TRUE){
-    df <- df[df$true.pt >= df$true.pc, ]
-  }
-  x <- apply(df, 1, function(x) varypPlot(h0=FALSE, n=n, r=r, pc=pc, pt=pt, true.pc=x["true.pc"], true.pt=x["true.pt"], thetaF=thetaF, thetaE=thetaE, runs=runs, seed=seed, method=method))
-  x <- do.call(rbind, x)
-
-  theplot <- ggplot(x, aes(true.pt, true.pc)) +
-    geom_raster(aes(fill = switch(power.ss, "power" = rejectH0, "ss" = ss))) +
-    scale_fill_gradient2(low="yellow", high="red", guide="colorbar") +
-    geom_text(aes(true.pt, true.pc, label = switch(power.ss, "power" = round(rejectH0, 2), "ss" = round(ss,1))), color = "black", size = 5) +
-    labs(fill = switch(power.ss, "power" = "P(reject H0)", "ss" = "ESS"),
-         y=expression("True p"[C]),
-         x=expression("True p"[T])) +
-    theme(legend.position = c(0.2, 0.7),
-          axis.text=element_text(size=rel(1.25)),
-          axis.title=element_text(size=rel(1.5)))
-
-  if(title.text==TRUE){
-    if(method=="carsten"){
-      theplot <- theplot +
-        labs(title = paste("Carsten design: n1=", n[[1]], ", n=", n[[2]], ", r1=", r[[1]], ", r=", r[[2]], ". pc=", pc, ", pt=", pt, sep=""))
-    }
-
-    if(method=="block"){
-      theplot <- theplot +
-        labs(title = paste("Block design: n=", n, ", r=", r, ", thetaF=", round(thetaF,3), ", thetaE=", round(thetaE,3),  ". pc=", pc, ", pt=", pt, sep=""))
-    }
-  }
-
-  if(plot==TRUE){
-    return(theplot)
-  } else {
-    return(x)
-  }
-} # END OF FUNCTION varypPowerSS
+# varypPowerSS <- function(method, n, r, pc, pt, thetaF=NULL, thetaE=NULL, p.range, runs, lower.triangle=TRUE,
+#                          seed=sample(1:1e5, 1), power.ss="power", title.text=FALSE, plot=TRUE){
+#   df <- data.frame(expand.grid(seq(p.range[1], p.range[2], by=0.1), seq(p.range[1], p.range[2], by=0.1)))
+#   names(df) <- c("true.pt", "true.pc")
+#   if(lower.triangle==TRUE){
+#     df <- df[df$true.pt >= df$true.pc, ]
+#   }
+#   x <- apply(df, 1, function(x) varypPlot(h0=FALSE, n=n, r=r, pc=pc, pt=pt, true.pc=x["true.pc"], true.pt=x["true.pt"], thetaF=thetaF, thetaE=thetaE, runs=runs, seed=seed, method=method))
+#   x <- do.call(rbind, x)
+#   thelabel <- switch(power.ss, "power" = round(rejectH0, 2), "ss" = round(ss,1))
+#   theplot <- ggplot(x, aes_string("true.pt", "true.pc")) +
+#     geom_raster(aes(fill = switch(power.ss, "power" = rejectH0, "ss" = ss))) +
+#     scale_fill_gradient2(low="yellow", high="red", guide="colorbar") +
+#     geom_text(aes_string("true.pt", "true.pc", label=thelabel), color = "black", size = 5) +
+#     labs(fill = switch(power.ss, "power" = "P(reject H0)", "ss" = "ESS"),
+#          y=expression("True p"[C]),
+#          x=expression("True p"[T])) +
+#     theme(legend.position = c(0.2, 0.7),
+#           axis.text=element_text(size=rel(1.25)),
+#           axis.title=element_text(size=rel(1.5)))
+#
+#   if(title.text==TRUE){
+#     if(method=="carsten"){
+#       theplot <- theplot +
+#         labs(title = paste("Carsten design: n1=", n[[1]], ", n=", n[[2]], ", r1=", r[[1]], ", r=", r[[2]], ". pc=", pc, ", pt=", pt, sep=""))
+#     }
+#
+#     if(method=="block"){
+#       theplot <- theplot +
+#         labs(title = paste("Block design: n=", n, ", r=", r, ", thetaF=", round(thetaF,3), ", thetaE=", round(thetaE,3),  ". pc=", pc, ", pt=", pt, sep=""))
+#     }
+#   }
+#
+#   if(plot==TRUE){
+#     return(theplot)
+#   } else {
+#     return(x)
+#   }
+# } # END OF FUNCTION varypPowerSS
 
 # Write a program that will find the sample size using our design and Carsten's design, for a given set of data #
 
@@ -266,8 +268,7 @@ varypPowerSS <- function(method, n, r, pc, pt, thetaF=NULL, thetaE=NULL, p.range
 # n=31; r2=3; thetaF=0.1277766; thetaE=0.9300000
 
 rejectionRegions <- function(n, r, thetaF=NULL, thetaE=NULL, pc, pt, method=NULL){
-
-
+  m <- successes <- outcome <- NULL
   #### Find CPs for block and Carsten designs:
   if(method=="block"){
     block.mat <- findBlockCP(n=n, r=r, pc=pc, pt=pt, thetaF=thetaF, thetaE=thetaE)
@@ -342,16 +343,16 @@ rejectionRegions <- function(n, r, thetaF=NULL, thetaE=NULL, pc, pt, method=NULL
 plotFeasible <- function(df, criterion=0){
   theme_set(theme_bw(base_size = 20)) # Increase font size and set theme for plots.
   plt <- ggplot(data=df,
-                aes(x = thetaF, y = thetaE))
+                aes_string(x="thetaF", y="thetaE"))
   if(criterion==0){
     main.text <- expression(paste(theta[F], ", ", theta[E], " and ESS(", p[0], ", ", p[0], ") for all feasible designs"))
     legend.text <- expression(paste("ESS(", p[0], ", ", p[0], ")"))
-    plt <- plt + geom_point(aes(color=EssH0), size=3)
+    plt <- plt + geom_point(aes_string(color="EssH0"), size=3)
   }
   if(criterion==1){
     main.text <- expression(paste(theta[F], ", ", theta[E], " and ESS(", p[0], ", ", p[1], ") for all feasible designs"))
     legend.text <- expression(paste("ESS(", p[0], ", ", p[1], ")"))
-    plt <- plt + geom_point(aes(color=Ess), size=3)
+    plt <- plt + geom_point(aes_string(color="Ess"), size=3)
   }
   plt <- plt +
     labs(title=main.text,
@@ -365,8 +366,8 @@ plotFeasible <- function(df, criterion=0){
 # Plot rejection regions for proposed design and Carsten design: ####
 plotRejectionRegions <- function(data.f, method){
   theme_set(theme_bw(base_size = 20))# Increase font size and set theme for plots.
-  rejection.plot <- ggplot(data.f, aes(m, successes)) +
-    geom_raster(aes(fill = outcome)) +
+  rejection.plot <- ggplot(data.f, aes_string("m", "successes")) +
+    geom_raster(aes_string(fill = "outcome")) +
     theme(legend.position = c(0.2, 0.8))+
     labs(fill="Decision")
   if(method=="carsten"){

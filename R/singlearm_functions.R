@@ -410,8 +410,8 @@ findDesignsGivenCohortStage <- function(nmin,
                         maxthetas=NA,
                         fixed.r=NA,
                         exact.thetaF=NA,
-                        exact.thetaE=NA)
-{
+                        exact.thetaE=NA){
+  grp <- V2 <- NULL
   q0 <- 1-p0
   q1 <- 1-p1
 
@@ -2116,9 +2116,8 @@ findSCdesigns <- function(nmin,
                  max.combns=1e6,
                  maxthetas=NA,
                  exact.thetaF=NA,
-                 exact.thetaE=NA
-                 )
-{
+                 exact.thetaE=NA){
+  grp <- V2 <- NULL
   #sc.all <- findN1N2R1R2_df(nmin=nmin, nmax=nmax, e1=FALSE)
   sc.all <- findSimonN1N2R1R2(nmin=nmin, nmax=nmax, e1=FALSE)
 
@@ -2430,12 +2429,12 @@ plot.all <- function(results, loss, scen){
 
 plotExpdLoss <- function(loss.df, design.type, scenario, design.loss.range){
   title <- paste("Expected loss: ", design.type, ", Scenario ", scenario, sep="")
-  ggplot2::ggplot(loss.df, ggplot2::aes(w1, w0)) +
+  ggplot2::ggplot(loss.df, ggplot2::aes_string("w1", "w0")) +
     ggplot2::ggtitle(title) +
     ggplot2::theme_bw() +
     ggplot2::xlab(expression(w[1])) +
     ggplot2::ylab(expression(w[0])) +
-    ggplot2::geom_raster(ggplot2::aes(fill = loss)) +
+    ggplot2::geom_raster(ggplot2::aes_string(fill="loss")) +
     ggplot2::scale_fill_gradient(low="red", high="darkblue", limits=design.loss.range) +
     ggplot2::theme(#axis.text.x=element_text(),
       axis.text=ggplot2::element_text(size=15),
@@ -2724,9 +2723,9 @@ plotMedianSSDesign <- function(dataf, p0, p1, factor, title){
   }
   dataf[, factor] <- factor(dataf[, factor])
 
-  ggplot2::ggplot(dataf, ggplot2::aes(x = p.vec, y = median, ymin = lower, ymax = upper), ggplot2::aes_string(group = factor)) +
-    ggplot2::geom_line(ggplot2::aes_string(color=factor), size=1) +
-    ggplot2::geom_ribbon(ggplot2::aes_string(fill = factor), alpha = 0.3) +
+  ggplot2::ggplot(dataf, ggplot2::aes_string(x="p.vec", y="median", ymin="lower", ymax="upper"), ggplot2::aes_string(group="factor")) +
+    ggplot2::geom_line(ggplot2::aes_string(color="factor"), size=1) +
+    ggplot2::geom_ribbon(ggplot2::aes_string(fill="factor"), alpha = 0.3) +
     ggplot2::labs(title=title,
          x ="p", y = "Sample size", fill="Design\n(block size B)", color="Design\n(block size B)")+
     ggplot2::geom_vline(xintercept = p0, size=0.5, color="grey60", linetype="longdash") +
@@ -2777,14 +2776,21 @@ findWaldAhernBounds <- function(N.range, beta, alpha, p0, p1, round=F){
 # Plot the boundaries along with the m-stage boundaries (two different data frames):
 plotBounds <- function(wald.ahern.bounds, mstage.bounds, title="XXX"){
   print(range(wald.ahern.bounds$N))
-  #library(ggplot2)
   plot.output <- ggplot2::ggplot()+
-    ggplot2::geom_ribbon(data=wald.ahern.bounds, ggplot2::aes(x=N, y=NULL, ymin=lower, ymax=upper, fill=design), alpha = 0.3)+
-    ggplot2::geom_point(data=mstage.bounds, ggplot2::aes(x=n, y=r))+
+    ggplot2::geom_ribbon(data=wald.ahern.bounds,
+                         ggplot2::aes(x=wald.ahern.bounds$N,
+                                      y=NULL,
+                                      ymin=wald.ahern.bounds$lower,
+                                      ymax=wald.ahern.bounds$upper,
+                                      fill=wald.ahern.bounds$design),
+                         alpha = 0.3)+
+    ggplot2::geom_point(data=mstage.bounds,
+                        ggplot2::aes(x=mstage.bounds$n,
+                                     y=mstage.bounds$r))+
     ggplot2::labs(title=title,
-         x ="Maximum sample size",
-         y = "Final rejection boundary",
-         fill="Design")+
+                  x ="Maximum sample size",
+                  y = "Final rejection boundary",
+                  fill="Design")+
     ggplot2::theme_bw()+
     ggplot2::scale_x_continuous(limits=range(wald.ahern.bounds$N), expand=c(0,1))
   plot.output
@@ -2821,41 +2827,41 @@ countOrderedPairsComplex <- function(r, n, p0, p1, thetaFmax=1, thetaEmin=0){
   return(output)
   }
 
-findTotalNoPairs <- function(nmin, nmax, p0, p1, ahern.plus=FALSE, SI.units=FALSE){
-  n.vec <- nmin:nmax
-  OP.list <- vector("list", length=length(n.vec))
-  for(i in 1:length(n.vec)){
-    rmin <- floor(N*p0)
-    rmax <- ceiling(N*p1)
-    if(ahern.plus==TRUE) rmax <- rmax + 1
-    CPs <- countCPsSingleStageNSC(r=rmin:rmax, N=n.vec[i])
-    OP.list[[i]] <- countOrderedPairs(CPs)
-  }
-  total.OPs <- sum(unlist(OP.list))
-  if(SI.units)  total.OPs <- format(total.OPs, scientific=TRUE)
-  total.OPs
-}
+# findTotalNoPairs <- function(nmin, nmax, p0, p1, ahern.plus=FALSE, SI.units=FALSE){
+#   n.vec <- nmin:nmax
+#   OP.list <- vector("list", length=length(n.vec))
+#   for(i in 1:length(n.vec)){
+#     rmin <- floor(N*p0)
+#     rmax <- ceiling(N*p1)
+#     if(ahern.plus==TRUE) rmax <- rmax + 1
+#     CPs <- countCPsSingleStageNSC(r=rmin:rmax, N=n.vec[i])
+#     OP.list[[i]] <- countOrderedPairs(CPs)
+#   }
+#   total.OPs <- sum(unlist(OP.list))
+#   if(SI.units)  total.OPs <- format(total.OPs, scientific=TRUE)
+#   total.OPs
+# }
 
 
 
 # Loss function: find individual components ####
 # Data frames required: all.results for scen 1 only, all.scen2.results for scen 2, all.scen3.results for scen 3.
 # These data frames can be found in the file "scen123_allresults.RData".
-# Input: w0, w1, full dataframe.
+# Input: w0, w1, full dataframe (all.results).
 # Output: the admissible design for each design type, with expected loss and each loss component.
-findLossComponents <- function(df=all.results, w0=1, w1=0){
-  df$loss.ESS0 <- w0*df$EssH0
-  df$loss.ESS1 <- w1*df$Ess
-  df$loss.N <- (1-w0-w1)*df$n
-  df$loss.total <- df$loss.ESS0 + df$loss.ESS1 + df$loss.N
-  df$loss.diff <- df$loss.total - min(df$loss.total)
-  admiss.des <- by(data=df, INDICES = df$design, FUN = function(x) x[x$loss.total==min(x$loss.total), ])
-  admiss.des <- do.call(rbind, admiss.des)
-  admiss.des <- admiss.des[order(match(admiss.des$design, des.order)), ]
-  rownames(admiss.des) <- c("Simon", "MT", "NSC", "SC", "mstage")
-  output <- admiss.des[, c("EssH0", "loss.ESS0", "Ess", "loss.ESS1", "n", "loss.N", "loss.total", "loss.diff")]
-  output
-}
+# findLossComponents <- function(df, w0=1, w1=0){
+#   df$loss.ESS0 <- w0*df$EssH0
+#   df$loss.ESS1 <- w1*df$Ess
+#   df$loss.N <- (1-w0-w1)*df$n
+#   df$loss.total <- df$loss.ESS0 + df$loss.ESS1 + df$loss.N
+#   df$loss.diff <- df$loss.total - min(df$loss.total)
+#   admiss.des <- by(data=df, INDICES = df$design, FUN = function(x) x[x$loss.total==min(x$loss.total), ])
+#   admiss.des <- do.call(rbind, admiss.des)
+#   admiss.des <- admiss.des[order(match(admiss.des$design, des.order)), ]
+#   rownames(admiss.des) <- c("Simon", "MT", "NSC", "SC", "mstage")
+#   output <- admiss.des[, c("EssH0", "loss.ESS0", "Ess", "loss.ESS1", "n", "loss.N", "loss.total", "loss.diff")]
+#   output
+# }
 
 
 
