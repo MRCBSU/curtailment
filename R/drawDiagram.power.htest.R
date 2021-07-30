@@ -1,3 +1,4 @@
+#' @export
 drawDiagram.power.htest <- function(findDesign.output, print.row=NULL, save.plot=FALSE, xmax=NULL, ymax=NULL){
   m <- Sm <- decision <- analysis <- NULL
   des <- findDesign.output

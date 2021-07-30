@@ -3112,6 +3112,7 @@ drawDiagram <- function(findDesign.output, print.row=NULL, save.plot=FALSE, xmax
   UseMethod("drawDiagram")
 }
 
+#' @export
 drawDiagram.curtailment_single <- function(findDesign.output, print.row=NULL, save.plot=FALSE, xmax=NULL, ymax=NULL){
     des <- findDesign.output$all.des
   row.names(des) <- 1:nrow(des)
@@ -3143,7 +3144,7 @@ drawDiagram.curtailment_single <- function(findDesign.output, print.row=NULL, sa
   }
 } # end of drawDiagram()
 
-
+#' @export
 drawDiagram.curtailment_simon <- function(findDesign.output, print.row=NULL, save.plot=FALSE, xmax=NULL, ymax=NULL){
   des <- findDesign.output$all.des
   row.names(des) <- 1:nrow(des)

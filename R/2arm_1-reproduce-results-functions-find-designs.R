@@ -1410,6 +1410,7 @@ createPlotAndBounds2arm <- function(des, des.input, rownum, save.plot, xmax, yma
               bounds.mat=stop.bounds))
 }
 
+#' @export
 drawDiagram.curtailment_twoarm <- function(findDesign.output, print.row=NULL, save.plot=FALSE, xmax=NULL, ymax=NULL){
   des <- findDesign.output$all.des
   row.names(des) <- 1:nrow(des)
