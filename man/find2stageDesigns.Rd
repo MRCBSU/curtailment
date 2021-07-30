@@ -38,17 +38,25 @@ sample size under p=p1 (Ess), maximum sample size (n) or any weighted combinatio
 three optimality criteria.
 }
 \examples{
-find2stageDesigns(nmin=23, nmax=27, p0=0.75, p1=0.92, alpha=0.22, power=0.95, benefit=TRUE)
+\donttest{
+find2stageDesigns(nmin=23,
+ nmax=27,
+ p0=0.75,
+ p1=0.92,
+ alpha=0.22,
+ power=0.95,
+ benefit=TRUE)
+ }
 }
 \references{
-\href{https://doi.org/10.1016/j.cct.2010.07.008}{A.P. Mander, S.G. Thompson,
+\doi{10.1016/j.cct.2010.07.008}{A.P. Mander, S.G. Thompson,
 Two-stage designs optimal under the alternative hypothesis for phase II cancer clinical trials,
 Contemporary Clinical Trials,
 Volume 31, Issue 6,
 2010,
 Pages 572-578}
 
-\href{https://doi.org/10.1016/0197-2456(89)90015-9}{Richard Simon,
+\doi{10.1016/0197-2456(89)90015-9}{Richard Simon,
 Optimal two-stage designs for phase II clinical trials,
 Controlled Clinical Trials,
 Volume 10, Issue 1,

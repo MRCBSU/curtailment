@@ -1,16 +1,15 @@
 Package: curtailment
-Title: What the Package Does (One Line, Title Case)
+Title: Finds Single- and Two-Arm Binary Outcome Designs Using Stochastic Curtailment
 Version: 0.0.0.9000
 Authors@R: 
-    person(given = "First",
-           family = "Last",
+    person(given = "Martin",
+           family = "Law",
            role = c("aut", "cre"),
-           email = "first.last@example.com",
-           comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: What the package does (one paragraph).
+           email = "martin.law@mrc-bsu.cam.ac.uk",
+           comment = c(ORCID = "0000-0001-9594-348X"))
+Description: The curtailment package finds single- and two-arm designs using stochastic curtailment. Designs can be single-stage or multi-stage. Non-stochastic curtailment is possible as a special case. Desired error-rates, maximum sample size and lower and upper anticipated response rates are inputted and suitable designs are returned with operating characteristics. Stopping boundaries and visualisations are also available. The package can find designs using other approaches, for example the Simon design. Other features: compare and visualise designs using a weighted sum of expected sample sizes under the null and alternative hypotheses and maximum sample size; visualise any binary outcome design.
 License: GPL (>= 3)
 Encoding: UTF-8
-LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
 Imports: 

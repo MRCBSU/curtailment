@@ -291,7 +291,9 @@ findBlock2armUncurtailedMatrix <- function(n, r, Bsize, pat.cols, prob.vec){
 #' @author Martin Law, \email{martin.law@@mrc-bsu.cam.ac.uk}
 #' @return Output is a list of two dataframes. The first, $input, is a one-row data frame that contains all the arguments used in the call.
 #' The second, $all.des, contains the operating characteristics of all admissible designs found.
-#' @examples des <- twoarmDesign(nmin.arm=20,
+#' @examples
+#' \donttest{
+#' des <- twoarmDesign(nmin.arm=20,
 #' nmax.arm=24,
 #' block.size=8,
 #' pc=0.1,
@@ -301,6 +303,7 @@ findBlock2armUncurtailedMatrix <- function(n, r, Bsize, pat.cols, prob.vec){
 #' maxthetaF=0.4,
 #' minthetaE=0.7,
 #' max.combns=1e4)
+#' }
 #' @export
 twoarmDesign <- function(nmin.arm,
                             nmax.arm,
@@ -1407,9 +1410,6 @@ createPlotAndBounds2arm <- function(des, des.input, rownum, save.plot, xmax, yma
               bounds.mat=stop.bounds))
 }
 
-
-
-#' @export
 drawDiagram.curtailment_twoarm <- function(findDesign.output, print.row=NULL, save.plot=FALSE, xmax=NULL, ymax=NULL){
   des <- findDesign.output$all.des
   row.names(des) <- 1:nrow(des)

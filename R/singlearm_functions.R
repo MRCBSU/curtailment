@@ -3005,16 +3005,25 @@ simonEfficacy <- function(n1, n2, r1, r, e1, p0, p1)
 #' stopping boundaries and operating characteristics. To see a diagram of any obtained design realisation
 #' and its corresponding stopping boundaries, simply call the function drawDiagram with this output as the only argument.
 #' @author Martin Law, \email{martin.law@@mrc-bsu.cam.ac.uk}
-#' @examples find2stageDesigns(nmin=23, nmax=27, p0=0.75, p1=0.92, alpha=0.22, power=0.95, benefit=TRUE)
+#' @examples
+#' \donttest{
+#' find2stageDesigns(nmin=23,
+#'  nmax=27,
+#'  p0=0.75,
+#'  p1=0.92,
+#'  alpha=0.22,
+#'  power=0.95,
+#'  benefit=TRUE)
+#'  }
 #' @references
-#' \href{https://doi.org/10.1016/j.cct.2010.07.008}{A.P. Mander, S.G. Thompson,
+#' \doi{10.1016/j.cct.2010.07.008}{A.P. Mander, S.G. Thompson,
 #' Two-stage designs optimal under the alternative hypothesis for phase II cancer clinical trials,
 #' Contemporary Clinical Trials,
 #' Volume 31, Issue 6,
 #' 2010,
 #' Pages 572-578}
 #'
-#' \href{https://doi.org/10.1016/0197-2456(89)90015-9}{Richard Simon,
+#' \doi{10.1016/0197-2456(89)90015-9}{Richard Simon,
 #' Optimal two-stage designs for phase II clinical trials,
 #' Controlled Clinical Trials,
 #' Volume 10, Issue 1,
@@ -3103,7 +3112,6 @@ drawDiagram <- function(findDesign.output, print.row=NULL, save.plot=FALSE, xmax
   UseMethod("drawDiagram")
 }
 
-#' @export
 drawDiagram.curtailment_single <- function(findDesign.output, print.row=NULL, save.plot=FALSE, xmax=NULL, ymax=NULL){
     des <- findDesign.output$all.des
   row.names(des) <- 1:nrow(des)
@@ -3136,7 +3144,6 @@ drawDiagram.curtailment_single <- function(findDesign.output, print.row=NULL, sa
 } # end of drawDiagram()
 
 
-#' @export
 drawDiagram.curtailment_simon <- function(findDesign.output, print.row=NULL, save.plot=FALSE, xmax=NULL, ymax=NULL){
   des <- findDesign.output$all.des
   row.names(des) <- 1:nrow(des)

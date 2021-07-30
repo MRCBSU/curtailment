@@ -70,6 +70,7 @@ The output can be used as the sole argument in the function 'drawDiagram', which
 admissible design of your choice. Monitoring frequency can set in terms of block size.
 }
 \examples{
+\donttest{
 des <- twoarmDesign(nmin.arm=20,
 nmax.arm=24,
 block.size=8,
@@ -80,6 +81,7 @@ power=0.8,
 maxthetaF=0.4,
 minthetaE=0.7,
 max.combns=1e4)
+}
 }
 \author{
 Martin Law, \email{martin.law@mrc-bsu.cam.ac.uk}
