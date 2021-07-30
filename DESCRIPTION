@@ -1,6 +1,6 @@
 Package: curtailment
-Title: Finds Single- and Two-Arm Binary Outcome Designs Using Stochastic Curtailment
-Version: 0.0.0.9000
+Title: Finds Single- And Two-Arm Binary Outcome Designs Using Stochastic Curtailment
+Version: 0.1.0
 Authors@R: 
     person(given = "Martin",
            family = "Law",

@@ -82,7 +82,7 @@ findWald <- function(alpha, power, p0, p1){
 #' @return A vector containing all the inputted values and corresponding operating characteristics.
 #' @author Martin Law, \email{martin.law@@mrc-bsu.cam.ac.uk}
 #' @references
-#' \href{https://doi.org/10.1016/0197-2456(89)90015-9}{Richard Simon,
+#' \doi{10.1016/0197-2456(89)90015-9}{Richard Simon,
 #' Optimal two-stage designs for phase II clinical trials,
 #' Controlled Clinical Trials,
 #' Volume 10, Issue 1,
