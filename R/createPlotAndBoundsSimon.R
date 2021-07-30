@@ -1,4 +1,4 @@
-createPlotAndBoundsSimon <- function(des, des.input, rownum, save.plot=FALSE, xmax=NULL, ymax=NULL){
+createPlotAndBoundsSimon <- function(des, des.input, rownum, xmax=NULL, ymax=NULL){
   m <- Sm <- decision <- analysis <- NULL
   des <- as.data.frame(des[rownum, ])
   coords <- expand.grid(0:des$n, 1:des$n)
@@ -82,19 +82,6 @@ createPlotAndBoundsSimon <- function(des, des.input, rownum, save.plot=FALSE, xm
 
   print(diagram)
 
-  if(save.plot==TRUE){
-    save.plot.yn <- readline("Save plot? (y/n): ")
-    if(save.plot.yn=="y"){
-      plot.filename <- readline("enter filename (no special characters or inverted commas): ")
-      plot.filename <- paste(plot.filename, ".pdf", sep="")
-      plot.width <- 8
-      scaling <- 1.25
-      plot.height <- 8*scaling*(des$r+1)/des$n
-      grDevices::pdf(plot.filename, width = plot.width, height = plot.height)
-      print(diagram)
-      grDevices::dev.off()
-    }
-  }
   stop.bounds <- data.frame(m=c(des$n1, des$n),
                            success=c(Inf, des$r+1),
                            fail=c(des$r1, des$r))

@@ -20,7 +20,8 @@ findSCdesigns(
   max.combns = 1e+06,
   maxthetas = NA,
   exact.thetaF = NA,
-  exact.thetaE = NA
+  exact.thetaE = NA,
+  progressBar = FALSE
 )
 }
 \arguments{
@@ -55,6 +56,8 @@ findSCdesigns(
 \item{exact.thetaF}{Provide an exact value for lower threshold theta_F. Useful for reproducing a particular design realisation. Defaults to NA.}
 
 \item{exact.thetaE}{Provide an exact value for upper threshold theta_E. Useful for reproducing a particular design realisation. Defaults to NA.}
+
+\item{progressBar}{Logical. If TRUE, shows progress bar. Defaults to FALSE.}
 }
 \description{
 This function finds admissible design realisations for single-arm binary outcome trials, using stochastic curtailment.

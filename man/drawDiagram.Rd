@@ -4,20 +4,12 @@
 \alias{drawDiagram}
 \title{drawDiagram}
 \usage{
-drawDiagram(
-  findDesign.output,
-  print.row = NULL,
-  save.plot = FALSE,
-  xmax = NULL,
-  ymax = NULL
-)
+drawDiagram(findDesign.output, print.row = NULL, xmax = NULL, ymax = NULL)
 }
 \arguments{
 \item{findDesign.output}{Output from either the function singlearmDesign or find2stageDesigns}
 
 \item{print.row}{Choose a row number to directly obtain a plot and stopping boundaries for a particular design realisation. Default is NULL.}
-
-\item{save.plot}{Logical. Set to TRUE to save plot as PDF. Default is FALSE.}
 
 \item{xmax, ymax}{Choose values for the upper limits of the x- and y-axes respectively. Helpful for comparing two design realisations. Default is NULL.}
 }

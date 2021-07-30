@@ -1,4 +1,4 @@
-createPlotAndBounds <- function(des, des.input, rownum, save.plot, xmax, ymax){
+createPlotAndBounds <- function(des, des.input, rownum, xmax, ymax){
   m <- Sm <- decision <- analysis <- NULL
   rownum <- as.numeric(rownum)
   des <- as.data.frame(t(des[rownum, ]))
@@ -82,20 +82,6 @@ createPlotAndBounds <- function(des, des.input, rownum, save.plot, xmax, ymax){
     scale_y_continuous(breaks = function(x) unique(floor(pretty(seq(0, (max(x) + 1) * 1.1)))))
 
   print(diagram)
-
-  if(save.plot==TRUE){
-    save.plot.yn <- readline("Save plot? (y/n): ")
-    if(save.plot.yn=="y"){
-      plot.filename <- readline("enter filename (no special characters or inverted commas): ")
-      plot.filename <- paste(plot.filename, ".pdf", sep="")
-      plot.width <- 8
-      scaling <- 1.25
-      plot.height <- 8*scaling*(des$r+1)/des$n
-      grDevices::pdf(plot.filename, width = plot.width, height = plot.height)
-      print(diagram)
-      grDevices::dev.off()
-    }
-  }
 
   tp.success.unique.m <- tp.success[!duplicated(tp.success$m), ]
   stop.bounds <- data.frame(m=seq(from=des$C, to=des$n, by=des$C),

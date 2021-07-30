@@ -21,7 +21,8 @@ singlearmDesign(
   maxthetas = NA,
   fixed.r = NA,
   exact.thetaF = NA,
-  exact.thetaE = NA
+  exact.thetaE = NA,
+  progressBar = FALSE
 )
 }
 \arguments{
@@ -58,6 +59,8 @@ singlearmDesign(
 \item{exact.thetaF}{Provide an exact value for lower threshold theta_F. Useful for reproducing a particular design realisation. Defaults to NA.}
 
 \item{exact.thetaE}{Provide an exact value for upper threshold theta_E. Useful for reproducing a particular design realisation. Defaults to NA.}
+
+\item{progressBar}{Logical. If TRUE, shows progress bar. Defaults to FALSE.}
 }
 \value{
 Output is a list of two dataframes. The first, $input, is a one-row data frame that contains all the arguments used in the call. The second, $all.des, contains the operating characteristics of all admissible designs found.

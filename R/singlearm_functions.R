@@ -410,7 +410,8 @@ findDesignsGivenCohortStage <- function(nmin,
                         maxthetas=NA,
                         fixed.r=NA,
                         exact.thetaF=NA,
-                        exact.thetaE=NA){
+                        exact.thetaE=NA,
+                        progressBar=FALSE){
   grp <- V2 <- NULL
   q0 <- 1-p0
   q1 <- 1-p1
@@ -552,7 +553,7 @@ if(!is.na(max.combns) & is.na(maxthetas)){ # Only use max.combns if maxthetas is
 
   h.results.list <- vector("list", nrow(sc.subset)) #
 
-  pb <- txtProgressBar(min = 0, max = nrow(sc.subset), style = 3)
+  if(progressBar==TRUE)  pb <- txtProgressBar(min = 0, max = nrow(sc.subset), style = 3)
 
   ######### START HERE
 
@@ -622,7 +623,7 @@ if(!is.na(max.combns) & is.na(maxthetas)){ # Only use max.combns if maxthetas is
       }
     } # end of "i" loop
 
-    setTxtProgressBar(pb, h)
+    if(progressBar==TRUE) setTxtProgressBar(pb, h)
 
     ####### END HERE
 
@@ -716,6 +717,7 @@ if(!is.na(max.combns) & is.na(maxthetas)){ # Only use max.combns if maxthetas is
 #' @param fixed.r Choose what final rejection boundaries should be searched over. Useful for reproducing a particular design realisation. Defaults to NA.
 #' @param exact.thetaF Provide an exact value for lower threshold theta_F. Useful for reproducing a particular design realisation. Defaults to NA.
 #' @param exact.thetaE Provide an exact value for upper threshold theta_E. Useful for reproducing a particular design realisation. Defaults to NA.
+#' @param progressBar Logical. If TRUE, shows progress bar. Defaults to FALSE.
 #' @export
 #' @author Martin Law, \email{martin.law@@mrc-bsu.cam.ac.uk}
 #' @return Output is a list of two dataframes. The first, $input, is a one-row data frame that contains all the arguments used in the call. The second, $all.des, contains the operating characteristics of all admissible designs found.
@@ -742,7 +744,8 @@ singlearmDesign <- function(nmin,
                         maxthetas=NA,
                         fixed.r=NA,
                         exact.thetaF=NA,
-                        exact.thetaE=NA){
+                        exact.thetaE=NA,
+                        progressBar=FALSE){
   use.stages <- any(is.na(C))
   if(any(!is.na(C)) & any(!is.na(stages))) stop("Values given for both cohort/block size C and number of stages. Please choose one only.")
 
@@ -764,7 +767,8 @@ singlearmDesign <- function(nmin,
                                                          maxthetas=maxthetas,
                                                          fixed.r=fixed.r,
                                                          exact.thetaF=exact.thetaF,
-                                                         exact.thetaE=exact.thetaE)
+                                                         exact.thetaE=exact.thetaE,
+                                                         progressBar=progressBar)
            )
   }else{
     intermediate.output <- lapply(C,
@@ -784,7 +788,8 @@ singlearmDesign <- function(nmin,
                                                          maxthetas=maxthetas,
                                                          fixed.r=fixed.r,
                                                          exact.thetaF=exact.thetaF,
-                                                         exact.thetaE=exact.thetaE)
+                                                         exact.thetaE=exact.thetaE,
+                                                         progressBar=progressBar)
     )
   }
 
@@ -2099,6 +2104,7 @@ insideTheta <- function(n1, n2, n, r1, r2, thetaF, thetaE, cp.sm, cp.m, p0, p, q
 #' @param fixed.n1 Choose what interim sample size values n1 should be searched over. Useful for reproducing a particular design realisation. Defaults to NA.
 #' @param exact.thetaF Provide an exact value for lower threshold theta_F. Useful for reproducing a particular design realisation. Defaults to NA.
 #' @param exact.thetaE Provide an exact value for upper threshold theta_E. Useful for reproducing a particular design realisation. Defaults to NA.
+#' @param progressBar Logical. If TRUE, shows progress bar. Defaults to FALSE.
 #' @export
 #' @examples \donttest{findSCdesigns(nmin = 20, nmax = 20, p0 = 0.1, p1 = 0.4, power = 0.8, alpha = 0.1, max.combns=1e2)}
 findSCdesigns <- function(nmin,
@@ -2116,7 +2122,8 @@ findSCdesigns <- function(nmin,
                  max.combns=1e6,
                  maxthetas=NA,
                  exact.thetaF=NA,
-                 exact.thetaE=NA){
+                 exact.thetaE=NA,
+                 progressBar=FALSE){
   grp <- V2 <- NULL
   #sc.all <- findN1N2R1R2_df(nmin=nmin, nmax=nmax, e1=FALSE)
   sc.all <- findSimonN1N2R1R2(nmin=nmin, nmax=nmax, e1=FALSE)
@@ -2238,7 +2245,7 @@ if(!is.na(max.combns) & is.na(maxthetas)){ # Only use max.combns if maxthetas is
 
   # NOTE: thetaE is fixed while thetaF increases. As thetaF increases, power decreases.
 
-  pb <- txtProgressBar(min = 0, max = length(outside.theta.data), style = 3)
+  if(progressBar==TRUE) pb <- txtProgressBar(min = 0, max = length(outside.theta.data), style = 3)
   h.results.list <- vector("list", length(outside.theta.data)) #
   y <- NULL
 
@@ -2317,7 +2324,7 @@ if(!is.na(max.combns) & is.na(maxthetas)){ # Only use max.combns if maxthetas is
 
     } # end of "i" loop
 
-    setTxtProgressBar(pb, h)
+    if(progressBar==TRUE) setTxtProgressBar(pb, h)
 
     h.results.df <- do.call(rbind.data.frame, h.results)
 
@@ -3095,7 +3102,6 @@ findCoeffs <- function(n, p0, p1){
 #' If the supplied argument contains more than one admissible designs, the user is offered a choice of which design to use.
 #' @param  findDesign.output Output from either the function singlearmDesign or find2stageDesigns
 #' @param  print.row Choose a row number to directly obtain a plot and stopping boundaries for a particular design realisation. Default is NULL.
-#' @param  save.plot Logical. Set to TRUE to save plot as PDF. Default is FALSE.
 #' @param  xmax,ymax Choose values for the upper limits of the x- and y-axes respectively. Helpful for comparing two design realisations. Default is NULL.
 #' @export
 #' @author Martin Law, \email{martin.law@@mrc-bsu.cam.ac.uk}
@@ -3108,12 +3114,12 @@ findCoeffs <- function(n, p0, p1){
 #'  power = 0.8,
 #'  alpha = 0.05)
 #'  dig <- drawDiagram(output, print.row = 2)
-drawDiagram <- function(findDesign.output, print.row=NULL, save.plot=FALSE, xmax=NULL, ymax=NULL){
+drawDiagram <- function(findDesign.output, print.row=NULL, xmax=NULL, ymax=NULL){
   UseMethod("drawDiagram")
 }
 
 #' @export
-drawDiagram.curtailment_single <- function(findDesign.output, print.row=NULL, save.plot=FALSE, xmax=NULL, ymax=NULL){
+drawDiagram.curtailment_single <- function(findDesign.output, print.row=NULL, xmax=NULL, ymax=NULL){
     des <- findDesign.output$all.des
   row.names(des) <- 1:nrow(des)
   if(!is.null(print.row)){
@@ -3134,18 +3140,18 @@ drawDiagram.curtailment_single <- function(findDesign.output, print.row=NULL, sa
         }
       }else{
         rownum <- as.numeric(rownum)
-        plot.and.bounds <- createPlotAndBounds(des=des, des.input=des.input, rownum=rownum, save.plot=save.plot, xmax=xmax, ymax=ymax)
+        plot.and.bounds <- createPlotAndBounds(des=des, des.input=des.input, rownum=rownum, xmax=xmax, ymax=ymax)
       }
     } # end of while
   }else{
     print("Returning diagram and bounds for single design.", quote = F)
-    plot.and.bounds <- createPlotAndBounds(des=des, des.input=des.input, rownum=1, save.plot=save.plot, xmax=xmax, ymax=ymax)
+    plot.and.bounds <- createPlotAndBounds(des=des, des.input=des.input, rownum=1, xmax=xmax, ymax=ymax)
     return(plot.and.bounds)
   }
 } # end of drawDiagram()
 
 #' @export
-drawDiagram.curtailment_simon <- function(findDesign.output, print.row=NULL, save.plot=FALSE, xmax=NULL, ymax=NULL){
+drawDiagram.curtailment_simon <- function(findDesign.output, print.row=NULL, xmax=NULL, ymax=NULL){
   des <- findDesign.output$all.des
   row.names(des) <- 1:nrow(des)
   if(!is.null(print.row)){
@@ -3166,12 +3172,12 @@ drawDiagram.curtailment_simon <- function(findDesign.output, print.row=NULL, sav
         }
       }else{
         rownum <- as.numeric(rownum)
-        plot.and.bounds <- createPlotAndBoundsSimon(des=des, des.input=des.input, rownum=rownum, save.plot=save.plot, xmax=xmax, ymax=ymax)
+        plot.and.bounds <- createPlotAndBoundsSimon(des=des, des.input=des.input, rownum=rownum, xmax=xmax, ymax=ymax)
       }
     } # end of while
   }else{
     print("Returning diagram and bounds for single design.", quote = F)
-    plot.and.bounds <- createPlotAndBoundsSimon(des=des, des.input=des.input, rownum=1, save.plot=save.plot, xmax=xmax, ymax=ymax)
+    plot.and.bounds <- createPlotAndBoundsSimon(des=des, des.input=des.input, rownum=1, xmax=xmax, ymax=ymax)
     return(plot.and.bounds)
   }
 }
