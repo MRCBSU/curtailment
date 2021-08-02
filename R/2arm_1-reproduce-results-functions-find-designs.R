@@ -1297,7 +1297,7 @@ fastSearch <- function(thetas,
 
 
 
-createPlotAndBounds2arm <- function(des, des.input, rownum, save.plot, xmax, ymax){
+createPlotAndBounds2arm <- function(des, des.input, rownum, xmax, ymax){
   m <- Sm <- decision <- analysis <- NULL
   rownum <- as.numeric(rownum)
   des <- des[rownum, , drop=FALSE]
@@ -1382,24 +1382,7 @@ createPlotAndBounds2arm <- function(des, des.input, rownum, save.plot, xmax, yma
   diagram <- diagram +
     scale_x_continuous(breaks=xbreaks)+
     scale_y_continuous(breaks = function(x) unique(floor(pretty(seq(0, (max(x) + 1) * 1.1)))))
-
-
   print(diagram)
-
-  if(save.plot==TRUE){
-    save.plot.yn <- readline("Save plot? (y/n): ")
-    if(save.plot.yn=="y"){
-      plot.filename <- readline("enter filename (no special characters or inverted commas): ")
-      plot.filename <- paste(plot.filename, ".pdf", sep="")
-      plot.width <- 8
-      scaling <- 1.25
-      plot.height <- 8*scaling*(des$r+1)/des$n
-      grDevices::pdf(plot.filename, width = plot.width, height = plot.height)
-      print(diagram)
-      grDevices::dev.off()
-    }
-  }
-
   tp.success.unique.m <- tp.success[!duplicated(tp.success$m), ]
   stop.bounds <- data.frame(m=seq(from=des$block, to=des$n, by=des$block),
                             success=Inf,
@@ -1411,7 +1394,7 @@ createPlotAndBounds2arm <- function(des, des.input, rownum, save.plot, xmax, yma
 }
 
 #' @export
-drawDiagram.curtailment_twoarm <- function(findDesign.output, print.row=NULL, save.plot=FALSE, xmax=NULL, ymax=NULL){
+drawDiagram.curtailment_twoarm <- function(findDesign.output, print.row=NULL, xmax=NULL, ymax=NULL){
   des <- findDesign.output$all.des
   row.names(des) <- 1:nrow(des)
   if(!is.null(print.row)){
@@ -1432,12 +1415,12 @@ drawDiagram.curtailment_twoarm <- function(findDesign.output, print.row=NULL, sa
         }
       }else{
         rownum <- as.numeric(rownum)
-        plot.and.bounds <- createPlotAndBounds2arm(des=des, des.input=des.input, rownum=rownum, save.plot=save.plot, xmax=xmax, ymax=ymax)
+        plot.and.bounds <- createPlotAndBounds2arm(des=des, des.input=des.input, rownum=rownum, xmax=xmax, ymax=ymax)
       }
     } # end of while
   }else{
     print("Returning diagram and bounds for single design.", quote = F)
-    plot.and.bounds <- createPlotAndBounds2arm(des=des, des.input=des.input, rownum=1, save.plot=save.plot, xmax=xmax, ymax=ymax)
+    plot.and.bounds <- createPlotAndBounds2arm(des=des, des.input=des.input, rownum=1, xmax=xmax, ymax=ymax)
     return(plot.and.bounds)
   }
 } # end of drawDiagram()

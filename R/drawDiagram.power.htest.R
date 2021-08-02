@@ -1,5 +1,5 @@
 #' @export
-drawDiagram.power.htest <- function(findDesign.output, print.row=NULL, save.plot=FALSE, xmax=NULL, ymax=NULL){
+drawDiagram.power.htest <- function(findDesign.output, print.row=NULL, xmax=NULL, ymax=NULL){
   m <- Sm <- decision <- analysis <- NULL
   des <- findDesign.output
   # des is output from power.prop.test()
@@ -42,18 +42,5 @@ drawDiagram.power.htest <- function(findDesign.output, print.row=NULL, save.plot
       expand_limits(y=ymax)
   }
   print(diagram)
-  if(save.plot==TRUE){
-    save.plot.yn <- readline("Save plot? (y/n): ")
-    if(save.plot.yn=="y"){
-      plot.filename <- readline("enter filename (no special characters or inverted commas): ")
-      plot.filename <- paste(plot.filename, ".pdf", sep="")
-      plot.width <- 8
-      scaling <- 1.25
-      plot.height <- 8*scaling*(des$r+1)/des$n
-      pdf(plot.filename, width = plot.width, height = plot.height)
-      print(diagram)
-      dev.off()
-    }
-  }
   return(diagram)
 }
