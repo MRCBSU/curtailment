@@ -9,5 +9,11 @@
 
 * This is a new release.
 
+## devtools::check_rhub() results
+
+0 errors √ | 0 warnings √ | 1 note x
+
+* Possibly misspelled words in DESCRIPTION, but the spelling is correct
+
 ## Downstream dependencies
 There are no downstream dependencies.
