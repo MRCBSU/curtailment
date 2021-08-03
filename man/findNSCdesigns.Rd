@@ -4,7 +4,7 @@
 \alias{findNSCdesigns}
 \title{findNSCdesigns}
 \usage{
-findNSCdesigns(nmin, nmax, p0, p1, alpha, power)
+findNSCdesigns(nmin, nmax, p0, p1, alpha, power, progressBar = FALSE)
 }
 \arguments{
 \item{nmin}{Minimum permitted sample size.}
@@ -18,6 +18,13 @@ findNSCdesigns(nmin, nmax, p0, p1, alpha, power)
 \item{alpha}{Significance level}
 
 \item{power}{Required power (1-beta).}
+
+\item{progressBar}{Logical. If TRUE, shows progress bar. Defaults to FALSE.}
+}
+\value{
+Output is a list of two dataframes. The first, $input, is a one-row
+data frame that contains important arguments used in the call. The second,
+$all.des,contains the operating characteristics of all admissible designs found.
 }
 \description{
 This function finds admissible design realisations for single-arm binary outcome trials, using non-stochastic curtailment.

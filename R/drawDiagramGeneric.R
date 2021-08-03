@@ -11,6 +11,8 @@
 #' @param xmax Optional. Maximum value for x axis.
 #' @param ymax Optional. Maximum value for y axis.
 #' @param ylab Optional. Label for y axis.
+#' @return An object of class ``ggplot``, showing a visualisation of the
+#' maximum sample size and inputted stopping boundaries.
 #' @export
 #' @examples
 #'  go <- cbind(6:8, rep(8,3))

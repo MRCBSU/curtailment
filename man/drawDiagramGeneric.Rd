@@ -23,6 +23,10 @@ the second column contains the corresponding number of participants so far.}
 
 \item{ylab}{Optional. Label for y axis.}
 }
+\value{
+An object of class \code{ggplot}, showing a visualisation of the
+maximum sample size and inputted stopping boundaries.
+}
 \description{
 drawDiagramGeneric
 }

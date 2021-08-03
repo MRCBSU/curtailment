@@ -12,6 +12,13 @@ plotByWeight(main.output, split.by.cohort.size = TRUE)
 \item{split.by.cohort.size}{Logical. If TRUE, creates separate plots for each
 cohort size/block size/ number of stages. Defaults to TRUE.}
 }
+\value{
+An object of class \code{ggplot} if either the chosen designs have only
+one unique cohort size or if split.by.cohort.size is FALSE. Otherwise, a list
+containing multiple \code{ggplot} objects is returned. The objects show which
+design has the lowest loss score, at each possible set of weights (w0, w1).
+Each design is characterised using the format \{r/N, thetaF/thetaE\}.
+}
 \description{
 This function shows the omni-admissible design -- the design realisation with
 the lowest loss score -- from a subset of admissible designs. The input is an

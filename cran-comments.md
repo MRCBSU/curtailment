@@ -1,3 +1,16 @@
+## Resubmission
+This is a resubmission. In this version I have:
+
+* Changed the description, which now does not start with the package name.
+
+* Reduced the length of the title to less than 65 characters.
+
+* Added \value (including output class) to the following .Rd files:
+  * drawDiagramGeneric.Rd
+  * findNSCdesigns.Rd
+  * findSCdesigns.Rd
+  * plotByWeight.Rd
+
 ## Test environments
 * local R installation, R 4.1.0
 * ubuntu 16.04 (on travis-ci), R 4.1.0

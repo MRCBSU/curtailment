@@ -2105,6 +2105,9 @@ insideTheta <- function(n1, n2, n, r1, r2, thetaF, thetaE, cp.sm, cp.m, p0, p, q
 #' @param exact.thetaF Provide an exact value for lower threshold theta_F. Useful for reproducing a particular design realisation. Defaults to NA.
 #' @param exact.thetaE Provide an exact value for upper threshold theta_E. Useful for reproducing a particular design realisation. Defaults to NA.
 #' @param progressBar Logical. If TRUE, shows progress bar. Defaults to FALSE.
+#' @return Output is a list of two dataframes. The first, $input, is a one-row
+#' data frame that contains important arguments used in the call. The second,
+#' $all.des,contains the operating characteristics of all admissible designs found.
 #' @export
 #' @examples \donttest{findSCdesigns(nmin = 20, nmax = 20, p0 = 0.1, p1 = 0.4, power = 0.8, alpha = 0.1, max.combns=1e2)}
 findSCdesigns <- function(nmin,
@@ -2368,15 +2371,14 @@ if(!is.na(max.combns) & is.na(maxthetas)){ # Only use max.combns if maxthetas is
   # Remove duplicates:
   duplicates <- duplicated(subset.results[, c("n", "Ess", "EssH0")])
   subset.results <- subset.results[!duplicates,]
-
-  final.output <- subset.results
-  final.output
+  sc.input <- data.frame(nmin=nmin, nmax=nmax, p0=p0, p1=p1, alpha=alpha, power=power)
+  sc.output <- list(input=sc.input,
+                       all.des=subset.results)
+  return(sc.output)
 }
-
 
 #### Plotting ####
 #### Plotting omni-admissible designs (Fig 6 in manuscript):
-
 
 design.plot <- function(results.df, loss.df, scenario, design)
 {

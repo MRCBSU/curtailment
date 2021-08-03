@@ -9,12 +9,15 @@
 #' @param p1 Probability for which to control the power
 #' @param alpha Significance level
 #' @param power Required power (1-beta).
+#' @param progressBar Logical. If TRUE, shows progress bar. Defaults to FALSE.
+#' @return Output is a list of two dataframes. The first, $input, is a one-row
+#' data frame that contains important arguments used in the call. The second,
+#' $all.des,contains the operating characteristics of all admissible designs found.
 #' @export
 #' @examples findNSCdesigns(nmin=20, nmax=21, p0=0.1, p1=0.4, alpha=0.1, power=0.8)
-findNSCdesigns <- function(nmin, nmax, p0, p1, alpha, power)
+findNSCdesigns <- function(nmin, nmax, p0, p1, alpha, power, progressBar=FALSE)
 {
   #system.time({
-
   nr.lists <- findN1N2R1R2NSC(nmin, nmax)
 
   n1.vec <- nr.lists$n1
@@ -29,7 +32,7 @@ findNSCdesigns <- function(nmin, nmax, p0, p1, alpha, power)
 
   ns <- nr.lists$ns
 
-  pb <- txtProgressBar(min = 0, max = nrow(ns), style = 3)
+  if(progressBar==TRUE) pb <- txtProgressBar(min = 0, max = nrow(ns), style = 3)
 
   for(i in 1:nrow(ns)) # For every combination of n1/n2/n,
   {
@@ -60,7 +63,7 @@ findNSCdesigns <- function(nmin, nmax, p0, p1, alpha, power)
         l <- l+1
       }
     }
-    setTxtProgressBar(pb, i)
+     if(progressBar==TRUE) setTxtProgressBar(pb, i)
   }
   #})
 
@@ -103,8 +106,13 @@ findNSCdesigns <- function(nmin, nmax, p0, p1, alpha, power)
 
   } else {subset.nsc <- rep(NA, 9)}
   names(subset.nsc) <- c("n1", "n2", "n", "r1", "r", "alpha", "power", "EssH0", "Ess")
-  subset.nsc
+  nsc.input <- data.frame(nmin=nmin, nmax=nmax, p0=p0, p1=p1, alpha=alpha, power=power)
+  nsc.output <- list(input=nsc.input,
+                     all.des=subset.nsc)
+  return(nsc.output)
+
 }
+
 
 findNSCerrorRates <- function(n1, n2, r1, r2, p1, p0, theta0=0, theta1=1,
                               cp.subset2.Sm=cp.subset2.Sm, cp.subset2.m=cp.subset2.m, Sm=Sm, m=m, n.to.n1=n.to.n1, cp.subset1.Sm=cp.subset1.Sm)
