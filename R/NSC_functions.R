@@ -109,6 +109,7 @@ findNSCdesigns <- function(nmin, nmax, p0, p1, alpha, power, progressBar=FALSE)
   nsc.input <- data.frame(nmin=nmin, nmax=nmax, p0=p0, p1=p1, alpha=alpha, power=power)
   nsc.output <- list(input=nsc.input,
                      all.des=subset.nsc)
+  class(nsc.output) <- append(class(nsc.output), "curtailment_single")
   return(nsc.output)
 
 }
