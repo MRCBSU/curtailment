@@ -21,14 +21,15 @@
 # r = stopping boundary
 # Csize = Block size
 
-findCPmatrix <- function(n, r, Csize, p0, p1){
+findCPmatrix <- function(n, r, Csize, p0, p1, minstop){
   q1 <- 1-p1
   mat <- matrix(3, ncol=n, nrow=max(3, min(r+Csize, n)+1)) #  nrow=r+Csize+1 unless number of stages equals 1, minimum of 3.
   rownames(mat) <- 0:(nrow(mat)-1)
   mat[(r+2):nrow(mat),] <- 1
   mat[1:(r+1),n] <- 0
 
-  pat.cols <- seq(n, 1, by=-Csize)[-1]
+  #pat.cols <- seq(n, 1, by=-Csize)[-1]
+  pat.cols <- seq(n, minstop, by=-Csize)[-1]
 
   for(i in (r+1):1){
     for(j in pat.cols){  # Only look every C patients (no need to look at final col)
@@ -42,8 +43,6 @@ findCPmatrix <- function(n, r, Csize, p0, p1){
       }
     }
   }
-
-
 for(i in 3:nrow(mat)) {
     mat[i, 1:(i-2)] <- NA
   }
@@ -187,12 +186,13 @@ findSingleSimonDesign <- function(n1, n2, r1, r, p0, p1)
 # coeffs.p0 = coefficients under H0
 # coeffs = coefficients under H1
 
-findDesignOCs <- function(n, r, C, thetaF, thetaE, mat, power, alpha, coeffs, coeffs.p0, p0, p1, return.tps=FALSE){
+findDesignOCs <- function(n, r, C, thetaF, thetaE, mat, power, alpha, coeffs, coeffs.p0, p0, p1, return.tps=FALSE, minstop){
 
   q0 <- 1-p0
   q1 <- 1-p1
 
-  interims <- seq(C, n, by=C)
+  #interims <- seq(C, n, by=C)
+  interims <- seq(minstop, n, by=C)
   pat.cols <- rev(interims)[-1]
 
   # Amend CP matrix, rounding up to 1 when CP>theta_1 and rounding down to 0 when CP<thetaF:
@@ -248,8 +248,8 @@ findDesignOCs <- function(n, r, C, thetaF, thetaE, mat, power, alpha, coeffs, co
 
   ############# Number of paths to each point:
   pascal.list <- list(c(1,1))
-  if(C>1){
-    for(i in 2:C){
+  if(C>1 | minstop>1){
+    for(i in 2:minstop){
       pascal.list[[i]] <- c(0, pascal.list[[i-1]]) + c(pascal.list[[i-1]], 0)
     }
   }
@@ -402,6 +402,7 @@ findDesignsGivenCohortStage <- function(nmin,
                         p1,
                         alpha,
                         power,
+                        minstop,
                         maxthetaF=p1,
                         minthetaE=p1,
                         bounds="wald",
@@ -503,8 +504,10 @@ if(use.stages==TRUE){
 
   ###### Find thetas for each possible {r, N} combn:
   mat.list <- vector("list", nrow(sc.subset))
+  C.vec <- seq(C, nposs.max, by=C) # all possible TPs, ignoring minstop
+  minstop <- C.vec[which.max(C.vec>minstop)] # minstop must be multiple of C
   for(i in 1:nrow(sc.subset)){
-    mat.list[[i]] <- findCPmatrix(n=sc.subset[i,"n"], r=sc.subset[i,"r"], Csize=sc.subset[i,"C"], p0=p0, p1=p1)
+    mat.list[[i]] <- findCPmatrix(n=sc.subset[i,"n"], r=sc.subset[i,"r"], Csize=sc.subset[i,"C"], p0=p0, p1=p1, minstop=minstop)
   }
 
   store.all.thetas <- lapply(mat.list, function(x) {sort(unique(c(x))[unique(c(x)) <= 1])})
@@ -736,6 +739,7 @@ singlearmDesign <- function(nmin,
                         p1,
                         alpha,
                         power,
+                        minstop=1,
                         maxthetaF=p1,
                         minthetaE=p1,
                         bounds="wald",
@@ -748,6 +752,7 @@ singlearmDesign <- function(nmin,
                         progressBar=FALSE){
   use.stages <- any(is.na(C))
   if(any(!is.na(C)) & any(!is.na(stages))) stop("Values given for both cohort/block size C and number of stages. Please choose one only.")
+  if(minstop>=nmin) stop("earliest stopping point (minstop) must be smaller than all potential maximum sample sizes, i.e. smaller than nmin.")
 
   if(use.stages==TRUE){
     intermediate.output <- lapply(stages,
@@ -759,6 +764,7 @@ singlearmDesign <- function(nmin,
                                                          p1=p1,
                                                          alpha=alpha,
                                                          power=power,
+                                                         minstop=minstop,
                                                          maxthetaF=maxthetaF,
                                                          minthetaE=minthetaE,
                                                          bounds=bounds,
@@ -780,6 +786,7 @@ singlearmDesign <- function(nmin,
                                                          p1=p1,
                                                          alpha=alpha,
                                                          power=power,
+                                                         minstop=minstop,
                                                          maxthetaF=maxthetaF,
                                                          minthetaE=minthetaE,
                                                          bounds=bounds,
