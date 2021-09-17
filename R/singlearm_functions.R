@@ -254,7 +254,7 @@ findDesignOCs <- function(n, r, C, thetaF, thetaE, mat, power, alpha, coeffs, co
     }
   }
 
-  for(i in min(C+1,n):n){ # Adding min() in case of stages=1, i.e. cohort size C=n.
+  for(i in min(minstop+1,n):n){ # Adding min() in case of stages=1, i.e. cohort size C=n.
     if(i %% C == 1 || C==1){
       column <- as.numeric(mat[!is.na(mat[,i-1]), i-1])
       newnew <- pascal.list[[i-1]]
