@@ -13,6 +13,7 @@ singlearmDesign(
   p1,
   alpha,
   power,
+  minstop = 1,
   maxthetaF = p1,
   minthetaE = p1,
   bounds = "wald",
