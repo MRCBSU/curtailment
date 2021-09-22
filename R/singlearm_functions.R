@@ -799,7 +799,7 @@ singlearmDesign <- function(nmin,
                                                          progressBar=progressBar)
     )
   }
-
+#test
   input <- data.frame(nmin=nmin, nmax=nmax,
                       Cmin=C[1], Cmax=C[length(C)],
                       stagesmin=stages[1], stagesmax=stages[length(stages)],
