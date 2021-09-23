@@ -191,7 +191,6 @@ findDesignOCs <- function(n, r, C, thetaF, thetaE, mat, power, alpha, coeffs, co
   q0 <- 1-p0
   q1 <- 1-p1
 
-  #interims <- seq(C, n, by=C)
   interims <- seq(minstop, n, by=C)
   pat.cols <- rev(interims)[-1]
 
@@ -235,15 +234,14 @@ findDesignOCs <- function(n, r, C, thetaF, thetaE, mat, power, alpha, coeffs, co
  #if(abs(thetaF-0.352)<0.0001 & abs(thetaE-0.98823057)<0.0001) browser()
   ###### STOP if design is pointless, i.e either failure or success is not possible:
 
-  # IF DESIGN GUARANTEES FAILURE (==0) or SUCCESS (==2) at n=C:
-  first.cohort <- sum(mat[,C], na.rm = T)
-
-  if(first.cohort==C+1){
-    return(c(n, r, C, 1, 1,  NA, NA, thetaF, thetaE, NA))
+  # IF DESIGN GUARANTEES FAILURE (==0) or SUCCESS (==2) at n=minstop:
+  #first.cohort <- sum(mat[,C], na.rm = T)
+  first.cohort <- sum(mat[,minstop], na.rm = T)
+  if(first.cohort==minstop+1){
+    return(c(n, r, C, 1, 1,  NA, NA, thetaF, thetaE, NA, minstop))
   }
-
   if(first.cohort==0){
-    return(c(n, r, C, 0, 0,  NA, NA, thetaF, thetaE, NA))
+    return(c(n, r, C, 0, 0,  NA, NA, thetaF, thetaE, NA, minstop))
   }
 
   ############# Number of paths to each point:
@@ -332,19 +330,18 @@ findDesignOCs <- function(n, r, C, thetaF, thetaE, mat, power, alpha, coeffs, co
   pwr <- sum(prob.success)
   typeI <- sum(prob.success.p0)
 
-
   if(pwr < power | typeI > alpha) # | pwr > power+tol | alpha < alpha-tol)
   {
-    return(c(n, r, C, typeI, pwr,  NA, NA, thetaF, thetaE, NA))
+    return(c(n, r, C, typeI, pwr,  NA, NA, thetaF, thetaE, NA, minstop))
   }
 
 
   ##### FAILURE:
-
   #first.zero.in.row <- apply(mat[1:(r+1),], 1, function(x) {which.max(x[interims]==0)})
-  submat <- mat[1:(r+1), interims]
+  #submat <- mat[1:(r+1), interims]
+  submat <- mat[1:(r+1), ]
   first.zero.in.row <- apply(submat, 1, function(x) match(0, x))
-  m.fail <- C * as.numeric(first.zero.in.row)
+  m.fail <- as.numeric(first.zero.in.row)
   Sm.fail <- as.numeric(names(first.zero.in.row))
 
   #fail.deets <- data.frame(Sm=Sm.fail, m=m.fail)
@@ -385,7 +382,7 @@ findDesignOCs <- function(n, r, C, thetaF, thetaE, mat, power, alpha, coeffs, co
   # possible.cps <- apply(mat, 2, function(x) {sum(!is.na(x))})
   possible.cps <- colSums(!is.na(mat))
   effective.n <- min(which(cp.colsums==possible.cps))
-  return.vec <- c(n, r, C, typeI, pwr, sample.size.expd.p0, sample.size.expd, thetaF, thetaE, effective.n)
+  return.vec <- c(n, r, C, typeI, pwr, sample.size.expd.p0, sample.size.expd, thetaF, thetaE, effective.n, minstop)
   if(return.tps==TRUE){
     return.list <- list(ocs=return.vec, tp=tp)
     return(return.list)
@@ -505,9 +502,9 @@ if(use.stages==TRUE){
   ###### Find thetas for each possible {r, N} combn:
   mat.list <- vector("list", nrow(sc.subset))
   C.vec <- seq(C, nposs.max, by=C) # all possible TPs, ignoring minstop
-  minstop <- C.vec[which.max(C.vec>minstop)] # minstop must be multiple of C
+  eff.minstop <- C.vec[which.max(C.vec>=minstop)] # minstop must be multiple of C
   for(i in 1:nrow(sc.subset)){
-    mat.list[[i]] <- findCPmatrix(n=sc.subset[i,"n"], r=sc.subset[i,"r"], Csize=sc.subset[i,"C"], p0=p0, p1=p1, minstop=minstop)
+    mat.list[[i]] <- findCPmatrix(n=sc.subset[i,"n"], r=sc.subset[i,"r"], Csize=sc.subset[i,"C"], p0=p0, p1=p1, minstop=eff.minstop)
   }
 
   store.all.thetas <- lapply(mat.list, function(x) {sort(unique(c(x))[unique(c(x)) <= 1])})
@@ -585,7 +582,7 @@ if(!is.na(max.combns) & is.na(maxthetas)){ # Only use max.combns if maxthetas is
 
       while((b-a)>1){
         output <- findDesignOCs(n=sc.subset$n[h], r=sc.subset$r[h], C=sc.subset$C[h], thetaF=as.numeric(thetaFs.current[d]), thetaE=all.thetas[i], mat=mat.list[[h]],
-                                   power=power, alpha=alpha, coeffs=coeffs, coeffs.p0=coeffs.p0, p0=p0, p1=p1)
+                                   power=power, alpha=alpha, minstop=eff.minstop, coeffs=coeffs, coeffs.p0=coeffs.p0, p0=p0, p1=p1)
 
         if(output[4] <= alpha) { # type I error decreases as index (and thetaF) increases. Jump backwards if type I error is smaller than alpha, o/w forwards.
           b <- d
@@ -598,19 +595,19 @@ if(!is.na(max.combns) & is.na(maxthetas)){ # Only use max.combns if maxthetas is
       # Take care of "edge case" where feasible design exists in the first row:
       if(a==1) { # (and also by necessity, b==2)
         output <-  findDesignOCs(n=sc.subset$n[h], r=sc.subset$r[h], C=sc.subset$C[h], thetaF=as.numeric(thetaFs.current[1]), thetaE=all.thetas[i], mat=mat.list[[h]],
-                                    power=power, alpha=alpha, coeffs=coeffs, coeffs.p0=coeffs.p0, p0=p0, p1=p1)
+                                    power=power, alpha=alpha, minstop=eff.minstop, coeffs=coeffs, coeffs.p0=coeffs.p0, p0=p0, p1=p1)
         if(output[4] <= alpha) b <- 1 # Should we start at the first row or the second?
       }
 
       # We can now proceed moving sequentially from index==b (or cause a break if we wish).
       first.result <-  findDesignOCs(n=sc.subset$n[h], r=sc.subset$r[h], C=sc.subset$C[h], thetaF=as.numeric(thetaFs.current[b]), thetaE=all.thetas[i],
-                                        mat=mat.list[[h]], coeffs.p0=coeffs.p0, coeffs=coeffs, power=power, alpha=alpha, p0=p0, p1=p1)
+                                        mat=mat.list[[h]], coeffs.p0=coeffs.p0, coeffs=coeffs, power=power, alpha=alpha, minstop=eff.minstop, p0=p0, p1=p1)
           if((first.result[4]!=0 | first.result[4]!=2) ) {
         pwr <- first.result[5]
         while(pwr >= power & b <= rows) # Keep going until power drops below 1-beta, i.e. no more feasible designs, or we reach the end of the data frame.
         {
           h.results[[k]] <-  findDesignOCs(n=sc.subset$n[h], r=sc.subset$r[h], C=sc.subset$C[h], thetaF=as.numeric(thetaFs.current[b]), thetaE=all.thetas[i],
-                                              mat=mat.list[[h]], coeffs.p0=coeffs.p0, coeffs=coeffs, power=power, alpha=alpha, p0=p0, p1=p1)
+                                              mat=mat.list[[h]], coeffs.p0=coeffs.p0, coeffs=coeffs, power=power, alpha=alpha, minstop=eff.minstop, p0=p0, p1=p1)
           pwr <- h.results[[k]][5] ####
           k <- k+1
           b <- b+1
@@ -634,7 +631,7 @@ if(!is.na(max.combns) & is.na(maxthetas)){ # Only use max.combns if maxthetas is
 
     if(!is.null(h.results.df)){
       # Remove all "skipped" results:
-      colnames(h.results.df) <- c("n", "r", "C", "alpha", "power", "EssH0", "Ess", "thetaF", "thetaE", "eff.n")
+      colnames(h.results.df) <- c("n", "r", "C", "alpha", "power", "EssH0", "Ess", "thetaF", "thetaE", "eff.n", "eff.minstop")
       h.results.df <- h.results.df[!is.na(h.results.df[, "Ess"]),]
       if(nrow(h.results.df)>0){
         # Remove dominated and duplicated designs:
@@ -799,10 +796,10 @@ singlearmDesign <- function(nmin,
                                                          progressBar=progressBar)
     )
   }
-#test
   input <- data.frame(nmin=nmin, nmax=nmax,
                       Cmin=C[1], Cmax=C[length(C)],
                       stagesmin=stages[1], stagesmax=stages[length(stages)],
+                      minstop=minstop,
                       p0=p0, p1=p1, alpha=alpha, power=power,
                       maxthetaF=maxthetaF, minthetaE=minthetaE, bounds=bounds, fixed.r=fixed.r,
                       return.only.admissible=return.only.admissible, max.combns=max.combns,

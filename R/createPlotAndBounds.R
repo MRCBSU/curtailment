@@ -3,9 +3,9 @@ createPlotAndBounds <- function(des, des.input, rownum, xmax, ymax){
   rownum <- as.numeric(rownum)
   des <- as.data.frame(t(des[rownum, ]))
   coef.list <- findCoeffs(n=des$n, p0 = des.input$p0, p1 = des.input$p1)
-  matt <- findCPmatrix(n=des$n, r=des$r, Csize=des$C, p0=des.input$p0, p1=des.input$p1) # uncurtailed matrix
+  matt <- findCPmatrix(n=des$n, r=des$r, Csize=des$C, p0=des.input$p0, p1=des.input$p1, minstop=des.input$minstop) # uncurtailed matrix
   findo <- findDesignOCs(n=des$n, r = des$r, C=des$C, thetaF = des$thetaF, thetaE = des$thetaE, p1 = des.input$p1, p0 = des.input$p0, alpha = des.input$alpha, power = des.input$power,
-                         return.tps = TRUE, coeffs = coef.list$coeffs, coeffs.p0 = coef.list$coeffs.p0, mat=matt)
+                         return.tps = TRUE, coeffs = coef.list$coeffs, coeffs.p0 = coef.list$coeffs.p0, mat=matt, minstop=des$eff.minstop)
   tp.success <- findo$tp[findo$tp$success=="Success", ]
   # Order by Sm (though this should already be the case):
   tp.success <- tp.success[order(tp.success$Sm),]
