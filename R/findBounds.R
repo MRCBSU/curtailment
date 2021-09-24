@@ -6,10 +6,13 @@ findBounds <- function(des, des.input){
                       pc=des.input$pc,
                       pt=des.input$pt,
                       thetaF=des$thetaF,
-                      thetaE=des$thetaE)
-   boundaries <- matrix(NA, nrow=2, ncol=ncol(mat)/Bsize)
+                      thetaE=des$thetaE,
+                      minstop=des$eff.minstop)
+   interims <- seq(from=des$eff.minstop, to=2*des$n.arm, by=Bsize)
+   #boundaries <- matrix(NA, nrow=2, ncol=ncol(mat)/Bsize)
+   boundaries <- matrix(NA, nrow=2, ncol=length(interims))
    rownames(boundaries) <- c("lower", "upper")
-   interims <- seq(from=Bsize, to=ncol(mat), by=Bsize)
+   #interims <- seq(from=Bsize, to=ncol(mat), by=Bsize)
    colnames(boundaries) <- paste(interims)
    for(i in 1:length(interims)){
      j <- interims[i]
