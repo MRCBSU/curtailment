@@ -5,4 +5,5 @@
 #' @import stats
 #' @importFrom grDevices dev.off pdf
 #' @importFrom utils combn head setTxtProgressBar txtProgressBar
-#requireNamespace("data.table")
+#' @import gridExtra
+#' @import grid
