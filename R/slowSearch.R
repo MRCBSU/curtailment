@@ -10,7 +10,10 @@ slowSearch <- function(thetas,
                        alpha,
                        pat.cols.single,
                        prob.vec,
-                       prob.vec.p0
+                       prob.vec.p0,
+                       prob.vec.minstop,
+                       prob.vec.p0.minstop,
+                       minstop
                        ){
   k <- 1
   h.results <- vector("list", ceiling(0.5*length(thetas)^2))
@@ -20,7 +23,9 @@ slowSearch <- function(thetas,
     thetaFs.current <- thetas[thetas<all.thetas[i] & thetas<=maxthetaF]
     for(m in 1:length(thetaFs.current)){
       h.results[[k]] <- find2armBlockOCs(n=sc.h$n, r=sc.h$r, Bsize=Bsize, thetaF=as.numeric(thetaFs.current[m]), thetaE=all.thetas[i], mat=mat.h,
-                                         power=power, alpha=alpha, pat.cols=pat.cols.single, prob.vec=prob.vec, prob.vec.p0=prob.vec.p0, blank.mat=blank.mat, zero.mat=zero.mat)
+                                         power=power, alpha=alpha, pat.cols=pat.cols.single,
+                                         prob.vec=prob.vec, prob.vec.p0=prob.vec.p0, prob.vec.minstop=prob.vec.minstop, prob.vec.p0.minstop=prob.vec.p0.minstop,
+                                         blank.mat=blank.mat, zero.mat=zero.mat, minstop=minstop)
       k <- k+1
       # Add lines here: if power decreases below desired value, break:
       if(h.results[[k-1]][5] < power){

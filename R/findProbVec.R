@@ -1,5 +1,5 @@
 ################ Function for finding the Prob(reponses on treatment + non-responses on control)=0, 1, 2,... Bsize:
-findProbVec <- function(Bsize, pt=pt, qt=qt, pc=pc, qc=qc){
+findProbVec <- function(Bsize, pt, qt, pc, qc){
   prob.vec <- rep(NA, Bsize+1)
   for(i in 1:(Bsize+1)){
     positives <- i-1

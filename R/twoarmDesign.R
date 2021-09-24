@@ -42,6 +42,7 @@
 twoarmDesign <- function(nmin.arm,
                             nmax.arm,
                             block.size,
+                            minstop,
                             pc,
                             pt,
                             alpha,
@@ -63,6 +64,8 @@ twoarmDesign <- function(nmin.arm,
   if((2*nmin.arm)%%Bsize!=0) stop("2*nmin.arm must be a multiple of block size")
   if((2*nmax.arm)%%Bsize!=0) stop("2*nmax.arm must be a multiple of block size")
 
+  if(minstop>=2*nmin.arm) stop("earliest stopping point (minstop) must be smaller than all potential maximum sample sizes, i.e. smaller than 2*nmin.arm.")
+
   nposs <- seq(from=nmin.arm, to=nmax.arm, by=Bsize/2)
 
   qc <- 1-pc
@@ -71,7 +74,14 @@ twoarmDesign <- function(nmin.arm,
   prob.vec <- findProbVec(Bsize=Bsize, pt=pt, qt=qt, pc=pc, qc=qc)
   prob.vec.p0 <- findProbVec(Bsize=Bsize, pt=pc, qt=qc, pc=pc, qc=qc)
 
-  pat.cols.list <- lapply(nposs, function(x) seq(from=2*x, to=Bsize, by=-Bsize)[-1])
+  prob.vec.minstop <- findProbVec(Bsize=minstop, pt=pt, qt=qt, pc=pc, qc=qc)
+  prob.vec.p0.minstop <- findProbVec(Bsize=minstop, pt=pc, qt=qc, pc=pc, qc=qc)
+
+  possible.tps <- seq(Bsize, 2*nmin.arm, by=Bsize) # all possible TPs, ignoring minstop
+  eff.minstop <- possible.tps[which.max(possible.tps>=minstop)] # minstop must be multiple of block size
+
+  pat.cols.list <- lapply(nposs, function(x) seq(from=2*x, to=eff.minstop, by=-Bsize)[-1])
+
   names(pat.cols.list) <- nposs
 
   if(is.null(maxthetaF)){
@@ -85,7 +95,6 @@ twoarmDesign <- function(nmin.arm,
   }
 
   ns <- NULL
-
   for(i in 1:length(nposs)){
     ns <- c(ns, rep(nposs[i], length(r.list[[i]])))
   }
@@ -125,8 +134,6 @@ twoarmDesign <- function(nmin.arm,
   }
 
   ###### Find thetas for each possible {r, N} combn:
-
-
   mat.list <- vector("list", nrow(sc.subset))
   for(i in 1:nrow(sc.subset)){
     mat.list[[i]] <- findBlock2armUncurtailedMatrix(n=sc.subset[i,"n"], r=sc.subset[i,"r"], Bsize=Bsize, pat.cols=pat.cols.list[[paste(sc.subset$n[i])]], prob.vec=prob.vec)
@@ -185,7 +192,10 @@ twoarmDesign <- function(nmin.arm,
                               alpha=alpha,
                               pat.cols.single=pat.cols.single,
                               prob.vec=prob.vec,
-                              prob.vec.p0=prob.vec.p0)
+                              prob.vec.p0=prob.vec.p0,
+                              prob.vec.minstop=prob.vec.minstop,
+                              prob.vec.p0.minstop=prob.vec.p0.minstop,
+                              minstop=eff.minstop)
     }else{
       h.results <- slowSearch(thetas=store.all.thetas[[h]],
                               maxthetaF=maxthetaF,
@@ -199,7 +209,10 @@ twoarmDesign <- function(nmin.arm,
                               alpha=alpha,
                               pat.cols.single=pat.cols.single,
                               prob.vec=prob.vec,
-                              prob.vec.p0=prob.vec.p0)
+                              prob.vec.p0=prob.vec.p0,
+                              prob.vec.minstop=prob.vec.minstop,
+                              prob.vec.p0.minstop=prob.vec.p0.minstop,
+                              minstop=eff.minstop)
     }
 
 
@@ -246,11 +259,13 @@ twoarmDesign <- function(nmin.arm,
     duplicates <- duplicated(subset.results[, c("n", "EssH0", "Ess"), drop=FALSE])
     all.des <- subset.results[!duplicates,,drop=FALSE]
     all.des$stage <- all.des[,"eff.n"]/all.des[,"block"]
+    all.des$eff.minstop <- eff.minstop
     names(all.des)[names(all.des)=="n"] <- "n.arm"
     names(all.des)[names(all.des)=="eff.n"] <- "n"
     input <- data.frame(nmin.arm=nmin.arm,
                         nmax.arm=nmax.arm,
                         block=block.size,
+                        minstop=minstop,
                         pc=pc,
                         pt=pt,
                         alpha=alpha,

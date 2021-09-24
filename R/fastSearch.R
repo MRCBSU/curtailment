@@ -10,7 +10,8 @@ fastSearch <- function(thetas,
                        alpha,
                        pat.cols.single,
                        prob.vec,
-                       prob.vec.p0){
+                       prob.vec.p0,
+                       minstop){
   k <- 1
   ########### START 2D BISECTION
   thetaF.vec <- thetas[thetas<=maxthetaF]
@@ -28,14 +29,15 @@ fastSearch <- function(thetas,
   maxthetaE <- NA
   while(min((b0-a0),(b1-a1))>1 & is.na(minthetaF)){ # Break/move on when bisection method fails to find anything OR when final feasible design is found.
     output <- find2armBlockOCs(n=sc.h$n, r=sc.h$r, Bsize=Bsize, thetaF=thetaF.vec[d0], thetaE=thetaE.vec[d1], mat=mat.h,  power=power, alpha=alpha,
-                               pat.cols=pat.cols.single, prob.vec=prob.vec, prob.vec.p0=prob.vec.p0, blank.mat=blank.mat, zero.mat=zero.mat)
+                               pat.cols=pat.cols.single, prob.vec=prob.vec, prob.vec.p0=prob.vec.p0, prob.vec.minstop=prob.vec.minstop, prob.vec.p0.minstop=prob.vec.p0.minstop, blank.mat=blank.mat, zero.mat=zero.mat, minstop=minstop)
     if(!is.na(output[6])){ # If ESS is not NA, then design IS feasible, and do:
       feasible <- TRUE
       maxthetaE <- thetaE.vec[d1]
       while((feasible==TRUE) & d0<length(thetaF.vec)){
         d0 <- d0+1
         h.results[[k]] <- find2armBlockOCs(n=sc.h$n, r=sc.h$r, Bsize=Bsize, thetaF=thetaF.vec[d0], thetaE=maxthetaE, mat=mat.h,  power=power, alpha=alpha,
-                                           pat.cols=pat.cols.single, prob.vec=prob.vec, prob.vec.p0=prob.vec.p0, blank.mat=blank.mat, zero.mat=zero.mat)
+                                           pat.cols=pat.cols.single, prob.vec=prob.vec, prob.vec.p0=prob.vec.p0, prob.vec.minstop=prob.vec.minstop, prob.vec.p0.minstop=prob.vec.p0.minstop,
+                                           blank.mat=blank.mat, zero.mat=zero.mat, minstop=minstop)
         feasible <- !is.na(h.results[[k]][6])
         k <- k+1
       } # Once the final feasible design for the given thetaF/1 is found (or we reach the largest thetaF), record thetaF and make it a limit:
@@ -54,7 +56,8 @@ fastSearch <- function(thetas,
       for(j in 1:length(thetaF.vec)){
         #  print(paste(thetaF.vec[i], thetaE.vec[j]))
         h.results[[k]] <- find2armBlockOCs(n=sc.h$n, r=sc.h$r, Bsize=Bsize, thetaF=thetaF.vec[j], thetaE=thetaE.vec[i], mat=mat.h,
-                                           power=power, alpha=alpha, pat.cols=pat.cols.single, prob.vec=prob.vec, prob.vec.p0=prob.vec.p0, blank.mat=blank.mat, zero.mat=zero.mat)
+                                           power=power, alpha=alpha, pat.cols=pat.cols.single, prob.vec=prob.vec, prob.vec.p0=prob.vec.p0, prob.vec.minstop=prob.vec.minstop, prob.vec.p0.minstop=prob.vec.p0.minstop,
+                                           blank.mat=blank.mat, zero.mat=zero.mat, minstop=minstop)
         k <- k+1
       }
     }
