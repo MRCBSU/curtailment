@@ -29,7 +29,7 @@ drawDiagram.curtailment_single <- function(findDesign.output, print.row=NULL, xm
   if(!is.null(print.row)){
     des <- des[print.row, , drop=FALSE]
   }
-  print(des)
+  #print(des)
   des.input <- findDesign.output$input
   if(nrow(des)>1){
     rownum <- 1
@@ -48,7 +48,7 @@ drawDiagram.curtailment_single <- function(findDesign.output, print.row=NULL, xm
       }
     } # end of while
   }else{
-    print("Returning diagram and bounds for single design.", quote = F)
+    #print("Returning diagram and bounds for single design.", quote = F)
     plot.and.bounds <- createPlotAndBounds(des=des, des.input=des.input, rownum=1, xmax=xmax, ymax=ymax)
     return(plot.and.bounds)
   }
@@ -61,7 +61,7 @@ drawDiagram.curtailment_simon <- function(findDesign.output, print.row=NULL, xma
   if(!is.null(print.row)){
     des <- des[print.row, , drop=FALSE]
   }
-  print(des)
+  #print(des)
   des.input <- findDesign.output$input
   if(nrow(des)>1){
     rownum <- 1
@@ -80,7 +80,7 @@ drawDiagram.curtailment_simon <- function(findDesign.output, print.row=NULL, xma
       }
     } # end of while
   }else{
-    print("Returning diagram and bounds for single design.", quote = F)
+    #print("Returning diagram and bounds for single design.", quote = F)
     plot.and.bounds <- createPlotAndBoundsSimon(des=des, des.input=des.input, rownum=1, xmax=xmax, ymax=ymax)
     return(plot.and.bounds)
   }

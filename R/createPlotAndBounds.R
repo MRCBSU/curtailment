@@ -81,7 +81,7 @@ createPlotAndBounds <- function(des, des.input, rownum, xmax, ymax){
     scale_x_continuous(breaks=xbreaks)+
     scale_y_continuous(breaks = function(x) unique(floor(pretty(seq(0, (max(x) + 1) * 1.1)))))
 
-  print(diagram)
+  #print(diagram)
 
   tp.success.unique.m <- tp.success[!duplicated(tp.success$m), ]
   stop.bounds <- data.frame(m=seq(from=des$C, to=des$n, by=des$C),

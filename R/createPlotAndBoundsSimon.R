@@ -80,7 +80,7 @@ createPlotAndBoundsSimon <- function(des, des.input, rownum, xmax=NULL, ymax=NUL
     ggplot2::scale_x_continuous(breaks=xbreaks)+
     ggplot2::scale_y_continuous(breaks = function(x) unique(floor(pretty(seq(0, (max(x) + 1) * 1.1)))))
 
-  print(diagram)
+  #print(diagram)
 
   stop.bounds <- data.frame(m=c(des$n1, des$n),
                            success=c(Inf, des$r+1),
