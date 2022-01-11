@@ -29,7 +29,7 @@ drawDiagram.curtailment_single <- function(findDesign.output, print.row=NULL, xm
   if(!is.null(print.row)){
     des <- des[print.row, , drop=FALSE]
   }
-  #print(des)
+  ##print(des)
   des.input <- findDesign.output$input
   if(nrow(des)>1){
     rownum <- 1
