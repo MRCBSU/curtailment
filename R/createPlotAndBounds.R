@@ -39,6 +39,17 @@ createPlotAndBounds <- function(des, des.input, rownum, xmax, ymax){
   #   diag.df$decision[unneeded.success.index] <- NA
   # }
 
+
+  tp.success.unique.m <- tp.success[!duplicated(tp.success$m), ]
+  stop.bounds <- data.frame(m=seq(from=des$C, to=des$n, by=des$C),
+                            success=Inf,
+                            fail=-Inf)
+  stop.bounds$success[match(tp.success.unique.m$m, stop.bounds$m)] <- tp.success.unique.m$Sm
+  stop.bounds$fail[match(tp.fail$m, stop.bounds$m)] <- tp.fail$Sm
+
+  # Actual number of stages:
+  des$stage <- sum(!is.infinite(stop.bounds$success) | !is.infinite(stop.bounds$fail))
+
   # Add shading:
   diag.df.subset <- diag.df[!is.na(diag.df$decision),]
   diag.df.subset$analysis <- "No"
@@ -77,18 +88,16 @@ createPlotAndBounds <- function(des, des.input, rownum, xmax, ymax){
       expand_limits(y=ymax)
   }
 
-  diagram <- diagram +
-    scale_x_continuous(breaks=xbreaks)+
-    scale_y_continuous(breaks = function(x) unique(floor(pretty(seq(0, (max(x) + 1) * 1.1)))))
+
 
   #print(diagram)
 
-  tp.success.unique.m <- tp.success[!duplicated(tp.success$m), ]
-  stop.bounds <- data.frame(m=seq(from=des$C, to=des$n, by=des$C),
-                            success=Inf,
-                            fail=-Inf)
-  stop.bounds$success[match(tp.success.unique.m$m, stop.bounds$m)] <- tp.success.unique.m$Sm
-  stop.bounds$fail[match(tp.fail$m, stop.bounds$m)] <- tp.fail$Sm
-  return(list(diagram=diagram,
+
+
+    diagram <- diagram +
+    scale_x_continuous(breaks=xbreaks)+
+    scale_y_continuous(breaks = function(x) unique(floor(pretty(seq(0, (max(x) + 1) * 1.1)))))
+
+    return(list(diagram=diagram,
               bounds.mat=stop.bounds))
 }
