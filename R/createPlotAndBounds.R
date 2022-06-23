@@ -19,7 +19,7 @@ createPlotAndBounds <- function(des, des.input, rownum, xmax, ymax){
   diag.df$decision <- as.character(diag.df$decision)
   diag.df$decision[coords[,1]>coords[,2]] <- NA
 
-  success.index <- apply(diag.df, 1, function(y) any(as.numeric(y[1])==tp.success$Sm & as.numeric(y[2])==tp.success$m))
+  success.index <- apply(diag.df, 1, function(y) any(as.numeric(y[1])>=tp.success$Sm & as.numeric(y[2])==tp.success$m))
   diag.df$decision[success.index] <- "Go decision"
   fail.index <- apply(diag.df, 1, function(y) any(as.numeric(y[1])==tp.fail$Sm & as.numeric(y[2])==tp.fail$m))
   diag.df$decision[fail.index] <- "No go decision"
