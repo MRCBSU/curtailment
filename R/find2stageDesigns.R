@@ -47,7 +47,7 @@
 #' 1989,
 #' Pages 1-10}
 #' @export
-find2stageDesigns <- function(nmin, nmax, p0, p1, alpha, power, maxthetaF=NULL, benefit=FALSE)
+find2stageDesigns <- function(nmin, nmax, p0, p1, alpha, power, maxthetaF=NA, benefit=FALSE)
 {
 
   if(benefit==FALSE){
@@ -73,7 +73,7 @@ for(i in 1:nrow(simon.df)){
 }
 simon.df$thetaF <- thetaF
 
-if(!is.null(maxthetaF)){
+if(!is.na(maxthetaF)){
   simon.df <- simon.df[simon.df$thetaF <= maxthetaF, ]
 }
 
