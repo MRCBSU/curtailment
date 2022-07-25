@@ -3,9 +3,10 @@
 #' This function finds admissible design realisations for two-arm binary outcome trials, using stochastic curtailment.
 #' The output can be used as the sole argument in the function 'drawDiagram', which will return the stopping boundaries for the
 #' admissible design of your choice. Monitoring frequency can set in terms of block size.
-#' @param nmin.arm Minimum permitted sample size *per arm*. Should be a multiple of block size.
-#' @param nmax.arm Maximum permitted sample size *per arm*. Should be a multiple of block size.
+#' @param nmin.arm Smallest maximum sample size *per arm*. Should be a multiple of block size.
+#' @param nmax.arm Largest maximum sample size *per arm*. Should be a multiple of block size.
 #' @param block.size Block size.
+#' @param minstop Minimum permitted sample size at the first interim analysis.
 #' @param pc Anticipated response rate on the control arm.
 #' @param pt Anticipated response rate on the treatment arm.
 #' @param alpha Significance level
@@ -42,7 +43,7 @@
 twoarmDesign <- function(nmin.arm,
                             nmax.arm,
                             block.size,
-                            minstop,
+                            minstop=NULL,
                             pc,
                             pt,
                             alpha,
@@ -63,6 +64,8 @@ twoarmDesign <- function(nmin.arm,
 
   if((2*nmin.arm)%%Bsize!=0) stop("2*nmin.arm must be a multiple of block size")
   if((2*nmax.arm)%%Bsize!=0) stop("2*nmax.arm must be a multiple of block size")
+
+  if(is.null(minstop)) minstop <- block.size
 
   if(minstop>=2*nmin.arm) stop("earliest stopping point (minstop) must be smaller than all potential maximum sample sizes, i.e. smaller than 2*nmin.arm.")
 
