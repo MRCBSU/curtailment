@@ -4,7 +4,16 @@
 \alias{find2stageDesigns}
 \title{Find two-stage designs}
 \usage{
-find2stageDesigns(nmin, nmax, p0, p1, alpha, power, benefit = FALSE)
+find2stageDesigns(
+  nmin,
+  nmax,
+  p0,
+  p1,
+  alpha,
+  power,
+  maxthetaF = NULL,
+  benefit = FALSE
+)
 }
 \arguments{
 \item{nmin}{Minimum permitted sample size. Should be a multiple of block size or number of stages.}
@@ -18,6 +27,8 @@ find2stageDesigns(nmin, nmax, p0, p1, alpha, power, benefit = FALSE)
 \item{alpha}{Significance level}
 
 \item{power}{Required power (1-beta)}
+
+\item{maxthetaF}{Maximum permitted conditional power for futility stopping. Optional.}
 
 \item{benefit}{Allow the trial to end for a go decision and reject the null hypothesis at the interim analysis (i.e., the design of Mander and Thompson)}
 }
