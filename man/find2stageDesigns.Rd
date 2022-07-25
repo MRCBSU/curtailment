@@ -11,7 +11,7 @@ find2stageDesigns(
   p1,
   alpha,
   power,
-  maxthetaF = NULL,
+  maxthetaF = NA,
   benefit = FALSE
 )
 }
