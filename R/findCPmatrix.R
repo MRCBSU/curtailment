@@ -1,6 +1,6 @@
 findCPmatrix <- function(n, r, Csize, p0, p1, minstop){
   q1 <- 1-p1
-  mat <- matrix(3, ncol=n, nrow=max(3, min(r+Csize, n)+1)) #  nrow=r+Csize+1 unless number of stages equals 1, minimum of 3.
+  mat <- matrix(3, ncol=n, nrow=max(3, min(r+Csize, n)+1, minstop+1)) #  nrow=r+Csize+1 unless number of stages equals 1, minimum of 3.
   rownames(mat) <- 0:(nrow(mat)-1)
   mat[(r+2):nrow(mat),] <- 1
   mat[1:(r+1),n] <- 0

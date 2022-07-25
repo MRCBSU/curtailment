@@ -73,15 +73,14 @@ findDesignOCs <- function(n, r, C, thetaF, thetaE, mat, power, alpha, coeffs, co
     pascal.list[[i]] <- c(pascal.list[[i]], rep(0, length(pascal.list)+1-length(pascal.list[[i]])))
   }
 
-
   pascal.t <- t(do.call(rbind, args = pascal.list))
-  pascal.t <- pascal.t[1:min(r+C+1, n+1), ] # Adding min() in case of stages=1, i.e. cohort size C=n.
+  pascal.t <- pascal.t[1:max(min(r+C+1, n+1), minstop+1), ] # Adding min() in case of stages=1, i.e. cohort size C=n.
 
   # Multiply the two matrices (A and p^b * q^c). This gives the probability of reaching each point:
-  # Note: Only need the first r+C+1 rows -- no other rows can be reached.
-  coeffs <- coeffs[1:min(r+C+1, n+1), 1:n]
-  coeffs.p0 <- coeffs.p0[1:min(r+C+1, n+1), 1:n]
-  pascal.t <- pascal.t[1:min(r+C+1, n+1), ]
+  # Note: Only need the first r+C+1 (or first minstop+1) rows -- no other rows can be reached.
+  coeffs <- coeffs[1:max(min(r+C+1, n+1), minstop+1), 1:n]
+  coeffs.p0 <- coeffs.p0[1:max(min(r+C+1, n+1), minstop+1), 1:n]
+  pascal.t <- pascal.t[1:max(min(r+C+1, n+1), minstop+1), ]
   final.probs.mat <- pascal.t*coeffs
   final.probs.mat.p0 <- pascal.t*coeffs.p0
 
@@ -158,3 +157,4 @@ findDesignOCs <- function(n, r, C, thetaF, thetaE, mat, power, alpha, coeffs, co
     }
   return.vec
 }
+
