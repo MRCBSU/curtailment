@@ -1,6 +1,6 @@
 # curtailment 0.2.0
 
-* Added minstop argument, specifying the minimum sample size for which early stopping is permitted.
+* Added minstop argument across multiple functions, specifying the minimum sample size for which early stopping is permitted.
 
 * Updated the find2stageDesigns function to allow a maximum permitted conditional power.
 
