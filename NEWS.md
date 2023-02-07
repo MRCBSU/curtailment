@@ -1,3 +1,7 @@
+# curtailment 0.2.1
+
+Bug fixes
+
 # curtailment 0.2.0
 
 * Added minstop argument across multiple functions, specifying the minimum sample size for which early stopping is permitted.
