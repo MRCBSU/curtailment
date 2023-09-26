@@ -1,3 +1,7 @@
+# curtailment 0.2.2
+
+Big fix: minstop argument in singlearmDesign
+
 # curtailment 0.2.1
 
 Bug fixes
