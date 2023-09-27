@@ -1,3 +1,7 @@
+# curtailment 0.2.4
+
+Fixed bug in simonEfficacy
+
 # curtailment 0.2.3
 
 Sped up Mander & Thompson design search (command find2stageDesigns)
