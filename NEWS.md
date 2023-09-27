@@ -1,3 +1,7 @@
+# curtailment 0.2.3
+
+Sped up Mander & Thompson design search (command find2stageDesigns)
+
 # curtailment 0.2.2
 
 Big fix: minstop argument in singlearmDesign
