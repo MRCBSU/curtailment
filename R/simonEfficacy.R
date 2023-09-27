@@ -1,5 +1,5 @@
 # Simon's design: No curtailment -- only stopping is at end of S1:
-simonEfficacyNew2 <- function(n1, n2, r1, r, e1, p0, p1)
+simonEfficacy <- function(n1, n2, r1, r, e1, p0, p1)
 {
 
   n <- n1+n2
