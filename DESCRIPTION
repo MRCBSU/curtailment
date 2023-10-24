@@ -1,6 +1,6 @@
 Package: curtailment
 Title: Finds Binary Outcome Designs Using Stochastic Curtailment
-Version: 0.2.4
+Version: 0.2.5
 Authors@R: 
     person(given = "Martin",
            family = "Law",

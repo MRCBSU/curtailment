@@ -1,18 +1,22 @@
+# curtailment 0.2.5
+
+* Tidied output of find2stageDesigns
+
 # curtailment 0.2.4
 
-Fixed bug in simonEfficacy
+* Fixed bug in simonEfficacy
 
 # curtailment 0.2.3
 
-Sped up Mander & Thompson design search (command find2stageDesigns)
+* Sped up Mander & Thompson design search (command find2stageDesigns)
 
 # curtailment 0.2.2
 
-Big fix: minstop argument in singlearmDesign
+* Big fix: minstop argument in singlearmDesign
 
 # curtailment 0.2.1
 
-Bug fixes
+* Bug fixes
 
 # curtailment 0.2.0
 
