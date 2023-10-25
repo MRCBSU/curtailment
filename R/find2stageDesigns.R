@@ -95,6 +95,6 @@ if(!is.na(maxthetaF)){
   simon.output <- list(input=simon.input,
                        all.des=simon.df)
   class(simon.output) <- append(class(simon.output), "curtailment_simon")
-  UseMethod("print", simon.output)
+  #UseMethod("print", simon.output)
   return(simon.output)
 }

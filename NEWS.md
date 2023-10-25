@@ -1,3 +1,7 @@
+# curtailment 0.2.6
+
+Changed output of find2stageDesigns
+
 # curtailment 0.2.5
 
 * Tidied output of find2stageDesigns
