@@ -1,0 +1,10 @@
+assert_that             Scoped Assertions
+collapse                Collapse character Vectors
+comma_list              Construct a comma separated list
+condition               Raise a mutable and classed condition.
+dot-underscore          Format and Translate Strings
+find_scope              Find the default scope of a call.
+infix-concatenation     Infix string concatenation.
+not-in                  Not in infix operator
+skip_scope              Exclude a function from find_scope
+suppress                Selectively suppress warnings and messages
