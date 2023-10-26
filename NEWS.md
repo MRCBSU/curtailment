@@ -1,3 +1,5 @@
+# curtailment (development version)
+
 # curtailment 0.2.6
 
 Changed output of find2stageDesigns
