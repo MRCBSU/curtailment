@@ -4,7 +4,16 @@
 \alias{find2stageDesigns}
 \title{Find two-stage designs}
 \usage{
-find2stageDesigns(nmin, nmax, p0, p1, alpha, power, benefit = FALSE)
+find2stageDesigns(
+  nmin,
+  nmax,
+  p0,
+  p1,
+  alpha,
+  power,
+  maxthetaF = NA,
+  benefit = FALSE
+)
 }
 \arguments{
 \item{nmin}{Minimum permitted sample size. Should be a multiple of block size or number of stages.}
@@ -18,6 +27,8 @@ find2stageDesigns(nmin, nmax, p0, p1, alpha, power, benefit = FALSE)
 \item{alpha}{Significance level}
 
 \item{power}{Required power (1-beta)}
+
+\item{maxthetaF}{Maximum permitted conditional power for futility stopping. Optional.}
 
 \item{benefit}{Allow the trial to end for a go decision and reject the null hypothesis at the interim analysis (i.e., the design of Mander and Thompson)}
 }
@@ -49,19 +60,19 @@ find2stageDesigns(nmin=23,
  }
 }
 \references{
-\doi{10.1016/j.cct.2010.07.008}{A.P. Mander, S.G. Thompson,
+\doi{10.1016/j.cct.2010.07.008}A.P. Mander, S.G. Thompson,
 Two-stage designs optimal under the alternative hypothesis for phase II cancer clinical trials,
 Contemporary Clinical Trials,
 Volume 31, Issue 6,
 2010,
-Pages 572-578}
+Pages 572-578
 
-\doi{10.1016/0197-2456(89)90015-9}{Richard Simon,
+\doi{10.1016/0197-2456(89)90015-9}Richard Simon,
 Optimal two-stage designs for phase II clinical trials,
 Controlled Clinical Trials,
 Volume 10, Issue 1,
 1989,
-Pages 1-10}
+Pages 1-10
 }
 \author{
 Martin Law, \email{martin.law@mrc-bsu.cam.ac.uk}

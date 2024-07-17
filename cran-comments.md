@@ -1,30 +1,23 @@
-## Resubmission
-This is a resubmission. In this version I have:
-
-* Changed the description, which now does not start with the package name.
-
-* Reduced the length of the title to less than 65 characters.
-
-* Added \value (including output class) to the following .Rd files:
-  * drawDiagramGeneric.Rd
-  * findNSCdesigns.Rd
-  * findSCdesigns.Rd
-  * plotByWeight.Rd
-
 ## Test environments
-* local R installation, R 4.1.0
-* ubuntu 16.04 (on travis-ci), R 4.1.0
-* win-builder (devel)
+- R-hub windows-x86_64-devel (r-devel)
+- R-hub ubuntu-gcc-release (r-release)
+- R-hub fedora-clang-devel (r-devel)
 
 ## R CMD check results
+❯ On windows-x86_64-devel (r-devel), ubuntu-gcc-release (r-release)
+  checking CRAN incoming feasibility ... NOTE
+  Maintainer: 'Martin Law <martin.law@mrc-bsu.cam.ac.uk>'
+  
+  Found the following (possibly) invalid DOIs:
+    DOI: 10.1002/pst.2067
+      From: DESCRIPTION
+      Status: Service Unavailable
+      Message: 503
 
-0 errors | 0 warnings | 0 notes
+❯ On windows-x86_64-devel (r-devel)
+  checking for detritus in the temp directory ... NOTE
 
-## devtools::check_rhub() results
+0 errors ✔ | 0 warnings ✔ | 2 notes ✖
 
-0 errors √ | 0 warnings √ | 1 note x
-
-* Possibly misspelled words in DESCRIPTION, but the spelling is correct
-
-## Downstream dependencies
-There are no downstream dependencies.
+* DOI has been checked at doi.org and is valid.
+* Detritus in temp directory is file/directory 'lastMiKTeXException'. As noted in R-hub issue #503, this could be due to a bug/crash in MiKTeX and can likely be ignored.

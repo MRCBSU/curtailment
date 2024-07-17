@@ -13,12 +13,12 @@
 #' @return A vector containing all the inputted values and corresponding operating characteristics.
 #' @author Martin Law, \email{martin.law@@mrc-bsu.cam.ac.uk}
 #' @references
-#' \doi{10.1016/0197-2456(89)90015-9}{Richard Simon,
+#' \doi{10.1016/0197-2456(89)90015-9}Richard Simon,
 #' Optimal two-stage designs for phase II clinical trials,
 #' Controlled Clinical Trials,
 #' Volume 10, Issue 1,
 #' 1989,
-#' Pages 1-10}
+#' Pages 1-10
 #' @examples findSingleSimonDesign(n1 = 15, n2 = 11, r1 = 1, r = 4, p0 = 0.1, p1 = 0.3)
 #' @export
 findSingleSimonDesign <- function(n1, n2, r1, r, p0, p1)

@@ -3,14 +3,15 @@
 #' This function finds admissible design realisations for single-arm binary outcome trials, using stochastic curtailment.
 #' The output can be used as the sole argument in the function 'drawDiagram', which will return the stopping boundaries for the
 #' admissible design of your choice. Monitoring frequency can set in terms of block(/cohort) size ("C") or number of stages ("stages").
-#' @param nmin Minimum permitted sample size. Should be a multiple of block size or number of stages.
-#' @param nmax Maximum permitted sample size. Should be a multiple of block size or number of stages.
+#' @param nmin Smallest maximum sample size. Should be a multiple of block size or number of stages.
+#' @param nmax Largest maximum sample size. Should be a multiple of block size or number of stages.
 #' @param C Block size. Vectors, i.e., multiple values, are permitted.
 #' @param stages Number of interim analyses or "stages". Only required if not setting block size C. Vectors, i.e., multiple values, are permitted.
 #' @param p0 Probability for which to control the type-I error-rate
 #' @param p1 Probability for which to control the power
 #' @param alpha Significance level
 #' @param power Required power (1-beta).
+#' @param minstop Minimum permitted sample size at the first interim analysis
 #' @param maxthetaF Maximum value of lower CP threshold theta_F_max. Defaults to p1.
 #' @param minthetaE Minimum value of upper threshold theta_E_min. Defaults to p1.
 #' @param bounds choose what final rejection boundaries should be searched over: Those of A'Hern ("ahern"), Wald ("wald") or no constraints (NA). Defaults to "wald".

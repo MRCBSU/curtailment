@@ -1,0 +1,14 @@
+drawDiagram             drawDiagram
+drawDiagramGeneric      drawDiagramGeneric
+find2stageDesigns       Find two-stage designs
+find2stageThetaF        Find conditional power for futility
+findLoss                Find loss scores for a set of single-arm
+                        designs
+findNSCdesigns          findNSCdesigns
+findSCdesigns           findSCDesigns
+findSingleSimonDesign   Find a single Simon design
+plotByWeight            plotByWeight
+singlearmDesign         Find single-arm trials using stochastic
+                        curtailment
+twoarmDesign            Find two-arm trial designs that use stochastic
+                        curtailment

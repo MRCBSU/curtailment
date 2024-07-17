@@ -13,7 +13,11 @@ in trial designs with a lower sample size on average, compared to
 typical trial designs or even multi-stage designs. The package contains
 functions that will search for designs that are suitable for your trial,
 and draw a diagram showing all points in the trial that a decision may
-be made to stop early.
+be made to stop early. The package can also find two-stage designs that
+stop for futility only (Simon designs) or for benefit or futility
+(Mander and Thompson designs). For all designs, a maximum conditional
+power for futility can be specified, above which a trial would not be
+permitted to stop early for futility.
 
 ## Installation
 
@@ -45,14 +49,26 @@ output <- singlearmDesign(nmin = 10,
                           p1 = 0.4,
                           power = 0.8,
                           alpha = 0.05)
-#>   |                                                                         |                                                                 |   0%  |                                                                         |====                                                             |   6%  |                                                                         |=======                                                          |  11%  |                                                                         |===========                                                      |  17%  |                                                                         |==============                                                   |  22%  |                                                                         |==================                                               |  28%  |                                                                         |======================                                           |  33%  |                                                                         |=========================                                        |  39%  |                                                                         |=============================                                    |  44%  |                                                                         |================================                                 |  50%  |                                                                         |====================================                             |  56%  |                                                                         |========================================                         |  61%  |                                                                         |===========================================                      |  67%  |                                                                         |===============================================                  |  72%  |                                                                         |===================================================              |  78%  |                                                                         |======================================================           |  83%  |                                                                         |==========================================================       |  89%  |                                                                         |=============================================================    |  94%  |                                                                         |=================================================================| 100%
 # Obtain the stopping boundaries and a diagram of the above trial:
 fig <- drawDiagram(output)
-#>    n r C      alpha     power    EssH0      Ess    thetaF  thetaE eff.n
-#> 1 20 5 5 0.02288714 0.8588104 11.37274 10.94708 0.3668967 0.92224    20
-#>   stage
-#> 1     4
-#> [1] Returning diagram and bounds for single design.
 ```
 
-<img src="man/figures/README-example-1.png" width="100%" />
+## Future plans
+
+Speed up Mander and Thompson and Simon design searches by reducing the
+number of combinations of n1/n2/r1/r/e1 search over, using Wald’s
+sequential probability ratio test as in the multi-stage/continuous
+functions:
+
+<!-- denom <- log(p1/p0) - log((1-p1)/(1-p0)) -->
+<!-- accept.null <- log((1-power)/(1-alpha)) / denom  + nposs * log((1-p0)/(1-p1))/denom -->
+<!-- accept.null <- floor(accept.null) -->
+<!-- reject.null <- log((power)/alpha) / denom  + nposs * log((1-p0)/(1-p1))/denom -->
+<!-- reject.null <- ceiling(reject.null) -->
+<!-- r.wald <- NULL -->
+<!-- ns.wald <- NULL -->
+<!-- for(i in 1:length(nposs)){ -->
+<!-- r.wald <- c(r.wald, accept.null[i]:reject.null[i]) -->
+<!-- ns.wald <- c(ns.wald, rep(nposs[i], length(accept.null[i]:reject.null[i]))) -->
+<!-- } -->
+<!-- sc.subset <- data.frame(n=ns.wald, r=r.wald) -->

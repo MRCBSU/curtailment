@@ -30,6 +30,8 @@ the second column contains the corresponding number of participants so far.}
 \item{ymax}{Optional. Maximum value for y axis.}
 
 \item{ylab}{Optional. Label for y axis.}
+
+\item{benefit.stop}{Will the trial stop for benefit? Default=TRUE.}
 }
 \value{
 An object of class \code{ggplot}, showing a visualisation of the

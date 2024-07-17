@@ -14,6 +14,7 @@
 #' @param p1 Probability for which to control the power
 #' @param alpha Significance level
 #' @param power Required power (1-beta)
+#' @param maxthetaF Maximum permitted conditional power for futility stopping. Optional.
 #' @param benefit Allow the trial to end for a go decision and reject the null hypothesis at the interim analysis (i.e., the design of Mander and Thompson)
 #' @return A list of class "curtailment_simon" containing two data frames. The first data frame, $input,
 #' has a single row and contains all the inputted values. The second data frame, $all.des, contains one
@@ -32,21 +33,21 @@
 #'  benefit=TRUE)
 #'  }
 #' @references
-#' \doi{10.1016/j.cct.2010.07.008}{A.P. Mander, S.G. Thompson,
+#' \doi{10.1016/j.cct.2010.07.008}A.P. Mander, S.G. Thompson,
 #' Two-stage designs optimal under the alternative hypothesis for phase II cancer clinical trials,
 #' Contemporary Clinical Trials,
 #' Volume 31, Issue 6,
 #' 2010,
-#' Pages 572-578}
+#' Pages 572-578
 #'
-#' \doi{10.1016/0197-2456(89)90015-9}{Richard Simon,
+#' \doi{10.1016/0197-2456(89)90015-9}Richard Simon,
 #' Optimal two-stage designs for phase II clinical trials,
 #' Controlled Clinical Trials,
 #' Volume 10, Issue 1,
 #' 1989,
-#' Pages 1-10}
+#' Pages 1-10
 #' @export
-find2stageDesigns <- function(nmin, nmax, p0, p1, alpha, power, benefit=FALSE)
+find2stageDesigns <- function(nmin, nmax, p0, p1, alpha, power, maxthetaF=NA, benefit=FALSE)
 {
 
   if(benefit==FALSE){
@@ -65,6 +66,20 @@ find2stageDesigns <- function(nmin, nmax, p0, p1, alpha, power, benefit=FALSE)
   correct.alpha.power <- simon.df$alpha < alpha & simon.df$power > power
   simon.df <- simon.df[correct.alpha.power, ]
 
+# Find max CP among all terminal points for futility:
+thetaF <- vector("numeric", nrow(simon.df))
+for(i in 1:nrow(simon.df)){
+  thetaF[i] <- find2stageThetaF(r=simon.df$r[i], r1=simon.df$r1[i], n2=simon.df$n2[i], p=p1)
+}
+simon.df$thetaF <- thetaF
+
+if(!is.na(maxthetaF)){
+  simon.df <- simon.df[simon.df$thetaF <= maxthetaF, ]
+}
+
+
+
+
   if(nrow(simon.df)==0){
     stop("No suitable designs exist for these design parameters.")
   }
@@ -76,9 +91,10 @@ find2stageDesigns <- function(nmin, nmax, p0, p1, alpha, power, benefit=FALSE)
   }
 
   simon.df <- simon.df[discard==0,]
-  simon.input <- data.frame(nmin=nmin, nmax=nmax, p0=p0, p1=p1, alpha=alpha, power=power)
+  simon.input <- data.frame(nmin=nmin, nmax=nmax, p0=p0, p1=p1, alpha=alpha, power=power, maxthetaF=maxthetaF)
   simon.output <- list(input=simon.input,
                        all.des=simon.df)
   class(simon.output) <- append(class(simon.output), "curtailment_simon")
+  #UseMethod("print", simon.output)
   return(simon.output)
 }

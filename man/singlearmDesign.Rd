@@ -27,9 +27,9 @@ singlearmDesign(
 )
 }
 \arguments{
-\item{nmin}{Minimum permitted sample size. Should be a multiple of block size or number of stages.}
+\item{nmin}{Smallest maximum sample size. Should be a multiple of block size or number of stages.}
 
-\item{nmax}{Maximum permitted sample size. Should be a multiple of block size or number of stages.}
+\item{nmax}{Largest maximum sample size. Should be a multiple of block size or number of stages.}
 
 \item{C}{Block size. Vectors, i.e., multiple values, are permitted.}
 
@@ -42,6 +42,8 @@ singlearmDesign(
 \item{alpha}{Significance level}
 
 \item{power}{Required power (1-beta).}
+
+\item{minstop}{Minimum permitted sample size at the first interim analysis}
 
 \item{maxthetaF}{Maximum value of lower CP threshold theta_F_max. Defaults to p1.}
 

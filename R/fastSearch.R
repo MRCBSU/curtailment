@@ -11,6 +11,8 @@ fastSearch <- function(thetas,
                        pat.cols.single,
                        prob.vec,
                        prob.vec.p0,
+                       prob.vec.minstop,
+                       prob.vec.p0.minstop,
                        minstop){
   k <- 1
   ########### START 2D BISECTION

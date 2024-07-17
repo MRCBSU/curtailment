@@ -8,7 +8,7 @@ twoarmDesign(
   nmin.arm,
   nmax.arm,
   block.size,
-  minstop,
+  minstop = NULL,
   pc,
   pt,
   alpha,
@@ -25,11 +25,13 @@ twoarmDesign(
 )
 }
 \arguments{
-\item{nmin.arm}{Minimum permitted sample size \emph{per arm}. Should be a multiple of block size.}
+\item{nmin.arm}{Smallest maximum sample size \emph{per arm}. Should be a multiple of block size.}
 
-\item{nmax.arm}{Maximum permitted sample size \emph{per arm}. Should be a multiple of block size.}
+\item{nmax.arm}{Largest maximum sample size \emph{per arm}. Should be a multiple of block size.}
 
 \item{block.size}{Block size.}
+
+\item{minstop}{Minimum permitted sample size at the first interim analysis.}
 
 \item{pc}{Anticipated response rate on the control arm.}
 
