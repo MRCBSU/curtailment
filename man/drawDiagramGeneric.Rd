@@ -4,7 +4,15 @@
 \alias{drawDiagramGeneric}
 \title{drawDiagramGeneric}
 \usage{
-drawDiagramGeneric(n, go, nogo, xmax = NULL, ymax = NULL, ylab = NULL)
+drawDiagramGeneric(
+  n,
+  go,
+  nogo,
+  xmax = NULL,
+  ymax = NULL,
+  ylab = NULL,
+  benefit.stop = TRUE
+)
 }
 \arguments{
 \item{n}{Maximum sample size}

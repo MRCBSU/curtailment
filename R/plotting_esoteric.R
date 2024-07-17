@@ -44,7 +44,7 @@ design.plot <- function(results.df, loss.df, scenario, design)
   return(output)
 }
 
-plot.all <- function(results, loss, scen){
+plotAll <- function(results, loss, scen){
   design.types <- c("simon", "simon_e1", "nsc", "sc", "mstage")
   plots.list <- vector("list", 5)
   for(i in 1:5){

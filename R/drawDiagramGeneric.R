@@ -11,6 +11,7 @@
 #' @param xmax Optional. Maximum value for x axis.
 #' @param ymax Optional. Maximum value for y axis.
 #' @param ylab Optional. Label for y axis.
+#' @param benefit.stop Will the trial stop for benefit? Default=TRUE.
 #' @return An object of class ``ggplot``, showing a visualisation of the
 #' maximum sample size and inputted stopping boundaries.
 #' @export
@@ -23,7 +24,8 @@ drawDiagramGeneric <- function(n,
                                nogo,
                                xmax=NULL,
                                ymax=NULL,
-                               ylab=NULL){
+                               ylab=NULL,
+                               benefit.stop=TRUE){
   m <- Sm <- decision <- NULL
   if(length(go)==2) go <- matrix(go, ncol=2)
   if(length(nogo)==2) nogo <- matrix(nogo, ncol=2)
@@ -58,6 +60,13 @@ drawDiagramGeneric <- function(n,
     diag.df$decision[not.poss.pass.index] <- NA
   }
 
+  if(benefit.stop==FALSE){
+    no.benefit.stop <- NULL
+    for(i in 1:nrow(tp.success)){
+      no.benefit.stop <- c(no.benefit.stop, which(diag.df$m - diag.df$Sm == tp.success$m[i] - tp.success$Sm[i] & diag.df$m > tp.success$m[i]))
+    }
+    diag.df$decision[no.benefit.stop] <- "Go decision"
+  }
 
   # Add shading:
   diag.df.subset <- diag.df[!is.na(diag.df$decision),]

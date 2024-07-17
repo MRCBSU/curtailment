@@ -1,4 +1,4 @@
-createPlotAndBounds <- function(des, des.input, rownum, xmax, ymax){
+createPlotAndBounds <- function(des, des.input, rownum, xmax, ymax, benefit.stop=TRUE){
   m <- Sm <- decision <- analysis <- NULL
   rownum <- as.numeric(rownum)
   des <- as.data.frame(t(des[rownum, ]))
@@ -32,6 +32,14 @@ createPlotAndBounds <- function(des, des.input, rownum, xmax, ymax){
   for(i in 1:nrow(tp.success)){
     not.poss.pass.index <- diag.df$m-diag.df$Sm==tp.success$m[i]-tp.success$Sm[i] & diag.df$m>tp.success$m[i]
     diag.df$decision[not.poss.pass.index] <- NA
+  }
+
+  if(benefit.stop==FALSE){
+    no.benefit.stop <- NULL
+    for(i in 1:nrow(tp.success)){
+      no.benefit.stop <- c(no.benefit.stop, which(diag.df$m - diag.df$Sm == tp.success$m[i] - tp.success$Sm[i] & diag.df$m > tp.success$m[i]))
+    }
+    diag.df$decision[no.benefit.stop] <- "Go decision"
   }
 
   # for(i in 1:nrow(tp.success.unneeded)){
@@ -97,7 +105,7 @@ createPlotAndBounds <- function(des, des.input, rownum, xmax, ymax){
     diagram <- diagram +
     scale_x_continuous(breaks=xbreaks)+
     scale_y_continuous(breaks = function(x) unique(floor(pretty(seq(0, (max(x) + 1) * 1.1)))))
-
+#browser()
     return(list(diagram=diagram,
               bounds.mat=stop.bounds))
 }

@@ -18,12 +18,12 @@
 #'  power = 0.8,
 #'  alpha = 0.05)
 #'  dig <- drawDiagram(output, print.row = 2)
-drawDiagram <- function(findDesign.output, print.row=NULL, xmax=NULL, ymax=NULL){
+drawDiagram <- function(findDesign.output, print.row=NULL, xmax=NULL, ymax=NULL, ...){
   UseMethod("drawDiagram")
 }
 
 #' @export
-drawDiagram.curtailment_single <- function(findDesign.output, print.row=NULL, xmax=NULL, ymax=NULL){
+drawDiagram.curtailment_single <- function(findDesign.output, print.row=NULL, xmax=NULL, ymax=NULL, ...){
     des <- findDesign.output$all.des
   row.names(des) <- 1:nrow(des)
   if(!is.null(print.row)){
@@ -44,12 +44,12 @@ drawDiagram.curtailment_single <- function(findDesign.output, print.row=NULL, xm
         }
       }else{
         rownum <- as.numeric(rownum)
-        plot.and.bounds <- createPlotAndBounds(des=des, des.input=des.input, rownum=rownum, xmax=xmax, ymax=ymax)
+        plot.and.bounds <- createPlotAndBounds(des=des, des.input=des.input, rownum=rownum, xmax=xmax, ymax=ymax, ...)
       }
     } # end of while
   }else{
     #print("Returning diagram and bounds for single design.", quote = F)
-    plot.and.bounds <- createPlotAndBounds(des=des, des.input=des.input, rownum=1, xmax=xmax, ymax=ymax)
+    plot.and.bounds <- createPlotAndBounds(des=des, des.input=des.input, rownum=1, xmax=xmax, ymax=ymax, ...)
     return(plot.and.bounds)
   }
 } # end of drawDiagram()

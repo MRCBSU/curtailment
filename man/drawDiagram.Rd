@@ -4,7 +4,7 @@
 \alias{drawDiagram}
 \title{drawDiagram}
 \usage{
-drawDiagram(findDesign.output, print.row = NULL, xmax = NULL, ymax = NULL)
+drawDiagram(findDesign.output, print.row = NULL, xmax = NULL, ymax = NULL, ...)
 }
 \arguments{
 \item{findDesign.output}{Output from either the function singlearmDesign or find2stageDesigns}
