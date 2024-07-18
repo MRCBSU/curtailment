@@ -65,10 +65,15 @@ createPlotAndBounds <- function(des, des.input, rownum, xmax, ymax, benefit.stop
   diag.df.subset$analysis[stop.index] <- "Yes"
 
   plot.title <- "Stopping boundaries"
-  sub.text1 <- paste("Max no. of analyses: ", des$stage, ". Max(N): ", des$n, ". ESS(p", sep="")
-  sub.text2 <- paste("): ", round(des$EssH0, 1), ". ESS(p", sep="")
-  sub.text3 <- paste("):", round(des$Ess, 1), sep="")
-  plot.subtitle2 <- bquote(.(sub.text1)[0]*.(sub.text2)[1]*.(sub.text3))
+
+  if(benefit.stop==TRUE){
+    sub.text1 <- paste("Max no. of analyses: ", des$stage, ". Max(N): ", des$n, ". ESS(p", sep="")
+    sub.text2 <- paste("): ", round(des$EssH0, 1), ". ESS(p", sep="")
+    sub.text3 <- paste("):", round(des$Ess, 1), sep="")
+    plot.subtitle2 <- bquote(.(sub.text1)[0]*.(sub.text2)[1]*.(sub.text3))
+  }else{
+    plot.subtitle2 <- paste("Max no. of analyses: ", des$stage, ". Max(N): ", des$n, ".", sep="")
+  }
   diagram <- pkgcond::suppress_warnings(ggplot2::ggplot(data=diag.df.subset, mapping = aes(x=m, y=Sm, fill=decision, alpha=analysis))+
                                           scale_alpha_discrete(range=c(0.5, 1)),
                                         "Using alpha for a discrete variable is not advised")
