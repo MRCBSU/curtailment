@@ -65,7 +65,9 @@ find2stageDesigns <- function(nmin, nmax, p0, p1, alpha, power, maxthetaF=NA, be
   }
   correct.alpha.power <- simon.df$alpha < alpha & simon.df$power > power
   simon.df <- simon.df[correct.alpha.power, ]
-
+  if(nrow(simon.df)==0){
+    stop("No suitable designs exist for these design parameters.")
+  }
 # Find max CP among all terminal points for futility:
 thetaF <- vector("numeric", nrow(simon.df))
 for(i in 1:nrow(simon.df)){
