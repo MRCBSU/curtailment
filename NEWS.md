@@ -1,3 +1,7 @@
+# curtailment 0.3.0
+
+find2stageDesigns now orders by increasing Nmax, row numbers removed.
+
 # curtailment 0.2.7
 
 When plotting single-arm designs and general plots (drawDiagramGeneric), added argument benefit.stop to allow diagrams to show no benefit stopping 
