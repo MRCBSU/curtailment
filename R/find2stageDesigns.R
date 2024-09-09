@@ -94,6 +94,8 @@ if(!is.na(maxthetaF)){
 
   simon.df <- simon.df[discard==0,]
   simon.input <- data.frame(nmin=nmin, nmax=nmax, p0=p0, p1=p1, alpha=alpha, power=power, maxthetaF=maxthetaF)
+  simon.df <- simon.df[order(simon.df$n), ]
+  row.names(simon.df) <- NULL
   simon.output <- list(input=simon.input,
                        all.des=simon.df)
   class(simon.output) <- append(class(simon.output), "curtailment_simon")
