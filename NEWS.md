@@ -1,3 +1,7 @@
+# curtailment (development version)
+
+Corrected version number in Description and News.
+
 # curtailment 0.3.0
 
 find2stageDesigns now orders by increasing Nmax, row numbers removed.
