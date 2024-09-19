@@ -2,6 +2,13 @@
 
 Corrected version number in Description and News.
 
+PLANS:
+ - Write meaningful error messages when nmin=0 or 1.
+ - Consider default nmin and nmax values, or better explanation for what they do.
+ - Add qLo, qHi?
+ - Hide unnecessary output
+ - Improve output to make it look more like ph2simon
+
 # curtailment 0.3.0
 
 find2stageDesigns now orders by increasing Nmax, row numbers removed.
