@@ -1,13 +1,7 @@
-# curtailment (development version)
+# curtailment 1.0.0
 
-Corrected version number in Description and News.
-
-PLANS:
- - Write meaningful error messages when nmin=0 or 1.
- - Consider default nmin and nmax values, or better explanation for what they do.
- - Add qLo, qHi?
- - Hide unnecessary output
- - Improve output to make it look more like ph2simon
+ - Now using `plot` for singlearmDesign and find2stagedesigns (remaining designs to follow, then drawDiagram may become deprecated)
+ - "Breaking" updates to argument names nmin, nmax -- now using argument n.max, vector of length 2.
 
 # curtailment 0.3.0
 
