@@ -13,8 +13,8 @@
 #' @param p1 Probability for which to control the power
 #' @param alpha Significance level
 #' @param power Required power (1-beta).
-#' @param maxthetaF Maximum value of lower CP threshold theta_F_max. Defaults to p.
-#' @param minthetaE Minimum value of upper threshold theta_E_min. Defaults to p.
+#' @param maxthetaF Maximum value of lower CP threshold theta_F_max. Defaults to 0.5.
+#' @param minthetaE Minimum value of upper threshold theta_E_min. Defaults to power.
 #' @param bounds choose what final rejection boundaries should be searched over: Those of A'Hern ("ahern"), Wald ("wald") or no constraints (NA). Defaults to "wald".
 #' @param max.combns Provide a maximum number of ordered pairs (theta_F, theta_E). Defaults to 1e6.
 #' @param maxthetas Provide a maximum number of CP values used to create ordered pairs (theta_F, theta_E). Can be used instead of max.combns. Defaults to NA.
@@ -35,8 +35,8 @@ findSCdesigns <- function(nmin,
                  p1,
                  alpha,
                  power,
-                 minthetaE=p1,
-                 maxthetaF=p1,
+                 minthetaE=power,
+                 maxthetaF=0.5,
                  bounds="wald",
                  fixed.r1=NA,
                  fixed.r=NA,

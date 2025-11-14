@@ -8,8 +8,7 @@
 #' sample size under p=p1 (Ess), maximum sample size (n) or any weighted combination of these
 #' three optimality criteria.
 #'
-#' @param nmin Minimum permitted sample size. Should be a multiple of block size or number of stages.
-#' @param nmax Maximum permitted sample size. Should be a multiple of block size or number of stages.
+#' @param n.max Maximum sample size. Can be a single value or a vector of length 2, indicating the range of maximum sample sizes to search over. If a single value is provided, search begins at n=4
 #' @param p0 Probability for which to control the type-I error-rate
 #' @param p1 Probability for which to control the power
 #' @param alpha Significance level
@@ -20,12 +19,12 @@
 #' has a single row and contains all the inputted values. The second data frame, $all.des, contains one
 #' row for each design realisation, and contains the details of each design, including sample size,
 #' stopping boundaries and operating characteristics. To see a diagram of any obtained design realisation
-#' and its corresponding stopping boundaries, simply call the function drawDiagram with this output as the only argument.
+#' and its corresponding stopping boundaries, simply call the function plot with this output as the first argument and the row number of the design as the second argument.
 #' @author Martin Law, \email{martin.law@@mrc-bsu.cam.ac.uk}
 #' @examples
 #' \donttest{
-#' find2stageDesigns(nmin=23,
-#'  nmax=27,
+#' find2stageDesigns(
+#'  n.max=c(23, 27),
 #'  p0=0.75,
 #'  p1=0.92,
 #'  alpha=0.22,
@@ -47,8 +46,16 @@
 #' 1989,
 #' Pages 1-10
 #' @export
-find2stageDesigns <- function(nmin, nmax, p0, p1, alpha, power, maxthetaF=NA, benefit=FALSE)
+find2stageDesigns <- function(n.max, p0, p1, alpha, power, maxthetaF=NA, benefit=FALSE)
 {
+  if(length(n.max)==2){
+    nmin <- n.max[1]
+    nmax <- n.max[2]
+  }
+  if(length(n.max)==1){
+    nmax <- n.max
+    nmin <- 4
+  }
 
   if(benefit==FALSE){
     nr.lists <- findSimonN1N2R1R2(nmin=nmin, nmax=nmax, e1=FALSE)
@@ -66,7 +73,8 @@ find2stageDesigns <- function(nmin, nmax, p0, p1, alpha, power, maxthetaF=NA, be
   correct.alpha.power <- simon.df$alpha < alpha & simon.df$power > power
   simon.df <- simon.df[correct.alpha.power, ]
   if(nrow(simon.df)==0){
-    stop("No suitable designs exist for these design parameters.")
+    print("No suitable designs exist for these design parameters.", quote=FALSE)
+    return(NULL)
   }
 # Find max CP among all terminal points for futility:
 thetaF <- vector("numeric", nrow(simon.df))
@@ -82,9 +90,10 @@ if(!is.na(maxthetaF)){
 
 
 
-  if(nrow(simon.df)==0){
-    stop("No suitable designs exist for these design parameters.")
-  }
+if(nrow(simon.df)==0){
+    print("No suitable designs exist for these design parameters.", quote=FALSE)
+    return(NULL)
+}
   # Discard all dominated designs. Note strict inequalities as EssH0 and Ess will (almost?) never be equal for two designs:
   discard <- rep(NA, nrow(simon.df))
   for(i in 1:nrow(simon.df))
@@ -96,9 +105,9 @@ if(!is.na(maxthetaF)){
   simon.input <- data.frame(nmin=nmin, nmax=nmax, p0=p0, p1=p1, alpha=alpha, power=power, maxthetaF=maxthetaF)
   simon.df <- simon.df[order(simon.df$n), ]
   row.names(simon.df) <- NULL
+ simon.df[, c("alpha", "power", "EssH0", "Ess", "thetaF")] <- signif(simon.df[, c("alpha", "power", "EssH0", "Ess", "thetaF")], 4)
   simon.output <- list(input=simon.input,
                        all.des=simon.df)
-  class(simon.output) <- append(class(simon.output), "curtailment_simon")
-  #UseMethod("print", simon.output)
+  simon.output <- structure(simon.output, class="curtailment_2stage")
   return(simon.output)
 }

@@ -5,35 +5,28 @@
 \title{Find single-arm trials using stochastic curtailment}
 \usage{
 singlearmDesign(
-  nmin,
-  nmax,
-  C = NA,
-  stages = NA,
+  n.max,
   p0,
   p1,
   alpha,
   power,
-  minstop = 1,
-  maxthetaF = p1,
-  minthetaE = p1,
+  C = 1,
+  stages = NULL,
+  minstop = NULL,
+  maxthetaF = power,
+  minthetaE = power,
   bounds = "wald",
   return.only.admissible = TRUE,
-  max.combns = 1e+06,
+  max.combns = 10000,
   maxthetas = NA,
   fixed.r = NA,
   exact.thetaF = NA,
   exact.thetaE = NA,
-  progressBar = FALSE
+  progressBar = TRUE
 )
 }
 \arguments{
-\item{nmin}{Smallest maximum sample size. Should be a multiple of block size or number of stages.}
-
-\item{nmax}{Largest maximum sample size. Should be a multiple of block size or number of stages.}
-
-\item{C}{Block size. Vectors, i.e., multiple values, are permitted.}
-
-\item{stages}{Number of interim analyses or "stages". Only required if not setting block size C. Vectors, i.e., multiple values, are permitted.}
+\item{n.max}{Maximum sample size. Can be a single value or a vector of length 2, indicating the range of maximum sample sizes to use. Value(s) should be a multiple of block size (C) or number of stages.}
 
 \item{p0}{Probability for which to control the type-I error-rate}
 
@@ -43,17 +36,21 @@ singlearmDesign(
 
 \item{power}{Required power (1-beta).}
 
+\item{C}{Possible block size(s) to use. Vectors are permitted. Default=1, i.e. sequential monitoring. Overridden by specifying a "stages" argument.}
+
+\item{stages}{Number of interim analyses or "stages" to use. Overrides block size C. Vectors are permitted.}
+
 \item{minstop}{Minimum permitted sample size at the first interim analysis}
 
-\item{maxthetaF}{Maximum value of lower CP threshold theta_F_max. Defaults to p1.}
+\item{maxthetaF}{Maximum value of lower CP threshold theta_F_max. Defaults to power.}
 
-\item{minthetaE}{Minimum value of upper threshold theta_E_min. Defaults to p1.}
+\item{minthetaE}{Minimum value of upper CP threshold theta_E_min. Defaults to power.}
 
 \item{bounds}{choose what final rejection boundaries should be searched over: Those of A'Hern ("ahern"), Wald ("wald") or no constraints (NA). Defaults to "wald".}
 
 \item{return.only.admissible}{Logical. Returns only admissible design realisations if TRUE, otherwise returns all feasible designs. Defaults to TRUE.}
 
-\item{max.combns}{Provide a maximum number of ordered pairs (theta_F, theta_E). Defaults to 1e6.}
+\item{max.combns}{Provide a maximum number of ordered pairs (theta_F, theta_E). Defaults to 1e4.}
 
 \item{maxthetas}{Provide a maximum number of CP values used to create ordered pairs (theta_F, theta_E). Can be used instead of max.combns. Defaults to NA.}
 
@@ -74,8 +71,7 @@ The output can be used as the sole argument in the function 'drawDiagram', which
 admissible design of your choice. Monitoring frequency can set in terms of block(/cohort) size ("C") or number of stages ("stages").
 }
 \examples{
-output <- singlearmDesign(nmin = 30,
- nmax = 30,
+output <- singlearmDesign(n.max = c(25, 30),
  C = 5,
  p0 = 0.1,
  p1 = 0.4,

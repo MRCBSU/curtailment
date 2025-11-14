@@ -14,7 +14,7 @@ twoarmDesign(
   alpha,
   power,
   maxthetaF = NULL,
-  minthetaE = 0.7,
+  minthetaE = power,
   bounds = "ahern",
   fixed.r = NULL,
   max.combns = 1e+06,

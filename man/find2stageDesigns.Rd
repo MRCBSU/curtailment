@@ -4,21 +4,10 @@
 \alias{find2stageDesigns}
 \title{Find two-stage designs}
 \usage{
-find2stageDesigns(
-  nmin,
-  nmax,
-  p0,
-  p1,
-  alpha,
-  power,
-  maxthetaF = NA,
-  benefit = FALSE
-)
+find2stageDesigns(n.max, p0, p1, alpha, power, maxthetaF = NA, benefit = FALSE)
 }
 \arguments{
-\item{nmin}{Minimum permitted sample size. Should be a multiple of block size or number of stages.}
-
-\item{nmax}{Maximum permitted sample size. Should be a multiple of block size or number of stages.}
+\item{n.max}{Maximum sample size. Can be a single value or a vector of length 2, indicating the range of maximum sample sizes to search over. If a single value is provided, search begins at n=4}
 
 \item{p0}{Probability for which to control the type-I error-rate}
 
@@ -37,7 +26,7 @@ A list of class "curtailment_simon" containing two data frames. The first data f
 has a single row and contains all the inputted values. The second data frame, $all.des, contains one
 row for each design realisation, and contains the details of each design, including sample size,
 stopping boundaries and operating characteristics. To see a diagram of any obtained design realisation
-and its corresponding stopping boundaries, simply call the function drawDiagram with this output as the only argument.
+and its corresponding stopping boundaries, simply call the function plot with this output as the first argument and the row number of the design as the second argument.
 }
 \description{
 This function finds two-stage designs for a given set of design parameters, allowing
@@ -50,8 +39,8 @@ three optimality criteria.
 }
 \examples{
 \donttest{
-find2stageDesigns(nmin=23,
- nmax=27,
+find2stageDesigns(
+ n.max=c(23, 27),
  p0=0.75,
  p1=0.92,
  alpha=0.22,

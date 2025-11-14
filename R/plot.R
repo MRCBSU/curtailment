@@ -1,5 +1,5 @@
 
-#' drawDiagram
+#' plot
 #'
 #' This function produces both a data frame and a diagram of stopping boundaries.
 #' The function takes two arguments: the output from the function singlearmDesign or find2stageDesigns and the row number of the design to plot.
@@ -17,50 +17,21 @@
 #'  p1 = 0.4,
 #'  power = 0.8,
 #'  alpha = 0.05)
-#'  dig <- drawDiagram(output, print.row=2)
-drawDiagram <- function(findDesign.output, print.row=NULL, xmax=NULL, ymax=NULL, ...){
-  UseMethod("drawDiagram")
-}
-
+#'  dig <- plot(output, print.row=2)
 #' @export
-drawDiagram.curtailment_single <- function(findDesign.output, print.row, xmax=NULL, ymax=NULL, ...){
+plot.curtailment_single <- function(findDesign.output, print.row, xmax=NULL, ymax=NULL, ...){
   des <- findDesign.output$all.des
-  row.names(des) <- 1:nrow(des)
   des <- des[print.row, , drop=FALSE]
   des.input <- findDesign.output$input
   plot.and.bounds <- createPlotAndBounds(des=des, des.input=des.input, rownum=1, xmax=xmax, ymax=ymax, ...)
   return(plot.and.bounds)
-  }
-# end of drawDiagram()
+}
 
 #' @export
-drawDiagram.curtailment_simon <- function(findDesign.output, print.row=NULL, xmax=NULL, ymax=NULL){
+plot.curtailment_2stage <- function(findDesign.output, print.row, xmax=NULL, ymax=NULL){
   des <- findDesign.output$all.des
-  row.names(des) <- 1:nrow(des)
-  if(!is.null(print.row)){
-    des <- des[print.row, , drop=FALSE]
-  }
-  #print(des)
+  des <- des[print.row, , drop=FALSE]
   des.input <- findDesign.output$input
-  if(nrow(des)>1){
-    rownum <- 1
-    while(is.numeric(rownum)){
-      rownum <- readline("Input a row number to choose a design and see the trial design diagram. Press 'q' to quit: ")
-      if(rownum=="q"){
-        if(exists("plot.and.bounds")){
-          return(plot.and.bounds)
-        }else{
-          print("No designs selected, nothing to return", q=F)
-          return()
-        }
-      }else{
-        rownum <- as.numeric(rownum)
-        plot.and.bounds <- createPlotAndBoundsSimon(des=des, des.input=des.input, rownum=rownum, xmax=xmax, ymax=ymax)
-      }
-    } # end of while
-  }else{
-    #print("Returning diagram and bounds for single design.", quote = F)
-    plot.and.bounds <- createPlotAndBoundsSimon(des=des, des.input=des.input, rownum=1, xmax=xmax, ymax=ymax)
-    return(plot.and.bounds)
-  }
+  plot.and.bounds <- createPlotAndBoundsSimon(des=des, des.input=des.input, rownum=1, xmax=xmax, ymax=ymax)
+  return(plot.and.bounds)
 }

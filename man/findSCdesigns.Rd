@@ -11,8 +11,8 @@ findSCdesigns(
   p1,
   alpha,
   power,
-  minthetaE = p1,
-  maxthetaF = p1,
+  minthetaE = power,
+  maxthetaF = 0.5,
   bounds = "wald",
   fixed.r1 = NA,
   fixed.r = NA,
@@ -37,9 +37,9 @@ findSCdesigns(
 
 \item{power}{Required power (1-beta).}
 
-\item{minthetaE}{Minimum value of upper threshold theta_E_min. Defaults to p.}
+\item{minthetaE}{Minimum value of upper threshold theta_E_min. Defaults to power.}
 
-\item{maxthetaF}{Maximum value of lower CP threshold theta_F_max. Defaults to p.}
+\item{maxthetaF}{Maximum value of lower CP threshold theta_F_max. Defaults to 0.5.}
 
 \item{bounds}{choose what final rejection boundaries should be searched over: Those of A'Hern ("ahern"), Wald ("wald") or no constraints (NA). Defaults to "wald".}
 

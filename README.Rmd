@@ -54,7 +54,7 @@ fig <- drawDiagram(output)
 
 ## Future plans
 
-Speed up Mander and Thompson and Simon design searches by reducing the number of combinations of n1/n2/r1/r/e1 search over, using Wald's sequential probability ratio test as in the multi-stage/continuous functions:
+ - Speed up Mander and Thompson and Simon design searches by reducing the number of combinations of n1/n2/r1/r/e1 search over, using Wald's sequential probability ratio test as in the multi-stage/continuous functions.
 
 <!-- denom <- log(p1/p0) - log((1-p1)/(1-p0)) -->
 <!-- accept.null <- log((1-power)/(1-alpha)) / denom  + nposs * log((1-p0)/(1-p1))/denom -->
@@ -71,3 +71,16 @@ Speed up Mander and Thompson and Simon design searches by reducing the number of
 <!-- } -->
 
 <!-- sc.subset <- data.frame(n=ns.wald, r=r.wald) -->
+
+ - Better solution: allow choice of definition of CP
+ - make some returned output invisible
+ - Fix bug: findSCdesigns and findNSCdesigns won't print plots
+ - Make alias of find2stagedesigns to make clear it can obtain Simon designs
+ 
+## To Report
+
+ - Now using `plot` for singlearmDesign and find2stagedesigns (remaining designs to follow, then drawDiagram may become deprecated)
+ - "Breaking" updates to argument names nmin, nmax -- now n.max. 
+ 
+
+

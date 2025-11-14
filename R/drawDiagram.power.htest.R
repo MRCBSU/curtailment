@@ -1,5 +1,5 @@
 #' @export
-drawDiagram.power.htest <- function(findDesign.output, print.row=NULL, xmax=NULL, ymax=NULL){
+drawDiagram.power.htest <- function(findDesign.output, print.row=NULL, xmax=NULL, ymax=NULL, ...){
   m <- Sm <- decision <- analysis <- NULL
   des <- findDesign.output
   # des is output from power.prop.test()

@@ -1,5 +1,5 @@
 #' @export
-drawDiagram.curtailment_twoarm <- function(findDesign.output, print.row=NULL, xmax=NULL, ymax=NULL){
+drawDiagram.curtailment_twoarm <- function(findDesign.output, print.row=NULL, xmax=NULL, ymax=NULL, ...){
   des <- findDesign.output$all.des
   row.names(des) <- 1:nrow(des)
   if(!is.null(print.row)){
